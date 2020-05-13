@@ -1,0 +1,117 @@
+package AnalizadorTime;
+import java_cup.runtime.Symbol;
+
+
+parser code {:
+    public static  ArrayList<Time> list;
+    public static  ArrayList<Tiempos> listTime;
+    public static String id,lz,inic,end;
+    public static int tim;
+
+public static ArrayList<Errors> erroresSemanticos;
+public static ArrayList<Errors> erroresSintacticos;
+   public void syntax_error(Symbol s){
+       System.out.println("Error R de sintaxis: "+ s.value +" Linea "+(s.left+1)+" columna "+(s.right+1) );
+    }
+    public void unrecovered_syntax_error(Symbol s) throwsjava.lang.Exception{
+    System.out.println("La Cadena:" +s.value+" en la Linea:"+(s.right+1) +" ,Columna: "+s.left+"esta fuera de contexto." );
+ }
+:}
+
+terminal abreLlaves,cierraLlaves,dosPuntos,Time,Start,End,Numero,Id,Error,Com,abreCor,cierraCor,coma,Duracion,
+Image,Iden,COM;
+
+non-terminal A,DATOS,F,C,V,K,W,Z,X,J;
+start with A;
+
+A::= abreLlaves Time dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves 
+|error abreLlaves Time dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves 
+|error Time dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves 
+|error  dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves 
+|error  abreLlaves DATOS F cierraLlaves cierraLlaves 
+|error   DATOS F cierraLlaves cierraLlaves 
+;
+
+DATOS::= Id:e dosPuntos abreLlaves C cierraLlaves 
+{:
+id=(String)e;
+boolean v=false;
+try{
+                for (int i = 0; i < lienzos.size(); i++) {
+                    if(lienzos.get(i).equals(id)){
+                        v=true;
+                        break;
+                    }
+                    
+                }
+}catch(Exception ex){v=true;}
+
+if(v){
+  erroresSemanticos.add(new Errors(id, "Identificador no existente en lienzos",0, eleft, eright));  
+}else{
+listTime.add(new Tiempos(id,list,inic,end));
+list=new ArrayList();
+}
+
+:}
+|error Id dosPuntos abreLlaves C cierraLlaves 
+|error  dosPuntos abreLlaves C cierraLlaves 
+|error  abreLlaves C cierraLlaves 
+|error   C cierraLlaves 
+;
+F::= coma DATOS |   |error coma DATOS;
+C::= V:e1 coma V:e2 coma V:e3
+{:
+int x1=(int)e1;
+int x2=(int)e2;
+int x3=(int)e3;
+if(x1==x2){
+erroresSintacticos.add(new Errors("Fin de id, se repite","Se repite la propiedad",-1,e2left,e2right));
+} if(x1==x3){
+erroresSintacticos.add(new Errors("Imagenes, se repite","Se repite la propiedad",-1,e3left,e3right));
+} if(x2==x3){
+erroresSintacticos.add(new Errors("Imagenes, se repite","Se repite la propiedad",-1,e3left,e3right));
+}
+:}
+|error V coma V coma V
+|error  coma V coma V
+|error  V coma V
+|error coma V
+;
+V::= Start dosPuntos COM Id:e COM {:inic=(String)e; RESULT=1;:}
+| End dosPuntos COM Id:e COM {:end=(String)e;RESULT=2;:}
+| Image dosPuntos abreCor X J {:RESULT=3;:}
+|error  dosPuntos COM Id COM 
+|error abreCor X J
+;
+K::= W:e1 coma Z:e2 
+{:
+String id_=(String)e1;
+for(int i=0;i<list.size();i++){
+if(id.equals(list.get(i).getId())){
+  erroresSemanticos.add(new Errors(id_, "Identificador existente dentro de la declaracion",0, e1left, e1right));  
+}
+}
+list.add(new Time((String)e1,(int)e2));
+:}
+| Z:e2 coma W:e1
+{:
+String id_=(String)e1;
+for(int i=0;i<list.size();i++){
+if(id.equals(list.get(i).getId())){
+  erroresSemanticos.add(new Errors(id_, "Identificador existente dentro de la declaracion",0, e1left, e1right));  
+}
+}
+list.add(new Time((String)e1,(int)e2));
+:};
+W::=Iden dosPuntos COM Id:e COM {:RESULT=e;:}
+|error Iden dosPuntos COM Id COM
+|error dosPuntos COM Id COM
+;
+Z::=Duracion dosPuntos Numero:e {:RESULT=e;:}
+|error Duracion dosPuntos Numero
+|error dosPuntos Numero;
+X::=abreLlaves K  cierraLlaves
+|error abreLlaves K cierraLlaves;
+
+J::= coma X  J | cierraCor;

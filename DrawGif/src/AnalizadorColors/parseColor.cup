@@ -1,0 +1,155 @@
+package AnalizadorColors;
+import java_cup.runtime.Symbol;
+/*
+import static AnalizadorColors.parseColor.clr;
+import static AnalizadorColors.parseColor.coloreslist;
+import static AnalizadorColors.parseColor.id;
+import static AnalizadorColors.parseColor.listado;
+*/
+
+parser code {:
+   public static String id,colorHex,lz;
+   public static Color clr;
+   public static int red,green,blue;
+
+public static ArrayList<Errors> erroresSemanticos;
+public static ArrayList<Errors> erroresSintacticos;
+public static ArrayList<Colores> coloreslist;
+
+   public static ArrayList<ContentColor> listado;
+
+   public void syntax_error(Symbol s){
+       System.out.println("Error R de sintaxis: "+ s.value +" Linea "+(s.left+1)+" columna "+(s.right+1) );
+    erroresSintacticos.add(new Errors((String)s.value,"",-1,s.left,s.right));
+   
+    }
+    public void unrecovered_syntax_error(Symbol s) throwsjava.lang.Exception{
+    System.out.println("La Cadena:" +s.value+" en la Linea:"+(s.right+1) +" ,Columna: "+s.left+"esta fuera de contexto." );
+    erroresSintacticos.add(new Errors((String)s.value,"",-1,s.left,s.right));
+   
+ }
+:}
+
+terminal abreLlaves,cierraLlaves,dosPuntos,Colores,coma,Rojo,Azul,Verde,Hex,Letter,Double,Numero,Id,Error;
+non-terminal A,DATOS,F,H,J,COLORS,K,DATA;
+start with A;
+A::= abreLlaves Colores dosPuntos abreLlaves DATOS F  cierraLlaves cierraLlaves
+|error abreLlaves Colores dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves
+|error  Colores dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves
+|error  dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves
+|error   abreLlaves DATOS F cierraLlaves cierraLlaves
+|error   DATOS cierraLlaves cierraLlaves
+|error   cierraLlaves cierraLlaves
+;
+DATOS::= Id:e dosPuntos abreLlaves H:e2 J cierraLlaves 
+{:
+id=(String)e;
+boolean v=false;
+                for (int i = 0; i < lienzos.size(); i++) {
+                    if(lienzos.get(i).equals(id)){
+                        v=true;
+                        break;
+                    }
+                    
+                }
+if(v){
+  erroresSemanticos.add(new Errors(id, "Identificador no existente en lienzos",0, eleft, eright));  
+}else{
+  listado.add(new ContentColor(coloreslist, id));
+
+                
+}
+coloreslist = new ArrayList();
+
+:}
+|error Id dosPuntos abreLlaves H J cierraLlaves 
+|error  dosPuntos abreLlaves H J cierraLlaves 
+|error  abreLlaves H J cierraLlaves 
+|error cierraLlaves 
+;
+F::= coma DATOS | |error coma DATOS;
+H::= Id:e dosPuntos abreLlaves COLORS:e1 cierraLlaves 
+{:
+
+String id_=(String)e;
+
+for (int i = 0; i < coloreslist.size(); i++) {
+                    if(id_.equals(coloreslist.get(i).id)){
+                      erroresSemanticos.add(new Errors(id_, "Identificador existente",0, eleft, eright));  
+                    }
+                }
+
+:}
+|error Id dosPuntos abreLlaves COLORS cierraLlaves 
+|error  dosPuntos abreLlaves COLORS cierraLlaves 
+|error  abreLlaves COLORS cierraLlaves 
+|error  COLORS cierraLlaves 
+;
+J::= coma H | |error coma H;
+COLORS::= K:c1 dosPuntos Numero:e1 coma K:c2 dosPuntos Numero:e2 coma K:c3 dosPuntos Numero:e3
+{:
+int x1=(int)c1;
+int x2=(int)c2;
+int x3=(int)c3;
+int red=0,blue=0,green=0;
+int d1=Integer.parseInt((String)e1);
+int d2=Integer.parseInt((String)e2);
+int d3=Integer.parseInt((String)e3);
+if((x1+x2+x3)==6){
+switch(x1){
+case 1:
+red=d1;
+break;
+case 2:
+green=d1;
+break;
+case 3:
+blue=d1;
+break;
+}
+switch(x2){
+case 1:
+red=d2;
+break;
+case 2:
+green=d2;
+break;
+case 3:
+blue=d2;
+break;
+}
+switch(x3){
+case 1:
+red=d3;
+break;
+case 2:
+green=d3;
+break;
+case 3:
+blue=d3;
+break;
+}
+RESULT=new Color(red,green,blue);
+}
+if(x1==x2){
+erroresSintacticos.add(new Errors("Color verde, se repite","Se repite la propiedad",-1,c2left,c2right));
+} if(x1==x3){
+erroresSintacticos.add(new Errors("Color azul, se repite","Se repite la propiedad",-1,c3left,c3right));
+} if(x2==x3){
+erroresSintacticos.add(new Errors("Color azul, se repite","Se repite la propiedad",-1,c3left,c3right));
+} 
+:}
+| Hex dosPuntos Letter:e
+{:
+Color clrtmp=new Color(0,0,0);
+clr.decode((String)e);
+RESULT=clrtmp;
+:}
+|error K dosPuntos Numero coma K dosPuntos Numero coma K dosPuntos Numero
+|error  dosPuntos Numero coma K dosPuntos Numero coma K dosPuntos Numero
+|error   Numero coma K dosPuntos Numero
+|error   coma K dosPuntos Numero
+|error    K dosPuntos Numero
+|error   dosPuntos Numero
+;
+K::= Rojo{:RESULT=1;:} | Verde {:RESULT=2;:}| Azul{:RESULT=3;:};

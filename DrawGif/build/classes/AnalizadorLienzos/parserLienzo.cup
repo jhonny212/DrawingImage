@@ -1,0 +1,262 @@
+package AnalizadorLienzos;
+import drawgif.Errors;
+import java.awt.Color;
+import java.util.ArrayList;
+import java_cup.runtime.Symbol;
+
+/*import static AnalizadorLienzos.parserLienzo.cadenaNombre;
+import static AnalizadorLienzos.parserLienzo.erroresSintacticos;
+import static AnalizadorLienzos.parserLienzo.fondo;
+import static AnalizadorLienzos.parserLienzo.identifi;
+import static AnalizadorLienzos.parserLienzo.lienzos;
+import static AnalizadorLienzos.parserLienzo.pix;
+import static AnalizadorLienzos.parserLienzo.posx;
+import static AnalizadorLienzos.parserLienzo.posy;
+import static AnalizadorLienzos.parserLienzo.type;*/
+parser code {:
+public static ArrayList<Errors> erroresSintacticos;
+public static Color fondo;
+public static int posx,posy,pix;
+public static String identifi,cadenaNombre,type;
+public static ArrayList<Errors> erroresSemanticos;
+public static ArrayList<lienzo> lienzos;
+   public void syntax_error(Symbol s){
+       System.out.println("Error R de sintaxis: "+ s.value +" Linea "+(s.left+1)+" columna "+(s.right+1) );
+       erroresSintacticos.add(new Errors((String)s.value,"",-1,s.left,s.right));
+    }
+    public void unrecovered_syntax_error(Symbol s) throwsjava.lang.Exception{
+        erroresSintacticos.add(new Errors((String)s.value,"",-1,s.left,s.right));
+    System.out.println("La Cadena:" +s.value+" en la Linea:"+(s.right+1) +" ,Columna: "+s.left+"esta fuera de contexto." );
+ }
+:}
+
+terminal abreLlaves, cierraLlaves, dosPuntos,Lienzos,Nombre,type,Fond,coma,Size,Rojo,Verde,Azul,Cuadro,
+Posx,Posy,Image,Numero,Double,Id,Cadena,ERROR,Hex,Letter,COM;
+
+non-terminal A, DATOS,C,F,V,D1,D2,D3,COLORS,Y,SIZE,SQUARE,POSX,POSY,K,STRING,D4;
+start with A;
+
+A::= abreLlaves Lienzos dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves
+|error abreLlaves Lienzos dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves
+|error  Lienzos dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves
+|error dosPuntos abreLlaves DATOS F cierraLlaves cierraLlaves
+|error  abreLlaves DATOS F cierraLlaves cierraLlaves
+|error  DATOS F cierraLlaves cierraLlaves
+|error  cierraLlaves cierraLlaves
+|error  cierraLlaves
+;
+ 
+DATOS::= Id:e dosPuntos abreLlaves C cierraLlaves 
+{:
+identifi=(String)e;
+String array[]=cadenaNombre.split(" ");
+cadenaNombre="";
+                for (int i = array.length-1; i >=0 ; i--) {
+                    String string = array[i];
+                    if(!string.equals("null")){
+                    cadenaNombre+=string+" ";
+                    }
+                }
+ lienzo tmp = new lienzo(identifi, cadenaNombre, type, fondo, pix, posx, posy);
+                boolean v = true;
+                for (int i = 0; i < lienzos.size(); i++) {
+                    if (lienzos.get(i).Id.equals(identifi)) {
+                        v = false;
+                        break;
+                    }
+
+                }
+                if (!v) {
+                    parserLienzo.erroresSemanticos.add(new Errors(identifi, "Identificador existente", 0, eleft, eright));
+
+                }
+                lienzos.add(tmp);
+
+                cadenaNombre = "";
+:}
+|error dosPuntos abreLlaves C cierraLlaves 
+|error  abreLlaves C cierraLlaves 
+|error  C cierraLlaves 
+|error  cierraLlaves 
+;
+F::=coma DATOS 
+|
+|error coma DATOS;
+
+C::= V:e1 coma V:e2 coma V:e3 coma V:e4
+{:
+int x=(int)e1;
+int x2=(int)e2;
+int x3=(int)e3;
+int x4=(int)e4;
+if(x==x2){
+erroresSintacticos.add(new Errors("colores, se repite","Se repite la propiedad",-1,e2left,e2right));
+} if(x==x3){
+erroresSintacticos.add(new Errors("dimension, se repite","Se repite la propiedad",-1,e3left,e3right));
+} if(x==x4){
+erroresSintacticos.add(new Errors("tipo, se repite","Se repite la propiedad",-1,e4left,e4right));
+} if(2==x3){
+erroresSintacticos.add(new Errors("dimension, se repite","Se repite la propiedad",-1,e3left,e3right));
+} if(x2==x4){
+erroresSintacticos.add(new Errors("dimension, se repite","Se repite la propiedad",-1,e3left,e3right));
+} if(x3==x4){
+erroresSintacticos.add(new Errors("dimension, se repite","Se repite la propiedad",-1,e3left,e3right));
+}
+:};
+V::=D1 {:RESULT=1;:} | D2{:RESULT=2;:} | D3{:RESULT=3;:} |D4{:RESULT=4;:};
+
+D1::= Nombre dosPuntos COM STRING:e COM 
+|error Nombre dosPuntos COM STRING COM
+|error  dosPuntos COM STRING COM
+|error  COM STRING COM
+ ;
+
+D4::= type dosPuntos COM Image:e COM
+{:
+type=(String)e;
+:}
+|error type dosPuntos COM Image COM
+|error  dosPuntos COM Image COM
+|error  COM Image COM
+;
+
+D2::=Fond dosPuntos abreLlaves COLORS:e cierraLlaves {:fondo=(Color)e;:}
+|error Fond dosPuntos abreLlaves COLORS cierraLlaves
+|error  dosPuntos abreLlaves COLORS cierraLlaves
+|error  abreLlaves COLORS cierraLlaves
+|error   cierraLlaves
+
+;
+COLORS::= K:c1 dosPuntos Numero:e1 coma K:c2 dosPuntos Numero:e2 coma K:c3 dosPuntos Numero:e3
+{:
+int x1=(int)c1;
+int x2=(int)c2;
+int x3=(int)c3;
+int red=0,blue=0,green=0;
+int d1=Integer.parseInt((String)e1);
+int d2=Integer.parseInt((String)e2);
+int d3=Integer.parseInt((String)e3);
+ if ((x1 + x2 + x3) != 6) {
+                    if (x1 == x2) {
+                        erroresSintacticos.add(new Errors("El color verde se repite", "Se repite la propiedad", -1, c2left, c2right));
+
+                    }
+                    if (x1 == x3) {
+                        erroresSintacticos.add(new Errors("El color azul se repite", "Se repite la propiedad", -1, c3left, c3right));
+
+                    }
+                    if (x2 == x3) {
+                        erroresSintacticos.add(new Errors("El color azul se repite", "Se repite la propiedad", -1, c3left, c3right));
+
+                    }
+                }
+switch(x1){
+case 1:
+red=d1;
+break;
+case 2:
+green=d1;
+break;
+case 3:
+blue=d1;
+break;
+}
+switch(x2){
+case 1:
+red=d2;
+break;
+case 2:
+green=d2;
+break;
+case 3:
+blue=d2;
+break;
+}
+switch(x3){
+case 1:
+red=d3;
+break;
+case 2:
+green=d3;
+break;
+case 3:
+blue=d3;
+break;
+}
+RESULT=new Color(red,green,blue);
+
+:}
+| Hex dosPuntos Letter:e
+{:
+Color clr=new Color(0,0,0);
+clr.decode((String)e);
+RESULT=clr;
+:}
+|error K dosPuntos Numero coma K dosPuntos Numero coma K dosPuntos Numero
+|error dosPuntos Numero coma K dosPuntos Numero coma K dosPuntos Numero
+|error  Numero coma K dosPuntos Numero coma K dosPuntos Numero
+|error  coma K dosPuntos Numero coma K dosPuntos Numero
+|error   K dosPuntos Numero coma K dosPuntos Numero
+|error   dosPuntos Numero coma K dosPuntos Numero
+|error   Numero coma K dosPuntos Numero
+|error   coma K dosPuntos Numero
+|error   K dosPuntos Numero
+|error   Numero
+;
+
+D3::= Size dosPuntos abreLlaves Y cierraLlaves 
+|error Size dosPuntos abreLlaves Y cierraLlaves 
+|error  dosPuntos abreLlaves Y cierraLlaves 
+|error  abreLlaves Y cierraLlaves 
+;
+Y::= SIZE:c1 coma SIZE:c2 coma SIZE:c3
+{:
+int x1=(int)c1;
+int x2=(int)c2;
+int x3=(int)c3;
+                   if (x1 == x2) {
+                        erroresSintacticos.add(new Errors("La posicion en y se repite", "Se repite la propiedad", -1, c2left, c2right));
+
+                    }
+                    if (x1 == x3) {
+                        erroresSintacticos.add(new Errors("El tamaño del cuadro se repite", "Se repite la propiedad", -1, c3left, c3right));
+
+                    }
+                    if (x2 == x3) {
+                        erroresSintacticos.add(new Errors("El tamaño del cuadro se repite", "Se repite la propiedad", -1, c3left, c3right));
+                    }
+                
+:}  
+|error SIZE coma SIZE coma SIZE
+|error  coma SIZE coma SIZE
+
+;
+
+
+SIZE::= POSX {:RESULT=1;:} 
+|POSY{:RESULT=2;:}
+|Cuadro dosPuntos Numero:e {: pix=Integer.parseInt((String)e); RESULT=3;:}
+;
+POSX::=Posx dosPuntos Numero:e
+{:
+posx=Integer.parseInt((String)e);
+:};
+POSY::= Posy dosPuntos Numero:e
+{:
+posy=Integer.parseInt((String)e);
+:}
+;
+
+
+K::= Rojo {:RESULT=1;:}| Verde {:RESULT=2;:} | Azul {:RESULT=3;:};
+STRING::= Cadena:e STRING
+{:cadenaNombre+=" "+String.valueOf(e);:}
+| Id:e STRING 
+{:cadenaNombre+=" "+String.valueOf(e);:}
+| Numero:e STRING
+{:cadenaNombre+=" "+String.valueOf(e);:}
+| Double:e STRING
+{:cadenaNombre+=" "+String.valueOf(e);:}
+| 
+
+|error Cadena STRING | error Id STRING| error Numero STRING | error Double STRING; 

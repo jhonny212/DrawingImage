@@ -1,0 +1,404 @@
+package AnalizadorPnt;
+import java_cup.runtime.Symbol;
+/*
+import static AnalizadorPnt.parserPnt.Semanticos;
+import static AnalizadorPnt.parserPnt.cadenaValue;
+import static AnalizadorPnt.parserPnt.tablaForInt;
+
+import static AnalizadorPnt.parserPnt.tipoVar;
+import TablaDeSimbolos.tablaInt;
+
+import drawgif.Errors;
+import java.util.ArrayList;
+import java_cup.runtime.Symbol;
+*/
+parser code {:
+    public static ArrayList<tablaInt> tablaForInt;
+    public static ArrayList<Errors> Semanticos;
+
+        
+public static int tipoVar,tipoOperacion;
+    public static String cadenaValue,condicion,cadenaPrev;
+   
+   public void syntax_error(Symbol s){
+       System.out.println("Error R de sintaxis: "+ s.value +" Linea "+(s.left+1)+" columna "+(s.right+1) );
+    }
+    public void unrecovered_syntax_error(Symbol s) throwsjava.lang.Exception{
+    System.out.println("La Cadena:" +s.value+" en la Linea:"+(s.right+1) +" ,Columna: "+s.left+"esta fuera de contexto." );
+ }
+:}
+
+terminal Vars,abreCor,cierraCor,Int,Id,String,Boolean,puntoComa,coma,equals,
+Sum,Res,Mul,Div,Num,abreParen,cierraParen,Double,Cadena,Operador,OperadorLogico,Bool,COM,Error,abreLlaves,cierraLlaves
+,Punto,Inst,If,Else,While,pintar,dobleEquals;
+
+non-terminal A,VARIABLES,VALUES,OPCBOOL,OPCSTR,OPCINT,K,E,T,OP2,OP1,F,STR,STR1,CADENA,CONDICION,COND,COND1,
+INSTRUC,INSTRUCCIONES,ASIGNACION,ASIG,SENTENCIAIF,SENTENCIAWHILE,PAINT,PARAM,PARAM2,SYMBOLS,STR2,C,U,X,V
+,STR3,COND2,CONDICION2,COND22,COND23,CONDICIONAL,Datas,ASIGNACION2,ASIG2,CONDICIONAL2,COND24,COND233
+,E22,V22,X22,T22,U22,C22,DATA22,S1,S2,S3,S11,S22, OPCIONINT1,OPCIONINT2,INT,STRING,BOOLEAN,OPCIONBOOL,
+OPCIONBOOL2,OPCIONSTRING,OPCIONSTRING2,STRINGX;
+start with A;
+SYMBOLS::= Sum | Res | Mul | Div | abreParen | cierraParen;
+//A::= VARIABLES K  INSTRUCCIONES;
+A::= VARIABLES K ;
+
+VARIABLES::= Vars abreCor VALUES ;
+
+
+VALUES::= INT OPCIONINT1
+| BOOLEAN OPCIONBOOL
+| STRINGX OPCIONSTRING;
+
+INT::=Int Id:e OPCINT:e1 
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+int value=(int)((double)e1);
+boolean isNull=false;
+if((double)e1==-1.5){
+isNull=true;
+}
+tablaForInt.add(new tablaInt(value,(String)e,isNull,"int"));
+:};
+BOOLEAN::= Boolean Id:e OPCBOOL:e1
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+boolean value=Boolean.parseBoolean(String.valueOf(e1));
+boolean isNull=false;
+if(e1!=null){
+if(((String)e1).equals("error")){
+
+isNull=true;
+}
+}else{
+isNull=true;
+}
+tablaForInt.add(new tablaInt(value,(String)e,isNull,"bool"));
+:};
+OPCBOOL::= equals E22:e {:RESULT=e;:} | {:RESULT="error";:}; 
+OPCIONBOOL::= OPCIONBOOL2 OPCIONBOOL | puntoComa {:RESULT="error";:};
+OPCIONBOOL2::= coma Id:e 
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+
+tablaForInt.add(new tablaInt(false,(String)e,true,"bool"));
+:}
+| coma Id:e equals E22:e1
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+boolean value=Boolean.parseBoolean(String.valueOf(e1));
+tablaForInt.add(new tablaInt(value,(String)e,false,"bool"));
+:}
+;
+
+STRINGX::= String Id:e OPCSTR:e1
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+String value=String.valueOf(e1);
+boolean isNull=false;
+if(((String)e1).equals("null")){
+isNull=true;
+}
+tablaForInt.add(new tablaInt(value,(String)e,isNull,"str"));
+:};
+
+OPCSTR::= equals S1:e {:RESULT=e;:} | {:RESULT="null";:}; 
+
+OPCIONSTRING::= OPCIONSTRING2 OPCIONSTRING | puntoComa {:RESULT="null";:};
+OPCIONSTRING2::= coma Id:e 
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+
+tablaForInt.add(new tablaInt("",(String)e,true,"str"));
+:}
+| coma Id:e equals S1:e1
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+String value=String.valueOf(e1);
+tablaForInt.add(new tablaInt(value,(String)e,false,"str"));
+:}
+;
+
+
+
+
+OPCINT::= equals E:e {:RESULT=e;:} | {:RESULT=-1.5;:};
+
+OPCIONINT1::= OPCIONINT2 OPCIONINT1 | puntoComa {:RESULT=-1.5;:};
+OPCIONINT2::= coma Id:e 
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+
+tablaForInt.add(new tablaInt(-1,(String)e,true,"int"));
+:}
+| coma Id:e equals E:e1
+{:
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
+    break;
+}}
+int value=(int)((double)e1);
+
+tablaForInt.add(new tablaInt(value,(String)e,false,"int"));
+:}
+
+;
+K::= cierraCor | VALUES K;
+
+/*
+*Condicion int
+*/
+
+
+
+E::=T:e OP1:e1 E:e2
+{:
+try{
+int opc=(int)e1;
+double x1=(double)e;
+double x2=(double)e2;
+System.out.println("Operacion"+e+" -> "+opc+" "+e2);
+if(opc==1){
+RESULT=(x1+x2);
+}else{
+RESULT=(x1-x2);
+}
+}catch(Exception ex){}
+:}
+| T:e {:RESULT=e;:};
+T::= F:e OP2:e1 T:e2
+{:
+try{
+int opc=(int)e1;
+double x1=(double)e;
+double x2=(double)e2;
+System.out.println("Operacion"+e+" -> "+opc+" "+e2);
+if(opc==1){
+RESULT=(x1*x2);
+}else{
+RESULT=(x1/x2);
+}
+}catch(Exception ex){}
+:}
+| F:e {:RESULT=e;:};
+
+F::= Num:e
+{:RESULT=Double.parseDouble((String)e);:}
+| abreParen E:e cierraParen {:RESULT=e;:}
+| Id:e
+{:
+String msj="El identificador no existe";
+boolean valid=true;
+int valor=1;
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    try{
+    valor=tablaForInt.get(i).getValorInt();
+    RESULT=Double.parseDouble(String.valueOf(valor));
+    valid=false;
+    if(tablaForInt.get(i).isIsNull()){
+        msj="La variable no esta inicializada";
+    valid=true;
+    }   
+    }catch(Exception exs){
+    msj="La variable no es de tipo entero";
+    valid=true;
+    }
+    
+     break;
+   
+}}
+if(valid){
+    RESULT=-1.5;
+    parserPnt.Semanticos.add(new Errors((String)e,msj,-1,eleft,eright));
+}
+:}
+| Double:e 
+{:RESULT=Double.parseDouble((String)e);:};
+
+OP2::= Mul 
+{:RESULT=1;
+tipoOperacion=1;
+:} 
+| Div 
+{:RESULT=2;
+tipoOperacion=2;
+:};
+OP1::=Sum 
+{:RESULT=1;
+tipoOperacion=3;
+:} 
+| Res 
+{:
+tipoOperacion=4;
+RESULT=2;:};
+
+
+
+/*
+*Condicion string
+*/
+
+
+CADENA::= STRING CADENA | ;
+STRING::= Cadena:e {:RESULT=e;:} | Id:e {:RESULT=e;:} | Num:e {:RESULT=e;:} | SYMBOLS:e {:RESULT=e;:};
+/*
+*SECCION DE INSTRUCCIONES
+*/
+
+INSTRUCCIONES::= Inst abreParen Id cierraParen abreCor INSTRUC   ;
+INSTRUC::= ASIGNACION ASIG | PAINT ASIG| SENTENCIAIF ASIG| SENTENCIAWHILE ASIG ;
+ASIGNACION::= Id equals E22 puntoComa  ;
+ASIG::= cierraCor|INSTRUC;
+
+/*E22::=DATA22:e V22:e2  
+|Bool:e S11:e1
+|DATA22:e Operador:e1 E:e2 S11:e3
+| abreParen E22:e cierraParen V22:e2 ;
+  V22::=OP2:e T22:e2 X22:e3 
+| OP1:e E22:e2 
+| 
+|dobleEquals S1:e S11:e1 ;
+X22::= OP1:e E22:e1 | ;
+T22::= DATA22:e U22:e1 
+| abreParen E22:e cierraParen U22:e1
+;
+U22::= OP2:e T22:e1 | ;
+*/
+
+E22::= C:e S11:e1
+{:RESULT=e+" "+e1;:}
+| CONDICION X22
+;
+
+//CONDICIONES--------------------------->
+/*CONDICION::= DATA22:e V22:e1
+| DATA22 Operador E S11
+| abreParen CONDICION  cierraParen  V22;
+V22::= OP2 T22:e1 X22:e2
+| OP1:e CONDICION:e1 
+| 
+|dobleEquals  S1 S11
+|OperadorLogico:e E22
+;
+X22::= OP1 CONDICION:e1 | ;
+T22::= DATA22:e U22:e1 | abreParen CONDICION:e cierraParen U22:e1;
+U22::= OP2 T22:e2 | ;
+*/
+
+CONDICION::= V22 OP1 S1 
+|V22 
+;
+V22::= T22 OP2 V22
+|DATA22 
+|abreParen COND1 X22 cierraParen 
+;
+
+X22::= Operador S1 S11| S11;
+
+COND1::= V22 OP1 S1
+|V22
+;
+
+COND::= Operador S1 | ;
+
+
+C::=  abreParen C:e S11:e1 cierraParen 
+{:
+RESULT="("+e+" "+e1+")";
+System.out.println(RESULT);
+;:}
+| Bool:e 
+{:RESULT=e;:};
+
+
+S11::= OperadorLogico:e E22:e1 {:RESULT=""+e+" "+" "+e1;:} |{: RESULT="";:};
+
+//Retornando el tipo de variable
+DATA22::=
+Num:e {:
+RESULT=e;
+tipoVar=1;
+:}
+|Id:e {:
+String valor="",msj="El no identificador existe";
+int tipo=0;
+boolean exist=true;
+for(int i=0;i<tablaForInt.size();i++){
+    if(((String)e).equals(tablaForInt.get(i).getId())){
+    tipoVar=tablaForInt.get(i).type();
+    valor=String.valueOf(tablaForInt.get(i).getValor());
+    exist=false;
+    break;
+}}
+if(exist){
+ Semanticos.add(new Errors((String)e,msj,-1,eleft,eright));
+}
+
+RESULT=valor;
+:} 
+| COM CADENA:e COM {:
+tipoVar=2;
+RESULT=e;:} 
+;
+
+
+
+S1::=S2:e OP1:e1 S1:e2
+| S2:e;
+S2::= S3:e OP2:e1 S2:e2
+| S3:e3;
+
+S3::= Num:e
+| abreParen S1:e cierraParen
+| Id:e
+| COM CADENA:e COM
+;
+
+
+
+SENTENCIAIF::= If abreParen E22 cierraParen V Else V;
+SENTENCIAWHILE::= While abreParen E22 cierraParen V ;
+PAINT::= pintar abreParen E22 coma E22 coma PARAM2 coma PARAM2 cierraParen puntoComa;
+
+PARAM2::= E
+| E Punto E;
+
+V::=abreLlaves Datas ;
+V::=abreLlaves cierraLlaves;
+
+Datas::= ASIGNACION2 | PAINT ASIG2| SENTENCIAIF ASIG2| SENTENCIAWHILE ASIG2 ;
+ASIGNACION2::= Id equals E22  ASIG2  ;
+ASIG2::= cierraLlaves|Datas;
