@@ -145,12 +145,13 @@ public class DrawGif {
 
     private static void probar() {
 
-        generarCompilador();
+        //generarCompilador();
+        
         String contenido = "";
         contenido = "VARS ["
-                + "boolean ff= ((true) AND 2>2 AND true) AND true AND ((true AND 4>5 AND ((true))));"
+                + "boolean ff= 2+(2*(2+2));"
                 + "]";
-
+       
         if (((true) && 2>2 && true) && true && ((true && 4>5 && ((true))))) {
             
         }
@@ -162,6 +163,7 @@ public class DrawGif {
         } catch (Exception ex) {
             System.out.println("exxs");
         }
+
     }
 
 }

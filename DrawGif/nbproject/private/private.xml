@@ -5,7 +5,10 @@
         <group>
             <file>file:/home/jhonny/Escritorio/5to.%20Semestre/compiladores1/proyectos/proyectoFinal/DrawGif/src/AnalizadorPnt/parserPnt.java</file>
             <file>file:/home/jhonny/Escritorio/5to.%20Semestre/compiladores1/proyectos/proyectoFinal/DrawGif/src/drawgif/DrawGif.java</file>
+            <file>file:/home/jhonny/Escritorio/5to.%20Semestre/compiladores1/proyectos/proyectoFinal/DrawGif/src/TablaDeSimbolos/TablaSimbolos.java</file>
             <file>file:/home/jhonny/Escritorio/5to.%20Semestre/compiladores1/proyectos/proyectoFinal/DrawGif/src/AnalizadorPnt/parserPnt.cup</file>
+            <file>file:/home/jhonny/Escritorio/5to.%20Semestre/compiladores1/proyectos/proyectoFinal/DrawGif/src/AnalizadorPnt/lexicoPnt.jflex</file>
+            <file>file:/home/jhonny/Escritorio/5to.%20Semestre/compiladores1/proyectos/proyectoFinal/DrawGif/src/TablaDeSimbolos/clasePnt.java</file>
             <file>file:/home/jhonny/Escritorio/5to.%20Semestre/compiladores1/proyectos/proyectoFinal/DrawGif/src/TablaDeSimbolos/tablaInt.java</file>
         </group>
     </open-files>

@@ -50,9 +50,8 @@ return symbol(sym.Punto,new String(yytext()));}
 "-"                                                                          {return symbol(sym.Res,new String(yytext()));}
 "*"                                                                          {return symbol(sym.Mul,new String(yytext()));}
 "/"                                                                          {return symbol(sym.Div,new String(yytext()));}
-"=="                                                                          {return symbol(sym.dobleEquals,new String(yytext()));}
 "="                                                                          {return symbol(sym.equals,new String(yytext()));}
-("<")|("<=")|(">")|(">=")|("<>")                                              {return symbol(sym.Operador,new String(yytext()));}
+("==")|("<")|("<=")|(">")|(">=")|("<>")                                              {return symbol(sym.Operador,new String(yytext()));}
 ("AND")|("OR")                                                                {return symbol(sym.OperadorLogico,new String(yytext()));}
 
 (({numero})+)(".")(({numero})+)                                              {return symbol(sym.Double,new String(yytext()));}    

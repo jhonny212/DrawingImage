@@ -48,18 +48,21 @@ public class tablaInt extends TablaSimbolos {
         this.valor = valor;
         this.Id = id;
         this.isNull = isNull;
+        this.tipo=tipo;
     }
 
     public tablaInt(Boolean valor, String id, boolean isNull, String tipo) {
         this.valor = valor;
         this.Id = id;
         this.isNull = isNull;
+        this.tipo=tipo;
     }
 
     public tablaInt(int valor, String id, boolean isNull, String tipo) {
         this.valor = valor;
         this.Id = id;
         this.isNull = isNull;
+        this.tipo=tipo;
     }
 
     public int type() {
@@ -71,9 +74,15 @@ public class tablaInt extends TablaSimbolos {
             case "bool":
                 return 3;
             default:
-               
+                
+
                 break;
         }
-    return -1;}
+        return -1;
+    }
+
+    public String getValue() {
+        return String.valueOf(valor);
+    }
 
 }
