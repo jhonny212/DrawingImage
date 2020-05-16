@@ -5,13 +5,17 @@
  */
 package Interfaz;
 
-import AnalizadorColors.Colores;
-import drawgif.Cuadro;
-import java.awt.Dimension;
-import java.awt.PopupMenu;
-import java.awt.Rectangle;
+import AnalizadorColors.ContentColor;
+import AnalizadorLienzos.lienzo;
+import AnalizadorPnt.Codigo;
+import AnalizadorTime.Tiempos;
+import AnalizadorTime.Time;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
+import javax.swing.JPanel;
 
 /**
  *
@@ -22,12 +26,36 @@ public class EditorGrafico extends javax.swing.JPanel {
     /**
      * Creates new form EditorGrafico
      */
-    Cuadro Tablero[][];
+    
+    int fila, columna;
+    JPanel printPanel;
 
     public EditorGrafico() {
         initComponents();
-        Tablero = new Cuadro[7][7];
+        printPanel = new JPanel();
         
+    }
+
+    public  JButton getColorSelect() {
+        return ColorSelect;
+    }
+
+    public void setItems() {
+        fila=this.lz.getDim_y();
+        columna=this.lz.getDim_x();
+        this.tab.setBackground(this.lz.getColor());
+        this.Ids.removeAllItems();
+        for (int i = 0; i < tmp.getList().size(); i++) {
+            String dato = tmp.getList().get(i).getId();
+            this.Ids.addItem(dato);
+            tmp.getList().get(i).inicializarTablero(fila, columna);
+        }
+        this.Inicio.setText(this.tmp.getInicio());
+        this.Fin.setText(this.tmp.getFin());
+        this.Inicio.setEnabled(false);
+        this.Fin.setEnabled(false);
+        iniciarColores();
+        iniciarTablero();
     }
 
     /**
@@ -57,8 +85,9 @@ public class EditorGrafico extends javax.swing.JPanel {
         jCheckBox1 = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
-        PanelImagen = new javax.swing.JPanel();
+        colores = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tab = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(208, 210, 213));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -92,8 +121,16 @@ public class EditorGrafico extends javax.swing.JPanel {
         jLabel4.setText("Imagen");
 
         Ids.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Ids.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IdsActionPerformed(evt);
+            }
+        });
 
         Duracion2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                Duracion2KeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 Duracion2KeyTyped(evt);
             }
@@ -169,9 +206,9 @@ public class EditorGrafico extends javax.swing.JPanel {
                     .addComponent(jLabel8))
                 .addGap(45, 45, 45)
                 .addGroup(PanelColoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ColorSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1))
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(jCheckBox1)
+                    .addComponent(ColorSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
         PanelColoresLayout.setVerticalGroup(
             PanelColoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,38 +224,41 @@ public class EditorGrafico extends javax.swing.JPanel {
                 .addGap(14, 14, 14))
         );
 
-        add(PanelColores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 270, 90));
+        add(PanelColores, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 550, 300, 90));
 
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel6.setText("COLORES");
         add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout coloresLayout = new javax.swing.GroupLayout(colores);
+        colores.setLayout(coloresLayout);
+        coloresLayout.setHorizontalGroup(
+            coloresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 298, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        coloresLayout.setVerticalGroup(
+            coloresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 278, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(jPanel2);
+        jScrollPane1.setViewportView(colores);
 
         add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 300, 280));
 
-        javax.swing.GroupLayout PanelImagenLayout = new javax.swing.GroupLayout(PanelImagen);
-        PanelImagen.setLayout(PanelImagenLayout);
-        PanelImagenLayout.setHorizontalGroup(
-            PanelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 860, Short.MAX_VALUE)
+        javax.swing.GroupLayout tabLayout = new javax.swing.GroupLayout(tab);
+        tab.setLayout(tabLayout);
+        tabLayout.setHorizontalGroup(
+            tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 808, Short.MAX_VALUE)
         );
-        PanelImagenLayout.setVerticalGroup(
-            PanelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+        tabLayout.setVerticalGroup(
+            tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 548, Short.MAX_VALUE)
         );
 
-        add(PanelImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 860, 600));
+        jScrollPane2.setViewportView(tab);
+
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 810, 550));
     }// </editor-fold>//GEN-END:initComponents
 
     private void Duracion1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Duracion1KeyTyped
@@ -243,11 +283,51 @@ public class EditorGrafico extends javax.swing.JPanel {
     }//GEN-LAST:event_FinKeyTyped
 
     private void Duracion2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Duracion2KeyTyped
-        char c = evt.getKeyChar();
+         char c = evt.getKeyChar();
+     
         if (Character.isLetter(c)) {
             evt.consume();
         }
+      
     }//GEN-LAST:event_Duracion2KeyTyped
+    int pos = 0;
+    private void IdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IdsActionPerformed
+        try {
+            String name = this.Ids.getSelectedItem().toString();
+            pos = this.Ids.getSelectedIndex();
+            tmp.getList().stream().filter((list) -> (list.getId().equals(name))).forEachOrdered((Time list) -> {
+                this.Duracion2.setText(String.valueOf(list.getDuracion1()));
+            });
+        } catch (NullPointerException e) {
+        }
+    }//GEN-LAST:event_IdsActionPerformed
+
+    private void Duracion2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Duracion2KeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+         this.tmp.getList().get(pos).setDuracion1(Float.parseFloat(this.Duracion2.getText()));
+        }
+    }//GEN-LAST:event_Duracion2KeyPressed
+    lienzo lz;
+    ContentColor clr;
+    Tiempos tmp;
+    Codigo pnt;
+
+    public void setLz(lienzo lz) {
+        this.lz = lz;
+    }
+
+    public void setClr(ContentColor clr) {
+        this.clr = clr;
+    }
+
+    public void setTmp(Tiempos tmp) {
+        this.tmp = tmp;
+    }
+
+    public void setPnt(Codigo pnt) {
+        this.pnt = pnt;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -258,7 +338,7 @@ public class EditorGrafico extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> Ids;
     private javax.swing.JTextField Inicio;
     private javax.swing.JPanel PanelColores;
-    private javax.swing.JPanel PanelImagen;
+    private javax.swing.JPanel colores;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -269,16 +349,35 @@ public class EditorGrafico extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPanel tab;
     // End of variables declaration//GEN-END:variables
-
-    private void iniciarTablero() {
-        PanelImagen.setLayout(new java.awt.GridLayout(7, 7));
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                // PanelImagen.add(Tablero[i][j]);
-            }
+    
+    
+    private void iniciarColores() {
+        GridLayout grid = new GridLayout(clr.getList().size(), 2);
+        grid.setHgap(10);
+        grid.setVgap(10);
+        this.colores.setLayout(grid);
+        JLabel lb[][] = new JLabel[clr.getList().size()][2];
+        for (int i = 0; i < clr.getList().size(); i++) {
+            lb[i][0] = new JLabel(clr.getList().get(i).getNombre());
+            lb[i][0].setFont(new java.awt.Font("Ubuntu", 1, 18));
+            this.colores.add(lb[i][0]);
+            //--------------------->Agregando el color
+            lb[i][1] = new JLabel("");
+            lb[i][1].setOpaque(true);
+            lb[i][1].setBackground(clr.getList().get(i).getColor());
+            lb[i][1].addMouseListener(new mouseAdapter(clr.getList().get(i).getColor(),this));
+            ColorSelect.setBackground(lb[i][1].getBackground());
+            this.colores.add(lb[i][1]);
         }
     }
+
+    private void iniciarTablero() {
+        
+    
+    }
+
 }

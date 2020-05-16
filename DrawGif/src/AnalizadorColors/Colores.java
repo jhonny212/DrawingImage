@@ -25,7 +25,7 @@ public class Colores extends Fichero {
         super(contenido);
         
     }
-
+     public ArrayList<ContentColor> listado;
     public boolean init() {
         lexicoColor scan = new lexicoColor(new BufferedReader(new StringReader(contenido)));
 
@@ -40,7 +40,7 @@ public class Colores extends Fichero {
         this.erroresLexico = scan.erroresLexico;
         this.erroresSintacticos = parser.erroresSintacticos;
         this.erroresSemanticos = parser.erroresSemanticos;
-       
+        this.listado=parser.listado;
         return isValid();
 
     }
@@ -55,5 +55,22 @@ public class Colores extends Fichero {
         this.nombre = nombre;
         this.color = clr;
     }
+
+    public ArrayList<ContentColor> getListado() {
+        return listado;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+    
 
 }

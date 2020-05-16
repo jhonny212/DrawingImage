@@ -5,12 +5,13 @@
  */
 package drawgif;
 
-import javax.swing.JButton;
+
+import javax.swing.JLabel;
 
 /**
  *
  * @author jhonny
  */
-public class Cuadro extends JButton {
+public class Cuadro extends JLabel{
     
 }

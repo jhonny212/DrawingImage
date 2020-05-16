@@ -3,6 +3,7 @@ import java_cup.runtime.Symbol;
 /*
 import static AnalizadorPnt.parserPnt.Semanticos;
 import static AnalizadorPnt.parserPnt.cadenaValue;
+import static AnalizadorPnt.parserPnt.getObj;
 import static AnalizadorPnt.parserPnt.tablaForInt;
 
 import static AnalizadorPnt.parserPnt.tipoVar;
@@ -62,7 +63,7 @@ if(opc==1){
  
   obj1[2]=x1+"-"+x2;
 }
-return=obj1;
+return obj1;
 }     
      }else{
 
@@ -150,10 +151,11 @@ for(int i=0;i<tablaForInt.size();i++){
 boolean value=Boolean.parseBoolean(String.valueOf(e1));
 boolean isNull=false;
 if(e1!=null){
-if(((String)e1).equals("error")){
+isNull=true;
+/*if(((String)e1).equals("error")){
 
 isNull=true;
-}
+}*/
 }else{
 isNull=true;
 }
@@ -350,7 +352,7 @@ RESULT=2;:};
 
 CADENA::= STRING:e CADENA:e1
 {:
-RESULT=e+""+e1
+RESULT=e+""+e1;
 :}
 | {:RESULT="";:};
 STRING::= Cadena:e {:RESULT=e;:} | Id:e {:RESULT=e;:} | Num:e {:RESULT=e;:} | SYMBOLS:e {:RESULT=e;:};
@@ -372,26 +374,49 @@ E22::= C:e S11:e1
 :}
 | CONDICION:e X22:e1
 {:
-Object obj1[]=(Object[])e;
-Object objx[]=(Object[])e1;
-Object obj2[]=(Object[1])objx[1];
-int type1=(int)obj1[0];
-int type2=(int)obj2[0];
-String Operador=(String)objx[0];
-if(type1==-55){
-    if(type2!=-55){
-        parserPnt.Semanticos.add(new Errors((String)e,"No se puede comparar una cadena con un numero",-1,e1left,e1right));
-    }
-}else{
-    type1=(int)obj1[1];
-    type2=(int)obj2[1];
+Object re[]=new Object[3];
+if(e1!=null){
     
+Object obx[]=(Object[])e1;
+Object obj2[]=(Object[])obx[1];
+Object obj1[]=(Object[])e;
+            
+String Operador=(String)obx[0];
+int type1=    (int) obj1[0];
+int type2=    (int) obj2[0];
+if(type1==1){
+    if(type2==1){
+        
+    }else{
+       parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+      }
+}else if((type1==-55)|| (type1==2)){
+    if((type2==-55)|| (type2==2)){
+        if(Operador.equals("==")){
+
+        }else{
+        parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, Un string no puede ser comparador con"+Operador,-1,eleft,eright));
+        }
+    }else{
+             parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+    }
+
+} 
+String t1=String.valueOf(obj1[2]);
+String t2=String.valueOf(obj2[2]);
+if(t1.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj1[2],"Error, de sintaxis",-1,eleft,eright));
+}
+if(t2.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, de sintaxis",-1,e1left,e1right));
 }
 
 
-:}
+}
 
-;
+
+
+:};
 
 //CONDICIONES--------------------------->
 
@@ -408,27 +433,54 @@ RESULT=getObj((Object []) e,(Object []) e2,(int) e1, 2,e2left,e2right);
 |DATA22:e {:RESULT=e;:} 
 |abreParen COND1:e X22:e1 cierraParen 
 {:
-System.out.println("Comparacion->Xd");
-Object [] obj1=(Object[])e;
-int type1=(int)obj1[0];
+//Objeto con 3 Objetos
 if(e1!=null){
+Object obx[]=(Object[])e1;
+Object obj2[]=(Object[])obx[1];
+String Operador=(String)obx[0];
+int type1=    (int) obj1[0];
+int type2=    (int) obj2[0];
+if(type1==1){
+    if(type2==1){
+        
+    }else{
+       parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+      }
+}else if((type1==-55)|| (type1==2)){
+    if((type2==-55)|| (type2==2)){
+        if(Operador.equals("==")){
 
+        }else{
+        parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, Un string no puede ser comparador con"+Operador,-1,eleft,eright));
+        }
+    }else{
+        parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+    }
 
 }
-
-
+String t1=String.valueOf(obj1[2]);
+String t2=String.valueOf(obj2[2]);
+if(t1.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj1[2],"Error, de sintaxis",-1,eleft,eright));
+}
+if(t2.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, de sintaxis",-1,e1left,e1right));
+}
+}
 :}
 ;
 //------------------------------------------------------------------------->
 X22::= Operador:e S1:e1 S11:e2
 {:
-Object []ob=new Object [3];
-ob[0]=(String)e;
-ob[1]=e1;
-ob[2]=e2;
-RESULT=ob;
+Object [] obj=new Object[4];
+obj[0]=e;
+obj[1]=e1;
+
+RESULT=obj;
 :}
-| S11:e ;
+| S11:e 
+{:RESULT=e;:}
+;
 
 //------------------------------------------------------------------------->
 COND1::= V22:e OP1:e1 S1:e2
@@ -444,7 +496,7 @@ COND::= Operador:e S1:e1 |  ;
 C::=  abreParen C:e S11:e1 cierraParen 
 {:
 
-;
+
 :}
 | Bool:e 
 {:RESULT=e;:};
@@ -452,13 +504,6 @@ C::=  abreParen C:e S11:e1 cierraParen
 
 S11::= OperadorLogico:e E22:e1 
 {:
-String type=(String)e;
-int opc=-1;
-if(type.equals("AND")){
-    opc=1;
-}else{
-    opc=2;
-}
 
 
 :} 
@@ -499,14 +544,13 @@ for(int i=0;i<tablaForInt.size();i++){
             array[1]=tablaForInt.get(i).getValorInt();
             break;
             case 2:
-            array[2]=tablaForInt.get(i).getValue();
-       
             break;
             case 3:
             array[3]=tablaForInt.get(i).getValorBoolean();
-            Semanticos.add(new Errors((String)e,"No se puede asignar una variable booleana",-1,eleft,eright));
             break;
         }
+        array[2]=tablaForInt.get(i).getValue();
+        
         if(tablaForInt.get(i).isIsNull()){
         msj="La variable no esta inicializada";
         exist=false;
@@ -582,13 +626,14 @@ for(int i=0;i<tablaForInt.size();i++){
             array[1]=tablaForInt.get(i).getValorInt();
             break;
             case 2:
-            array[2]=tablaForInt.get(i).getValue();
             break;
             case 3:
             array[3]=tablaForInt.get(i).getValorBoolean();
             Semanticos.add(new Errors((String)e,"No se puede asignar una variable booleana",-1,eleft,eright));
             break;
         }
+        array[2]=tablaForInt.get(i).getValue();
+            
         if(tablaForInt.get(i).isIsNull()){
         msj="La variable no esta inicializada";
         exist=false;

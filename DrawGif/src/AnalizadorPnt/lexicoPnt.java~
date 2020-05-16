@@ -322,8 +322,8 @@ public class lexicoPnt implements java_cup.runtime.Scanner {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
+  int contador=0;
     private Symbol symbol(int type, Object value) {
-       
         return new Symbol(type, yyline+1, yycolumn+1, value);
     }
 

@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,9 +54,9 @@ public class DrawGif {
      */
     public static BufferedImage crearPNG() {
         BufferedImage bufferedImage = new BufferedImage(500, 600, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = bufferedImage.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        Graphics g2 = bufferedImage.createGraphics();
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+          //      RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(Color.CYAN);
         g2.fillRect(0, 0, 500, 600);
         // Aquí deberíamos introducir el código que queramos pintar.
@@ -66,6 +67,11 @@ public class DrawGif {
 
         g2.setColor(Color.BLACK);
         g2.dispose();
+        try {
+            ImageIO.write(bufferedImage, "png", new File("Text.png"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
         return bufferedImage;
     }
 
@@ -88,9 +94,9 @@ public class DrawGif {
     }
 
     public static void main(String[] args) throws IOException {
-
-        //generarCompilador();
-        probar();
+        EditorDeTexto r=new EditorDeTexto();
+        r.show();
+       // crearPNG();
         /*try {
             
             
@@ -127,6 +133,8 @@ public class DrawGif {
 
         writer.close();
         output.close();*/
+        
+        
     }
 
     private static void generarCompilador() {
@@ -144,24 +152,27 @@ public class DrawGif {
     }
 
     private static void probar() {
-
         //generarCompilador();
-        
         String contenido = "";
         contenido = "VARS ["
-                + "boolean ff= 2+(2*(2+2));"
+                + "boolean ff= 2+(2) AND true AND true;"
                 + "]";
-       
-        if (((true) && 2>2 && true) && true && ((true && 4>5 && ((true))))) {
-            
-        }
+
         lexicoPnt scan = new lexicoPnt(new BufferedReader(new StringReader(contenido)));
 
         parserPnt parser = new parserPnt(scan);
+        parser.tablaForInt = new ArrayList<>();
+        parser.Semanticos = new ArrayList<>();
+
         try {
             parser.parse();
         } catch (Exception ex) {
-            System.out.println("exxs");
+            System.out.println(ex.getMessage()+"s");
+        }
+
+        for (int i = 0; i < parser.Semanticos.size(); i++) {
+            System.out.println(parser.Semanticos.get(i).getSolucion());
+
         }
 
     }

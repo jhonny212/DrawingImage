@@ -6,8 +6,10 @@
 package Interfaz;
 
 import AnalizadorColors.Colores;
+import AnalizadorColors.ContentColor;
 import AnalizadorLienzos.lienzo;
 import AnalizadorPnt.Codigo;
+import AnalizadorTime.Tiempos;
 import AnalizadorTime.Time;
 import drawgif.Fichero;
 import drawgif.panelError;
@@ -318,20 +320,48 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
-        iniciarErrores(1);
-        iniciarErrores(2);
-        iniciarErrores(3);
-        iniciarErrores(4);
+        boolean x1 = iniciarErrores(4);
+        boolean x2 = iniciarErrores(2);
+        boolean x3 = iniciarErrores(1);
+
+        if (x1 && x2 && x3) {
+            lz.getLienzos().stream().map((lienzo1) -> {
+                Tiempos Time = null;
+                ContentColor color = null;
+                for (Tiempos listTime : tmp.getListTime()) {
+                    if (lienzo1.getId().equals(listTime.getName())) {
+                        Time = listTime;
+                    }
+                }
+                for (ContentColor listado : clr.getListado()) {
+                    if (lienzo1.getId().equals(listado.getName())) {
+                        color = listado;
+                    }
+                }
+                EditorGrafico t = new EditorGrafico();
+                Panel.addTab(lienzo1.getId(), t);
+                Panel.setSelectedComponent(t);
+                t.setClr(color);
+                t.setTmp(Time);
+                t.setLz(lienzo1);
+                return t;
+            }).forEachOrdered((t) -> {
+                t.setItems();
+            });
+        }
+        //iniciarErrores(4);
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         EditorGrafico t = new EditorGrafico();
-        Panel.addTab("", t);
+        Panel.addTab("Grafico", t);
         Panel.setSelectedComponent(t);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    public void iniciarErrores(int type) {
+    public boolean iniciarErrores(int type) {
+
+        int aux = 0;
         switch (type) {
             case 4:
                 try {
@@ -353,18 +383,21 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     lz.sintact.init(lz.getErroresSintacticos());
                     Panel.addTab("Sintatico", lz.sintact);
                     Panel.setSelectedComponent(lz.sintact);
+                    aux++;
                 }
                 if (!lz.getErroresLexico().isEmpty()) {
                     lz.lexi = new panelError();
                     lz.lexi.init(lz.getErroresLexico());
                     Panel.addTab("Lexicos", lz.lexi);
                     Panel.setSelectedComponent(lz.lexi);
+                    aux++;
                 }
                 if (!lz.getErroresSemanticos().isEmpty()) {
                     lz.seman = new panelError();
                     lz.seman.init2(lz.getErroresSemanticos());
                     Panel.addTab("Semantico", lz.seman);
                     Panel.setSelectedComponent(lz.seman);
+                    aux++;
                 }
 
                 break;
@@ -388,18 +421,21 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     tmp.sintact.init(tmp.getErroresSintacticos());
                     Panel.addTab("Sintatico", tmp.sintact);
                     Panel.setSelectedComponent(tmp.sintact);
+                    aux++;
                 }
                 if (!tmp.getErroresLexico().isEmpty()) {
                     tmp.lexi = new panelError();
                     tmp.lexi.init(tmp.getErroresLexico());
                     Panel.addTab("Lexico", tmp.lexi);
                     Panel.setSelectedComponent(tmp.lexi);
+                    aux++;
                 }
                 if (!tmp.getErroresSemanticos().isEmpty()) {
                     tmp.seman = new panelError();
                     tmp.seman.init2(tmp.getErroresSemanticos());
                     Panel.addTab("Semantico", tmp.seman);
                     Panel.setSelectedComponent(tmp.seman);
+                    aux++;
                 }
                 break;
             case 2:
@@ -423,18 +459,21 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     clr.sintact.init(clr.getErroresSintacticos());
                     Panel.addTab("Sintatico", clr.sintact);
                     Panel.setSelectedComponent(clr.sintact);
+                    aux++;
                 }
                 if (!clr.getErroresLexico().isEmpty()) {
                     clr.lexi = new panelError();
                     clr.lexi.init(clr.getErroresLexico());
                     Panel.addTab("Lexico", clr.lexi);
                     Panel.setSelectedComponent(clr.lexi);
+                    aux++;
                 }
                 if (!clr.getErroresSemanticos().isEmpty()) {
                     clr.seman = new panelError();
                     clr.seman.init2(clr.getErroresSemanticos());
                     Panel.addTab("Semantico", clr.seman);
                     Panel.setSelectedComponent(clr.seman);
+                    aux++;
                 }
                 break;
             case 3:
@@ -457,22 +496,25 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     pnt.sintact.init(pnt.getErroresSintacticos());
                     Panel.addTab("Sintatico", pnt.sintact);
                     Panel.setSelectedComponent(pnt.sintact);
+                    aux++;
                 }
                 if (!pnt.getErroresLexico().isEmpty()) {
                     pnt.lexi = new panelError();
                     pnt.lexi.init(pnt.getErroresLexico());
                     Panel.addTab("Sintatico", pnt.lexi);
                     Panel.setSelectedComponent(pnt.lexi);
+                    aux++;
                 }
                 if (!pnt.getErroresSemanticos().isEmpty()) {
                     pnt.lexi = new panelError();
                     pnt.lexi.init(pnt.getErroresSemanticos());
                     Panel.addTab("Sintatico", pnt.seman);
                     Panel.setSelectedComponent(pnt.seman);
+                    aux++;
                 }
                 break;
         }
-
+        return aux == 0;
     }
 
     /**

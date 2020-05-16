@@ -87,5 +87,12 @@ public class lienzo extends Fichero {
         return dim_y;
     }
     
+    public int getPosTime(String id){
+        for (int i = 0; i < this.lienzos.size(); i++) {
+            if(id.equals(this.lienzos.get(i).getId())){
+            return i;
+            }
+        }
+    return -1;}  
 
 }
