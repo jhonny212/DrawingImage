@@ -11,37 +11,12 @@ import AnalizadorPnt.parserPnt;
 //import static AnalizadorPnt.parserPnt.Semanticos;
 import Interfaz.EditorDeTexto;
 import TablaDeSimbolos.clasePnt;
-import java.awt.AWTException;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
-import javax.imageio.stream.ImageOutputStream;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+
 
 /**
  *
@@ -52,89 +27,13 @@ public class DrawGif {
     /**
      * @param args the command line arguments
      */
-    public static BufferedImage crearPNG() {
-        BufferedImage bufferedImage = new BufferedImage(500, 600, BufferedImage.TYPE_INT_RGB);
-        Graphics g2 = bufferedImage.createGraphics();
-        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-          //      RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(Color.CYAN);
-        g2.fillRect(0, 0, 500, 600);
-        // Aquí deberíamos introducir el código que queramos pintar.
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(0, 0, 150, 150);
-        g2.setColor(Color.black);
-        g2.fillRect(0, 150, 150, 150);
+  
 
-        g2.setColor(Color.BLACK);
-        g2.dispose();
-        try {
-            ImageIO.write(bufferedImage, "png", new File("Text.png"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return bufferedImage;
-    }
-
-    public static BufferedImage crearPNG2() {
-        BufferedImage bufferedImage = new BufferedImage(500, 600, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2 = bufferedImage.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(Color.CYAN);
-        g2.fillRect(0, 0, 500, 600);
-        // Aquí deberíamos introducir el código que queramos pintar.
-        g2.setColor(Color.green);
-        g2.fillRect(0, 0, 150, 150);
-        g2.setColor(Color.red);
-        g2.fillRect(0, 150, 150, 150);
-
-        g2.setColor(Color.BLACK);
-        g2.dispose();
-        return bufferedImage;
-    }
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         EditorDeTexto r=new EditorDeTexto();
         r.show();
-       // crearPNG();
-        /*try {
-            
-            
-            ImageIO.write(crearPNG(), "png", new File("hola"));
-            } catch (IOException ex) {
-            }*/
-        //EditorDeTexto t = new EditorDeTexto();
-        //t.show();
-        /*BufferedImage first = ImageIO.read(new File("/home/jhonny/Descargas/d.png"));
-        ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
+     
 
-        GifSequenceWriter writer = null;
-        int contador=250;
-        try {
-            writer = new GifSequenceWriter(output, first.getType(), contador, true);
-        } catch (IOException ex) {
-            Logger.getLogger(DrawGif.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        writer.writeToSequence(first);
-
-        File[] images = new File[]{
-            new File("/home/jhonny/Descargas/f.png"),
-            new File("/home/jhonny/Descargas/d.png"),
-            new File("/home/jhonny/Descargas/f.png"),};
-
-        for (File image : images) {
-            System.out.println("entroo");
-            contador+=4000;
-            writer.time=contador;
-            writer.configureRootMetadata(contador,true);
-            BufferedImage next = ImageIO.read(image);
-            writer.writeToSequence(next);
-        }
-
-        writer.close();
-        output.close();*/
-        
-        
     }
 
     private static void generarCompilador() {
@@ -167,7 +66,7 @@ public class DrawGif {
         try {
             parser.parse();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage()+"s");
+            System.out.println(ex.getMessage() + "s");
         }
 
         for (int i = 0; i < parser.Semanticos.size(); i++) {

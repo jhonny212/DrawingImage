@@ -162,6 +162,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
         jMenu4.setText("Generar");
 
+        jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem10.setText("Exportar Gif");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -355,8 +356,9 @@ public class EditorDeTexto extends javax.swing.JFrame {
             name = (panelTxt) Panel.getComponentAt(2);
             name.save();
             Panel.remove(0);
-            Panel.remove(1);
-            Panel.remove(2);
+            Panel.remove(0);
+            Panel.remove(0);
+
         }
 
         //iniciarErrores(4);
@@ -364,10 +366,14 @@ public class EditorDeTexto extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        for (int i = 0; i < Panel.getTabCount(); i++) {
-             //EditorGrafico tmp=(EditorGrafico) Panel.getComponentAt(i);
-             
-        }
+        /* for (int i = 0; i < Panel.getTabCount(); i++) {
+            
+        }*/
+        EditorGrafico href = (EditorGrafico) Panel.getComponentAt(0);
+        href.tmp.getList().get(href.pos).setPaint(href.saveColors());
+        generarImage images = new generarImage(href);
+        images.crearPNG();
+        //generarImage images=new generarImage(this, true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     public boolean iniciarErrores(int type) {

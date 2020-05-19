@@ -442,7 +442,7 @@ class CUP$parserTime$actions {
                 int e1right = ((java_cup.runtime.Symbol) CUP$parserTime$stack.peek()).right;
                 Object e1 = (Object) ((java_cup.runtime.Symbol) CUP$parserTime$stack.peek()).value;
 
-                 String id_ = (String) e1;
+                String id_ = (String) e1;
 
                 for (int i = 0; i < list.size(); i++) {
                     if (id_.equals(list.get(i).getId())) {
@@ -691,13 +691,29 @@ class CUP$parserTime$actions {
                 if (v) {
                     erroresSemanticos.add(new Errors(id, "Identificador no existente en lienzos", 0, eleft, eright));
                 }
-                /*if(inic.equals(end)){
-                    erroresSemanticos.add(new Errors(id, "Los identificadores inicio", 0, eleft, eright));
+                if (inic.equals(end)) {
+                    erroresSemanticos.add(new Errors(inic, "Error, entre el inicio y fin", 0, -1, -1));
+                }
+                boolean v1 = true, v2 = true;
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).Id.equals(inic)) {
+                        v1 = false;
+                    }
+                    if (list.get(i).Id.equals(end)) {
+                        v2 = false;
+                    }
+
+                }
+                if (v1) {
+                    erroresSemanticos.add(new Errors(inic, "Error, la imagen de inicio no esta declarada", 0, -1, -1));
+                }
+                if (v2) {
+                    erroresSemanticos.add(new Errors(end, "Error, la imagen de fin no esta declarada", 0, -1, -1));
+                }
                 
-                }*/
-         listTime.add(new Tiempos(id,list,inic,end));
-list=new ArrayList();
-        
+                listTime.add(new Tiempos(id, list, inic, end));
+                list = new ArrayList();
+
                 CUP$parserTime$result = parser.getSymbolFactory().newSymbol("DATOS", 1, ((java_cup.runtime.Symbol) CUP$parserTime$stack.elementAt(CUP$parserTime$top - 4)), ((java_cup.runtime.Symbol) CUP$parserTime$stack.peek()), RESULT);
             }
             return CUP$parserTime$result;

@@ -18,9 +18,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
-
-import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -64,9 +64,10 @@ public class EditorGrafico extends javax.swing.JPanel {
                 this.tab.add(tablero[i][j]);
             }
         }
-
+        vectorOrden = new String[tmp.getList().size()];
         for (int i = 0; i < tmp.getList().size(); i++) {
             String dato = tmp.getList().get(i).getId();
+            vectorOrden[i] = dato;
             this.Ids.addItem(dato);
             tmp.getList().get(i).setPaint(saveColors());
         }
@@ -99,6 +100,7 @@ public class EditorGrafico extends javax.swing.JPanel {
         Ids = new javax.swing.JComboBox<>();
         Duracion2 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         PanelColores = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -164,6 +166,13 @@ public class EditorGrafico extends javax.swing.JPanel {
 
         jLabel5.setText("Duracion");
 
+        jButton1.setText("Ordenar orden de imagenes");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -171,21 +180,28 @@ public class EditorGrafico extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Duracion1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
-                    .addComponent(Inicio)
-                    .addComponent(Fin))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Duracion2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(Ids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(61, 61, 61))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(Duracion1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                                    .addComponent(Inicio)
+                                    .addComponent(Fin))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Duracion2, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(Ids, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))))
+                        .addGap(61, 61, 61))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,10 +228,12 @@ public class EditorGrafico extends javax.swing.JPanel {
                         .addComponent(jLabel5)
                         .addGap(12, 12, 12)
                         .addComponent(Duracion2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 300, 150));
+        add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 300, 190));
 
         jLabel7.setText("Color Seleccionado");
 
@@ -254,7 +272,7 @@ public class EditorGrafico extends javax.swing.JPanel {
 
         jLabel6.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel6.setText("COLORES");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
 
         javax.swing.GroupLayout coloresLayout = new javax.swing.GroupLayout(colores);
         colores.setLayout(coloresLayout);
@@ -269,7 +287,7 @@ public class EditorGrafico extends javax.swing.JPanel {
 
         jScrollPane1.setViewportView(colores);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 300, 280));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, 300, 250));
 
         javax.swing.GroupLayout tabLayout = new javax.swing.GroupLayout(tab);
         tab.setLayout(tabLayout);
@@ -342,6 +360,15 @@ public class EditorGrafico extends javax.swing.JPanel {
     private void Duracion2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Duracion2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Duracion2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JDialog dialogo = new JDialog(new EditorDeTexto(), "Ordenando...");
+        Ordenar orden = new Ordenar();
+        orden.inicializar(this);
+        dialogo.add(orden);
+        dialogo.setSize(new Dimension(700, 500));
+        dialogo.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
     lienzo lz;
     ContentColor clr;
     Tiempos tmp;
@@ -374,6 +401,7 @@ public class EditorGrafico extends javax.swing.JPanel {
     private javax.swing.JPanel PanelColores;
     private javax.swing.JCheckBox borrador;
     private javax.swing.JPanel colores;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -426,7 +454,7 @@ public class EditorGrafico extends javax.swing.JPanel {
 
     }
 
-    private ArrayList<Cuadro> saveColors() {
+    public ArrayList<Cuadro> saveColors() {
         ArrayList<Cuadro> list = new ArrayList<>();
         for (int i = 0; i < fila; i++) {
             for (int j = 0; j < columna; j++) {
@@ -443,6 +471,27 @@ public class EditorGrafico extends javax.swing.JPanel {
 
     public JCheckBox getBorrador() {
         return borrador;
+    }
+
+    public Tiempos getTmp() {
+        return tmp;
+    }
+    String vectorOrden[];
+
+    public void setVectorOrden(String[] vectorOrden) {
+        this.vectorOrden = vectorOrden;
+    }
+
+    public String[] getVectorOrden() {
+        return vectorOrden;
+    }
+
+    public JTextField getFin() {
+        return Fin;
+    }
+
+    public JTextField getInicio() {
+        return Inicio;
     }
 
 }
