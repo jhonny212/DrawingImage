@@ -33,9 +33,9 @@ public class generarImage {
     BufferedImage Imagenes[];
     boolean Gif;
 
-    public generarImage(EditorGrafico href) {
+    public generarImage(EditorGrafico href, boolean is) {
         this.href = href;
-        this.Gif = href.lz.getTipo().equals("gif");
+        this.Gif = is;
         pix = this.href.lz.getCuadro();
         width = href.columna * pix;
         height = href.fila * pix;
@@ -46,6 +46,10 @@ public class generarImage {
         ArrayList<Time> listTime = href.tmp.getList();
         tiempos = new int[listTime.size()];
         Imagenes = new BufferedImage[listTime.size()];
+        if (!Gif) {
+            File directorio = new File(this.href.lz.getId());
+            directorio.mkdir();
+        }
         for (int i = 0; i < listTime.size(); i++) {
             BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2 = bufferedImage.createGraphics();
@@ -65,7 +69,7 @@ public class generarImage {
             g2.dispose();
             if (!Gif) {
                 try {
-                    ImageIO.write(bufferedImage, "png", new File(Id + ".png"));
+                    ImageIO.write(bufferedImage, "png", new File(this.href.lz.getId()+"/"+Id + ".png"));
                 } catch (IOException ex) {
                 }
             } else {
@@ -77,39 +81,6 @@ public class generarImage {
         if (Gif) {
             prueba();
         }
-    }
-
-    private void generarGif() {
-        try {
-            BufferedImage first = ImageIO.read(new File("/home/jhonny/Descargas/d.png"));
-            ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
-
-            GifSequenceWriter writer = null;
-            int contador = 250;
-            try {
-                writer = new GifSequenceWriter(output, first.getType(), contador, true);
-            } catch (IOException ex) {
-            }
-            writer.writeToSequence(first);
-
-            File[] images = new File[]{
-                new File("/home/jhonny/Descargas/f.png"),
-                new File("/home/jhonny/Descargas/d.png"),
-                new File("/home/jhonny/Descargas/f.png"),};
-
-            for (File image : images) {
-                contador += 4000;
-                writer.time = contador;
-                writer.configureRootMetadata(contador, true);
-                BufferedImage next = ImageIO.read(image);
-                writer.writeToSequence(next);
-            }
-            writer.close();
-            output.close();
-
-        } catch (IOException ex) {
-        }
-
     }
 
     private void prueba() {

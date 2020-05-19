@@ -72,6 +72,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
+        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
 
         jMenu3.setText("jMenu3");
@@ -170,6 +171,14 @@ public class EditorDeTexto extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem10);
+
+        jMenuItem11.setText("Exportar a Png");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMenuItem11);
 
         jMenuBar1.add(jMenu4);
 
@@ -366,15 +375,24 @@ public class EditorDeTexto extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        /* for (int i = 0; i < Panel.getTabCount(); i++) {
-            
-        }*/
-        EditorGrafico href = (EditorGrafico) Panel.getComponentAt(0);
+         for (int i = 0; i < Panel.getTabCount(); i++) {
+        EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
         href.tmp.getList().get(href.pos).setPaint(href.saveColors());
-        generarImage images = new generarImage(href);
-        images.crearPNG();
-        //generarImage images=new generarImage(this, true);
+        generarImage images = new generarImage(href,true);
+        images.crearPNG();     
+        }
+       
+       
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+          for (int i = 0; i < Panel.getTabCount(); i++) {
+        EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
+        href.tmp.getList().get(href.pos).setPaint(href.saveColors());
+        generarImage images = new generarImage(href,false);
+        images.crearPNG();     
+        }
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     public boolean iniciarErrores(int type) {
 
@@ -579,6 +597,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
+    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

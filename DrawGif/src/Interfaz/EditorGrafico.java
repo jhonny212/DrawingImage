@@ -111,6 +111,7 @@ public class EditorGrafico extends javax.swing.JPanel {
         colores = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tab = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(208, 210, 213));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -302,7 +303,15 @@ public class EditorGrafico extends javax.swing.JPanel {
 
         jScrollPane2.setViewportView(tab);
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 810, 550));
+        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 810, 530));
+
+        jButton2.setText("Exportar Este lienzo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 220, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void Duracion1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Duracion1KeyTyped
@@ -369,6 +378,15 @@ public class EditorGrafico extends javax.swing.JPanel {
         dialogo.setSize(new Dimension(700, 500));
         dialogo.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    
+        boolean isGif=this.lz.getTipo().equals("gif");
+        this.tmp.getList().get(this.pos).setPaint(this.saveColors());
+        generarImage images = new generarImage(this,isGif);
+        images.crearPNG();     
+      
+    }//GEN-LAST:event_jButton2ActionPerformed
     lienzo lz;
     ContentColor clr;
     Tiempos tmp;
@@ -402,6 +420,7 @@ public class EditorGrafico extends javax.swing.JPanel {
     private javax.swing.JCheckBox borrador;
     private javax.swing.JPanel colores;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
