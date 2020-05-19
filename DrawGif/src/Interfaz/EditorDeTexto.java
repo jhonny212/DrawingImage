@@ -348,15 +348,26 @@ public class EditorDeTexto extends javax.swing.JFrame {
             }).forEachOrdered((t) -> {
                 t.setItems();
             });
+            panelTxt name = (panelTxt) Panel.getComponentAt(0);
+            name.save();
+            name = (panelTxt) Panel.getComponentAt(1);
+            name.save();
+            name = (panelTxt) Panel.getComponentAt(2);
+            name.save();
+            Panel.remove(0);
+            Panel.remove(1);
+            Panel.remove(2);
         }
+
         //iniciarErrores(4);
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        EditorGrafico t = new EditorGrafico();
-        Panel.addTab("Grafico", t);
-        Panel.setSelectedComponent(t);
+        for (int i = 0; i < Panel.getTabCount(); i++) {
+             //EditorGrafico tmp=(EditorGrafico) Panel.getComponentAt(i);
+             
+        }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     public boolean iniciarErrores(int type) {

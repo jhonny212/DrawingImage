@@ -5,7 +5,6 @@
  */
 package Interfaz;
 
-
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,17 +15,37 @@ import java.awt.event.MouseEvent;
  */
 public class mouseAdapter extends MouseAdapter {
 
- 
-
     final Color clr;
     EditorGrafico aThis;
-    mouseAdapter(Color clr, EditorGrafico aThis) {
-        this.clr=clr;
-        this.aThis=aThis;
+    boolean isColors;
+
+    mouseAdapter(Color clr, EditorGrafico aThis, boolean is) {
+        this.clr = clr;
+        this.aThis = aThis;
+        this.isColors = is;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-      this.aThis.getColorSelect().setBackground(clr);
+        if (isColors) {
+            this.aThis.getColorSelect().setBackground(clr);
+        } else {
+            int fila=aThis.fila;
+            int columna=aThis.columna;
+            Color colorsSelected=aThis.getColorSelect().getBackground();
+            boolean eraser=aThis.getBorrador().isSelected();
+            for (int i = 0; i < fila; i++) {
+                for (int j = 0; j < columna; j++) {
+                    if(aThis.getTablero()[i][j].equals(e.getSource())){
+                    if(eraser)
+                        aThis.getTablero()[i][j].setBackground(aThis.lz.getColor());
+                    else
+                        aThis.getTablero()[i][j].setBackground(colorsSelected);
+                    break;
+                    }
+                }
+                
+            }
+        }
     }
 }

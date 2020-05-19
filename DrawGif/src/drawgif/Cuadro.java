@@ -6,12 +6,37 @@
 package drawgif;
 
 
+import java.awt.Color;
 import javax.swing.JLabel;
 
 /**
  *
  * @author jhonny
  */
-public class Cuadro extends JLabel{
+public class Cuadro {
+    private final int posY,posX;
+    private Color color;
+
+    public Cuadro(int posY, int posX, Color color) {
+        this.posY = posY;
+        this.posX = posX;
+        this.color = color;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
     
 }

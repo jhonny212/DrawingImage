@@ -117,7 +117,7 @@ public class panelTxt extends javax.swing.JPanel {
     private javax.swing.JTextArea texto;
     // End of variables declaration//GEN-END:variables
 
-    private void save() {
+    public void save() {
         contenido = this.texto.getText();
         String nombre = "";
         String path = "";

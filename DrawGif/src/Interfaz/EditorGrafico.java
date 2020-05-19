@@ -10,9 +10,14 @@ import AnalizadorLienzos.lienzo;
 import AnalizadorPnt.Codigo;
 import AnalizadorTime.Tiempos;
 import AnalizadorTime.Time;
+import drawgif.Cuadro;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
 import javax.swing.JPanel;
@@ -26,36 +31,52 @@ public class EditorGrafico extends javax.swing.JPanel {
     /**
      * Creates new form EditorGrafico
      */
-    
     int fila, columna;
-    JPanel printPanel;
+
+    JLabel tablero[][];
 
     public EditorGrafico() {
         initComponents();
-        printPanel = new JPanel();
-        
     }
 
-    public  JButton getColorSelect() {
+    public JButton getColorSelect() {
         return ColorSelect;
     }
 
     public void setItems() {
-        fila=this.lz.getDim_y();
-        columna=this.lz.getDim_x();
-        this.tab.setBackground(this.lz.getColor());
+        fila = this.lz.getDim_y();
+        columna = this.lz.getDim_x();
         this.Ids.removeAllItems();
+        mouseAdapter mouse = new mouseAdapter(Color.red, this, false);
+        GridLayout grid = new GridLayout(fila, columna);
+        this.tab.setLayout(grid);
+        this.tablero = new JLabel[fila][columna];
+        for (int i = 0; i < fila; i++) {
+            for (int j = 0; j < columna; j++) {
+                tablero[i][j] = new JLabel();
+                tablero[i][j].setOpaque(true);
+                tablero[i][j].setBackground(lz.getColor());
+                tablero[i][j].addMouseListener(mouse);
+                tablero[i][j].setMinimumSize(new Dimension(50, 50));
+                tablero[i][j].setPreferredSize(new Dimension(80, 80));
+                tablero[i][j].setMaximumSize(new Dimension(100, 100));
+
+                this.tab.add(tablero[i][j]);
+            }
+        }
+
         for (int i = 0; i < tmp.getList().size(); i++) {
             String dato = tmp.getList().get(i).getId();
             this.Ids.addItem(dato);
-            tmp.getList().get(i).inicializarTablero(fila, columna);
+            tmp.getList().get(i).setPaint(saveColors());
         }
         this.Inicio.setText(this.tmp.getInicio());
         this.Fin.setText(this.tmp.getFin());
         this.Inicio.setEnabled(false);
         this.Fin.setEnabled(false);
+
         iniciarColores();
-        iniciarTablero();
+
     }
 
     /**
@@ -82,7 +103,7 @@ public class EditorGrafico extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         ColorSelect = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        borrador = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         colores = new javax.swing.JPanel();
@@ -127,6 +148,11 @@ public class EditorGrafico extends javax.swing.JPanel {
             }
         });
 
+        Duracion2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Duracion2ActionPerformed(evt);
+            }
+        });
         Duracion2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 Duracion2KeyPressed(evt);
@@ -206,7 +232,7 @@ public class EditorGrafico extends javax.swing.JPanel {
                     .addComponent(jLabel8))
                 .addGap(45, 45, 45)
                 .addGroup(PanelColoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox1)
+                    .addComponent(borrador)
                     .addComponent(ColorSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
@@ -220,7 +246,7 @@ public class EditorGrafico extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelColoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(jCheckBox1))
+                    .addComponent(borrador))
                 .addGap(14, 14, 14))
         );
 
@@ -283,31 +309,39 @@ public class EditorGrafico extends javax.swing.JPanel {
     }//GEN-LAST:event_FinKeyTyped
 
     private void Duracion2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Duracion2KeyTyped
-         char c = evt.getKeyChar();
-     
+        char c = evt.getKeyChar();
+
         if (Character.isLetter(c)) {
             evt.consume();
         }
-      
+
     }//GEN-LAST:event_Duracion2KeyTyped
     int pos = 0;
     private void IdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IdsActionPerformed
         try {
             String name = this.Ids.getSelectedItem().toString();
+            tmp.getList().get(pos).setPaint(saveColors());
             pos = this.Ids.getSelectedIndex();
             tmp.getList().stream().filter((list) -> (list.getId().equals(name))).forEachOrdered((Time list) -> {
                 this.Duracion2.setText(String.valueOf(list.getDuracion1()));
+                this.listadoPaint = list.getPaint();
+                iniciarTablero();
             });
         } catch (NullPointerException e) {
         }
     }//GEN-LAST:event_IdsActionPerformed
+    ArrayList<Cuadro> listadoPaint;
 
     private void Duracion2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Duracion2KeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-         this.tmp.getList().get(pos).setDuracion1(Float.parseFloat(this.Duracion2.getText()));
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            this.tmp.getList().get(pos).setDuracion1(Float.parseFloat(this.Duracion2.getText()));
         }
     }//GEN-LAST:event_Duracion2KeyPressed
+
+    private void Duracion2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Duracion2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Duracion2ActionPerformed
     lienzo lz;
     ContentColor clr;
     Tiempos tmp;
@@ -338,8 +372,8 @@ public class EditorGrafico extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> Ids;
     private javax.swing.JTextField Inicio;
     private javax.swing.JPanel PanelColores;
+    private javax.swing.JCheckBox borrador;
     private javax.swing.JPanel colores;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -353,8 +387,7 @@ public class EditorGrafico extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel tab;
     // End of variables declaration//GEN-END:variables
-    
-    
+
     private void iniciarColores() {
         GridLayout grid = new GridLayout(clr.getList().size(), 2);
         grid.setHgap(10);
@@ -369,15 +402,47 @@ public class EditorGrafico extends javax.swing.JPanel {
             lb[i][1] = new JLabel("");
             lb[i][1].setOpaque(true);
             lb[i][1].setBackground(clr.getList().get(i).getColor());
-            lb[i][1].addMouseListener(new mouseAdapter(clr.getList().get(i).getColor(),this));
+            lb[i][1].setMinimumSize(new Dimension(15, 15));
+            lb[i][1].setPreferredSize(new Dimension(20, 20));
+            lb[i][1].setMaximumSize(new Dimension(20, 20));
+            lb[i][1].addMouseListener(new mouseAdapter(clr.getList().get(i).getColor(), this, true));
             ColorSelect.setBackground(lb[i][1].getBackground());
             this.colores.add(lb[i][1]);
         }
     }
 
     private void iniciarTablero() {
-        
-    
+
+        try {
+            listadoPaint.forEach((listadoPaint1) -> {
+                Color clr = listadoPaint1.getColor();
+                int i = listadoPaint1.getPosY();
+                int j = listadoPaint1.getPosX();
+                this.tablero[i][j].setBackground(clr);
+            });
+        } catch (NullPointerException e) {
+
+        }
+
+    }
+
+    private ArrayList<Cuadro> saveColors() {
+        ArrayList<Cuadro> list = new ArrayList<>();
+        for (int i = 0; i < fila; i++) {
+            for (int j = 0; j < columna; j++) {
+                list.add(new Cuadro(i, j, tablero[i][j].getBackground()));
+            }
+        }
+        return list;
+    }
+
+    public JLabel[][] getTablero() {
+        return tablero;
+
+    }
+
+    public JCheckBox getBorrador() {
+        return borrador;
     }
 
 }

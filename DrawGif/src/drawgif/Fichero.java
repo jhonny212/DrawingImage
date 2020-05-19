@@ -17,6 +17,7 @@ public class Fichero {
     }
     protected String contenido;
     protected ArrayList<Errors> erroresLexico, erroresSintacticos, erroresSemanticos;
+   
     public panelError sintact, lexi, seman;
 
     public Fichero(String contenido) {

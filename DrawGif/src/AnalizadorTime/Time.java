@@ -7,7 +7,6 @@ package AnalizadorTime;
 
 import drawgif.Cuadro;
 import drawgif.Fichero;
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -21,10 +20,11 @@ public class Time extends Fichero {
     String inicio, fin, Id;
     float duracion1, duracion2;
     public ArrayList<Tiempos> listTime;
-    private Cuadro Tablero[][];
+    protected ArrayList<Cuadro> paint;
     public Time(String contenido) {
         super(contenido);
         listTime=new ArrayList<>();
+        paint=new ArrayList();
         init();
     }
 
@@ -80,17 +80,19 @@ public class Time extends Fichero {
     public void setDuracion2(float duracion2) {
         this.duracion2 = duracion2;
     }
+    public void inicializar(){
+    paint=new ArrayList<>();
+    }
+    public ArrayList<Cuadro> getPaint() {
+        return paint;
+    }
 
-    public Cuadro[][] getTablero() {
-        return Tablero;
+    public void setPaint(ArrayList<Cuadro> paint) {
+        this.paint = paint;
     }
-    public void inicializarTablero(int filas,int columnas){
-        Tablero=new Cuadro[filas][columnas];
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                Tablero[i][j]=new Cuadro();
-            }
-        }
-    }
+    
+    
+
+  
 
 }
