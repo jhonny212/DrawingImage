@@ -43,6 +43,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         Panel.setSize(new Dimension(this.getWidth(), this.getHeight() - 20));
+        this.Menu3.disable();
 
     }
 
@@ -61,19 +62,23 @@ public class EditorDeTexto extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         Panel = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        Menu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        Menu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        Menu3 = new javax.swing.JMenu();
+        Gif = new javax.swing.JMenuItem();
+        Png = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
+        jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem12 = new javax.swing.JMenuItem();
+        jMenuItem13 = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -94,7 +99,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Archivo");
+        Menu1.setText("Archivo");
 
         jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem2.setText("Nuevo");
@@ -103,7 +108,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        Menu1.add(jMenuItem2);
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setText("Abrir");
@@ -112,11 +117,11 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem3);
+        Menu1.add(jMenuItem3);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(Menu1);
 
-        jMenu2.setText("Analisis");
+        Menu2.setText("Analisis");
 
         jMenuItem5.setText("Analizar tiempo");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -124,7 +129,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 jMenuItem5ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem5);
+        Menu2.add(jMenuItem5);
 
         jMenuItem6.setText("Analizar colores");
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
@@ -132,7 +137,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 jMenuItem6ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem6);
+        Menu2.add(jMenuItem6);
 
         jMenuItem7.setText("Analizar codigo");
         jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
@@ -140,7 +145,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 jMenuItem7ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem7);
+        Menu2.add(jMenuItem7);
 
         jMenuItem8.setText("Analizar lienzo");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +153,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 jMenuItem8ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem8);
+        Menu2.add(jMenuItem8);
 
         jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem9.setText("Analizar todos");
@@ -157,32 +162,50 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 jMenuItem9ActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem9);
+        Menu2.add(jMenuItem9);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(Menu2);
 
-        jMenu4.setText("Generar");
+        Menu3.setText("Generar");
 
-        jMenuItem10.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem10.setText("Exportar Gif");
+        Gif.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        Gif.setText("Exportar Gif");
+        Gif.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GifActionPerformed(evt);
+            }
+        });
+        Menu3.add(Gif);
+
+        Png.setText("Exportar a Png");
+        Png.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PngActionPerformed(evt);
+            }
+        });
+        Menu3.add(Png);
+
+        jMenuItem10.setText("Volver al menu de editor");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
             }
         });
-        jMenu4.add(jMenuItem10);
+        Menu3.add(jMenuItem10);
 
-        jMenuItem11.setText("Exportar a Png");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem11);
-
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(Menu3);
 
         jMenu5.setText("Ayuda");
+
+        jMenuItem11.setText("Manual De usuario");
+        jMenu5.add(jMenuItem11);
+
+        jMenuItem12.setText("Manual Tecnico");
+        jMenu5.add(jMenuItem12);
+
+        jMenuItem13.setText("Acerca De");
+        jMenu5.add(jMenuItem13);
+
         jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
@@ -330,72 +353,93 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
-        boolean x1 = iniciarErrores(4);
-        boolean x2 = iniciarErrores(2);
-        boolean x3 = iniciarErrores(1);
 
+        boolean x1 = false;
+
+        boolean x2 = false;
+
+        boolean x3 = false;
+        try{
+         x1 = iniciarErrores(4);
+        x2 = iniciarErrores(2);
+        x3 = iniciarErrores(1);
+        }catch(NullPointerException e){}
+       
         if (x1 && x2 && x3) {
-            lz.getLienzos().stream().map((lienzo1) -> {
-                Tiempos Time = null;
-                ContentColor color = null;
-                for (Tiempos listTime : tmp.getListTime()) {
-                    if (lienzo1.getId().equals(listTime.getName())) {
-                        Time = listTime;
-                    }
-                }
-                for (ContentColor listado : clr.getListado()) {
-                    if (lienzo1.getId().equals(listado.getName())) {
-                        color = listado;
-                    }
-                }
-                EditorGrafico t = new EditorGrafico();
-                Panel.addTab(lienzo1.getId(), t);
-                Panel.setSelectedComponent(t);
-                t.setClr(color);
-                t.setTmp(Time);
-                t.setLz(lienzo1);
-                return t;
-            }).forEachOrdered((t) -> {
-                t.setItems();
-            });
-            panelTxt name = (panelTxt) Panel.getComponentAt(0);
-            name.save();
-            name = (panelTxt) Panel.getComponentAt(1);
-            name.save();
-            name = (panelTxt) Panel.getComponentAt(2);
-            name.save();
-            Panel.remove(0);
-            Panel.remove(0);
-            Panel.remove(0);
+            int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea ir a la parte Grafica?", "", 0);
+            if (seleccion == 0) {
 
+                lz.getLienzos().stream().map((lienzo1) -> {
+                    Tiempos Time = null;
+                    ContentColor color = null;
+                    for (Tiempos listTime : tmp.getListTime()) {
+                        if (lienzo1.getId().equals(listTime.getName())) {
+                            Time = listTime;
+                        }
+                    }
+                    for (ContentColor listado : clr.getListado()) {
+                        if (lienzo1.getId().equals(listado.getName())) {
+                            color = listado;
+                        }
+                    }
+                    EditorGrafico t = new EditorGrafico();
+                    Panel.addTab(lienzo1.getId(), t);
+                    Panel.setSelectedComponent(t);
+                    t.setClr(color);
+                    t.setTmp(Time);
+                    t.setLz(lienzo1);
+                    return t;
+                }).forEachOrdered((t) -> {
+                    t.setItems();
+                });
+                panelTxt name = (panelTxt) Panel.getComponentAt(0);
+                name.save();
+                name = (panelTxt) Panel.getComponentAt(1);
+                name.save();
+                name = (panelTxt) Panel.getComponentAt(2);
+                name.save();
+                Panel.remove(0);
+                Panel.remove(0);
+                Panel.remove(0);
+                this.Menu3.enable();
+                this.Menu1.disable();
+                this.Menu2.disable();
+            }
         }
-
-        //iniciarErrores(4);
 
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-         for (int i = 0; i < Panel.getTabCount(); i++) {
-        EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
-        href.tmp.getList().get(href.pos).setPaint(href.saveColors());
-        generarImage images = new generarImage(href,true);
-        images.crearPNG();     
+    private void GifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GifActionPerformed
+        for (int i = 0; i < Panel.getTabCount(); i++) {
+            EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
+            href.tmp.getList().get(href.pos).setPaint(href.saveColors());
+            generarImage images = new generarImage(href, true);
+            images.crearPNG();
         }
-       
-       
+
+
+    }//GEN-LAST:event_GifActionPerformed
+
+    private void PngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PngActionPerformed
+        for (int i = 0; i < Panel.getTabCount(); i++) {
+            EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
+            href.tmp.getList().get(href.pos).setPaint(href.saveColors());
+            generarImage images = new generarImage(href, false);
+            images.crearPNG();
+        }
+    }//GEN-LAST:event_PngActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // TODO add your handling code here:
+        this.Menu3.disable();
+        this.Menu1.enable();
+        this.Menu2.enable();
+        for (int i = 0; i < Panel.getTabCount(); i++) {
+            Panel.remove(0);
+        }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-          for (int i = 0; i < Panel.getTabCount(); i++) {
-        EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
-        href.tmp.getList().get(href.pos).setPaint(href.saveColors());
-        generarImage images = new generarImage(href,false);
-        images.crearPNG();     
-        }
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
-
     public boolean iniciarErrores(int type) {
-
         int aux = 0;
         switch (type) {
             case 4:
@@ -588,16 +632,20 @@ public class EditorDeTexto extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Gif;
+    private javax.swing.JMenu Menu1;
+    private javax.swing.JMenu Menu2;
+    private javax.swing.JMenu Menu3;
     public static javax.swing.JTabbedPane Panel;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem Png;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JMenuItem jMenuItem12;
+    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

@@ -13,7 +13,7 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.RenderedImage;
 import java.io.IOException;
 
-public class GifSequenceWriter {
+public final class GifSequenceWriter {
 
     protected ImageWriter writer;
     protected ImageWriteParam params;

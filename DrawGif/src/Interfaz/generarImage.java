@@ -5,7 +5,7 @@
  */
 package Interfaz;
 
-import AnalizadorTime.Tiempos;
+
 import AnalizadorTime.Time;
 import drawgif.Cuadro;
 import drawgif.GifSequenceWriter;
@@ -15,8 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.imageio.ImageIO;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.imageio.stream.ImageOutputStream;
