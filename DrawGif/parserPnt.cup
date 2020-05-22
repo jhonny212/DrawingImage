@@ -16,10 +16,10 @@ import java_cup.runtime.Symbol;
 parser code {:
     public static ArrayList<tablaInt> tablaForInt;
     public static ArrayList<Errors> Semanticos;
-    public static boolean containsLleter,containsBool;
+
         
 public static int tipoVar,tipoOperacion;
-public static String Variables,condicion,cadenaPrev;
+public static String cadenaValue,condicion,cadenaPrev;
 
    public void syntax_error(Symbol s){
        System.out.println("Error R de sintaxis: "+ s.value +" Linea "+(s.left+1)+" columna "+(s.right+1) );
@@ -29,14 +29,11 @@ public static String Variables,condicion,cadenaPrev;
  }
 
  public static Object[] getObj(Object [] obj1,Object [] obj2,int opc, int cases,int e2left,int e2right){
-
+/*Object obj1[]=(Object[])e;
+Object obj2[]=(Object[])e2;*/
 int type=(int)obj1[0]+(int)obj2[0];
 String x1=(String)obj1[2];
 String x2=(String)obj2[2];
-boolean bool=(boolean)obj2[3];
-if(bool){
-    obj1[3]=true;
-}
      if(cases==1){
 
 if(type==2){
@@ -57,7 +54,7 @@ switch(opc){
  
 }
 }else{
-obj1[0]=2;    
+obj1[0]=-55;    
     
 if(opc==1){
   
@@ -92,15 +89,13 @@ switch(opc){
     return obj1;
 }
 }else{
-Semanticos.add(new Errors(String.valueOf(obj1[0]),"Error en Operadores para una cadena, solo se puede concatenar",-1,e2left,e2right));
-   
-obj1[0]=2;    
+obj1[0]=-55;    
 if(opc==1){
  
-    obj1[2]=x1+"*"+x2;
+    obj1[2]=x1+"+"+x2;
 }else{
 
-  obj1[2]=x1+"/"+x2;
+  obj1[2]=x1+"-"+x2;
 }
 return obj1;
 }
@@ -119,37 +114,24 @@ non-terminal A,VARIABLES,VALUES,OPCBOOL,OPCSTR,OPCINT,K,E,T,OP2,OP1,F,STR,STR1,C
 INSTRUC,INSTRUCCIONES,ASIGNACION,ASIG,SENTENCIAIF,SENTENCIAWHILE,PAINT,PARAM,PARAM2,SYMBOLS,STR2,C,U,X,V
 ,STR3,COND2,CONDICION2,COND22,COND23,CONDICIONAL,Datas,ASIGNACION2,ASIG2,CONDICIONAL2,COND24,COND233
 ,E22,V22,X22,T22,U22,C22,DATA22,S1,S2,S3,S11,S22, OPCIONINT1,OPCIONINT2,INT,STRING,BOOLEAN,OPCIONBOOL,
-OPCIONBOOL2,OPCIONSTRING,OPCIONSTRING2,STRINGX,OperadorLogico,AS;
+OPCIONBOOL2,OPCIONSTRING,OPCIONSTRING2,STRINGX,OperadorLogico;
 
 precedence left And,Or;
 
-start with AS;
+start with A;
 
 
 SYMBOLS::= Sum | Res | Mul | Div | abreParen | cierraParen;
 //A::= VARIABLES K  INSTRUCCIONES;
-OperadorLogico::= And {:RESULT="&&";:} | Or {:RESULT="||";:};
-AS::= A INSTRUCCIONES:e T22;
-T22::= INSTRUCCIONES:e T22|;
-A::=VARIABLES:e K:e1 
-{:
-containsBool=false;
-containsLleter=false;
-String txt=String.valueOf(e)+" "+String.valueOf(e1);
-Variables=txt.replace("null","");
-System.out.println(Variables);
-:};
+OperadorLogico::= And | Or;
+A::= VARIABLES K ;
 
-VARIABLES::= Vars abreCor VALUES:e {:RESULT=e;:};
+VARIABLES::= Vars abreCor VALUES ;
 
 
-VALUES::= INT:e OPCIONINT1:e1
-{:RESULT="int "+e+" "+e1+";\n";:}
-| BOOLEAN:e OPCIONBOOL:e1
-{:RESULT="boolean "+e+" "+e1+";\n";:}
-| STRINGX:e OPCIONSTRING:e1
-{:RESULT="String "+e+" "+e1+";\n";:}
-;
+VALUES::= INT OPCIONINT1
+| BOOLEAN OPCIONBOOL
+| STRINGX OPCIONSTRING;
 
 INT::=Int Id:e OPCINT:e1 
 {:
@@ -162,12 +144,8 @@ int value=(int)((double)e1);
 boolean isNull=false;
 if((double)e1==-1.5){
 isNull=true;
-RESULT=(String)e;
-}else{
-RESULT=(String)e+"="+String.valueOf(value);
 }
 tablaForInt.add(new tablaInt(value,(String)e,isNull,"int"));
-
 :};
 BOOLEAN::= Boolean Id:e OPCBOOL:e1
 {:
@@ -176,54 +154,21 @@ for(int i=0;i<tablaForInt.size();i++){
     Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
     break;
 }}
-boolean value=true;
+boolean value=Boolean.parseBoolean(String.valueOf(e1));
 boolean isNull=false;
-if(e1==null){
- isNull=true;
- RESULT=(String)e;
+if(e1!=null){
+isNull=true;
+if(((String)e1).equals("error")){
+
+isNull=true;
+}
+}else{
+isNull=true;
 }
 tablaForInt.add(new tablaInt(value,(String)e,isNull,"bool"));
-RESULT=(String)e+(String)e1;
 :};
-OPCBOOL::= equals E22:e 
-{:
-String retorno="";
-try{
-Condicion tmp=(Condicion)e;
-int tipo=tmp.getTipo();
-retorno="="+tmp.letter;
-if(tipo!=3){
-    if(tmp.letter.contains("&&")|| tmp.letter.contains("||") 
-    ||tmp.letter.contains(">")||tmp.letter.contains("<")||tmp.letter.contains("equals")
-    ||tmp.letter.contains("<=") || tmp.letter.contains(">=") ||tmp.letter.contains("==")
-    ||tmp.letter.contains("!=")){
-
-    }else{
-    Semanticos.add(new Errors(tmp.letter,"Se debe asignar un valor logico (booleano)",-1,eleft,eright));
-    }
-    }
-}catch(Exception ex){
-    Object obj[]=(Object[])e;
-    int tipo=(int) obj[0];
-    if(tipo!=3){
-    Semanticos.add(new Errors((String)obj[2],"Se debe asignar un valor logico (booleano)",-1,eleft,eright));
-    }
-    retorno="="+obj[2];
-}
-
-
-RESULT=retorno;
-:} 
-| ; 
-OPCIONBOOL::= OPCIONBOOL2:e OPCIONBOOL:e1 
-{:
-if(e1!=null){
-RESULT=(String)e+(String)e1;
-}else{
-RESULT=(String)e;
-}
-:}
-| puntoComa ;
+OPCBOOL::= equals E22:e {:RESULT=e;:} | {:RESULT="error";:}; 
+OPCIONBOOL::= OPCIONBOOL2 OPCIONBOOL | puntoComa {:RESULT="error";:};
 OPCIONBOOL2::= coma Id:e 
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -233,27 +178,16 @@ for(int i=0;i<tablaForInt.size();i++){
 }}
 
 tablaForInt.add(new tablaInt(false,(String)e,true,"bool"));
-RESULT=","+(String)e;
 :}
 | coma Id:e equals E22:e1
 {:
-String msj="";
 for(int i=0;i<tablaForInt.size();i++){
     if(((String)e).equals(tablaForInt.get(i).getId())){
     Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
     break;
 }}
-boolean value=true;
+boolean value=Boolean.parseBoolean(String.valueOf(e1));
 tablaForInt.add(new tablaInt(value,(String)e,false,"bool"));
-try{
-Condicion tmp=(Condicion)e1;
-msj=tmp.letter;
-}catch(Exception ex){
-Object obj[]=(Object[])e1;
-msj=(String)obj[2];
-}
-
-RESULT=","+(String)e+"="+msj;
 :}
 ;
 
@@ -264,32 +198,17 @@ for(int i=0;i<tablaForInt.size();i++){
     Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
     break;
 }}
-
+String value=String.valueOf(e1);
 boolean isNull=false;
-if(e1==null){
+if(((String)e1).equals("null")){
 isNull=true;
-RESULT=(String)e;
-}else{
-    RESULT=(String)e+(String)e1;
 }
-tablaForInt.add(new tablaInt("",(String)e,isNull,"str"));
+tablaForInt.add(new tablaInt(value,(String)e,isNull,"str"));
 :};
 
-OPCSTR::= equals S1:e 
-{:
-Object obj[]=(Object[])e;
-if(!containsLleter){
-     Semanticos.add(new Errors((String)obj[2],"Despues de =, debe contener al menos el valor de una cadena",-1,eleft,eright));
-}
-    containsLleter=false;
-RESULT="="+obj[2];
+OPCSTR::= equals S1:e {:RESULT=e;:} | {:RESULT="null";:}; 
 
-:} 
-| ; 
-
-OPCIONSTRING::= OPCIONSTRING2:e OPCIONSTRING:e1
-{:RESULT=""+e+""+e1;:}
- | puntoComa {:RESULT="";:};
+OPCIONSTRING::= OPCIONSTRING2 OPCIONSTRING | puntoComa {:RESULT="null";:};
 OPCIONSTRING2::= coma Id:e 
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -299,7 +218,6 @@ for(int i=0;i<tablaForInt.size();i++){
 }}
 
 tablaForInt.add(new tablaInt("",(String)e,true,"str"));
-RESULT=","+e;
 :}
 | coma Id:e equals S1:e1
 {:
@@ -308,14 +226,8 @@ for(int i=0;i<tablaForInt.size();i++){
     Semanticos.add(new Errors((String)e,"El identificador existe",-1,eleft,eright));
     break;
 }}
-Object obj[]=(Object[])e1;
-if(!containsLleter){
-     Semanticos.add(new Errors((String)obj[2],"Despues de =, debe contener al menos el valor de una cadena",-1,eleft,eright));
-}
-    containsLleter=false;
-//String value=String.valueOf(e1);
-tablaForInt.add(new tablaInt("",(String)e,false,"str"));
-RESULT=","+e+"="+obj[2];
+String value=String.valueOf(e1);
+tablaForInt.add(new tablaInt(value,(String)e,false,"str"));
 :}
 ;
 
@@ -324,11 +236,7 @@ RESULT=","+e+"="+obj[2];
 
 OPCINT::= equals E:e {:RESULT=e;:} | {:RESULT=-1.5;:};
 
-OPCIONINT1::= OPCIONINT2:e OPCIONINT1:e1
-{:
-RESULT=(String)e+(String)e1;
-:}
-| puntoComa {:RESULT="";:};
+OPCIONINT1::= OPCIONINT2 OPCIONINT1 | puntoComa {:RESULT=-1.5;:};
 OPCIONINT2::= coma Id:e 
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -338,10 +246,7 @@ for(int i=0;i<tablaForInt.size();i++){
 }}
 
 tablaForInt.add(new tablaInt(-1,(String)e,true,"int"));
-RESULT=","+(String)e;
 :}
-
-
 | coma Id:e equals E:e1
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -352,16 +257,10 @@ for(int i=0;i<tablaForInt.size();i++){
 int value=(int)((double)e1);
 
 tablaForInt.add(new tablaInt(value,(String)e,false,"int"));
-
-RESULT=","+(String)e+" = "+String.valueOf(value);
-
 :}
 
 ;
-K::= cierraCor {:RESULT="";:} | VALUES:e K:e1 
-{:
-    RESULT=(String)e+(String)e1;
-:};
+K::= cierraCor | VALUES K;
 
 /*
 *Condicion int
@@ -463,60 +362,66 @@ RESULT=e+""+e1;
 :}
 | {:RESULT="";:};
 STRING::= Cadena:e {:RESULT=e;:} | Id:e {:RESULT=e;:} | Num:e {:RESULT=e;:} | SYMBOLS:e {:RESULT=e;:};
+/*
+*SECCION DE INSTRUCCIONES
+*/
+
+INSTRUCCIONES::= Inst abreParen Id cierraParen abreCor INSTRUC   ;
+INSTRUC::= ASIGNACION ASIG | PAINT ASIG| SENTENCIAIF ASIG| SENTENCIAWHILE ASIG ;
+ASIGNACION::= Id equals E22 puntoComa  ;
+ASIG::= cierraCor|INSTRUC;
+
 
 
 E22::= C:e S11:e1
 {:
 
-try{
-extraClass next=(extraClass)e1;
-Condicion cond =new Condicion((boolean)e,next);
-RESULT=cond;
-}catch(Exception ex){
-Condicion c=(Condicion)e;
-Condicion cond =new Condicion(c,(extraClass)e1);
-RESULT=cond;
-}
-
 
 :}
 | CONDICION:e X22:e1
 {:
-try{
-extraClass next=(extraClass)e1;
-Condicion cond =new Condicion(e,next);
-RESULT=cond;
-}catch(Exception ex){
-try{
-Condicion cond =new Condicion((Condicion)e,(extraClass)e1);
-RESULT=cond;
-}   catch(Exception ss){
-RESULT=e;
+Object re[]=new Object[3];
+if(e1!=null){
+Object obx[]=(Object[])e1;
+Object obj2[]=(Object[])obx[1];
+Object obj1[]=(Object[])e;
+            
+String Operador=(String)obx[0];
+int type1=    (int) obj1[0];
+int type2=    (int) obj2[0];
+if(type1==1){
+    if(type2==1){
+        
+    }else{
+       parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+      }
+}else if((type1==-55)|| (type1==2)){
+    if((type2==-55)|| (type2==2)){
+        if(Operador.equals("==")){
+
+        }else{
+        parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, Un string no puede ser comparador con"+Operador,-1,eleft,eright));
+        }
+    }else{
+             parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+    }
+
 } 
+String t1=String.valueOf(obj1[2]);
+String t2=String.valueOf(obj2[2]);
+if(t1.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj1[2],"Error, de sintaxis",-1,eleft,eright));
 }
+if(t2.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, de sintaxis",-1,e1left,e1right));
+}
+
+
+}
+
+
+
 :};
-
-
-//------------------------------------------------------------------------->
-X22::= Operador:e S1:e1 S11:e2
-{:
-Object obj[]=(Object[])e1;
-String op=(String)e;
-int typo=(int)obj[0];
-RESULT=new extraClass(op,typo,String.valueOf(obj[2]),(extraClass)e2);
-:}
-| S11:e 
-{:
-RESULT=e;
-:}
-;
-//-------------------------------------------------------------------------->
-
-S11::= OperadorLogico:e E22:e1 
-{:
-RESULT=new extraClass((String)e,(Condicion)e1);
-:} 
-|;
 
 //CONDICIONES--------------------------->
 
@@ -526,7 +431,6 @@ RESULT=getObj((Object []) e,(Object []) e2,(int) e1, 1,e2left,e2right);
 :} 
 |V22:e {: RESULT=e;:} 
 ;
-//--------------------------------------->
 V22::= DATA22:e OP2:e1 S2:e2
 {:
 RESULT=getObj((Object []) e,(Object []) e2,(int) e1, 2,e2left,e2right);
@@ -534,32 +438,54 @@ RESULT=getObj((Object []) e,(Object []) e2,(int) e1, 2,e2left,e2right);
 |DATA22:e {:RESULT=e;:} 
 |abreParen COND1:e X22:e1 cierraParen 
 {:
+//Objeto con 3 Objetos
 if(e1!=null){
-try{
-extraClass next=(extraClass)e1;
-Condicion cond =new Condicion(e,next);
-String letter=cond.letter;
-cond.setLetter("("+letter+")");
-RESULT=cond;
-}catch(Exception ex){
-Condicion cond =new Condicion((Condicion)e,(extraClass)e1);
-cond.setLetter("("+cond.letter+")");
-RESULT=cond;
+Object obx[]=(Object[])e1;
+Object obj2[]=(Object[])obx[1];
+String Operador=(String)obx[0];
+int type1=    (int) obj1[0];
+int type2=    (int) obj2[0];
+if(type1==1){
+    if(type2==1){
+        
+    }else{
+       parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+      }
+}else if((type1==-55)|| (type1==2)){
+    if((type2==-55)|| (type2==2)){
+        if(Operador.equals("==")){
+
+        }else{
+        parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, Un string no puede ser comparador con"+Operador,-1,eleft,eright));
+        }
+    }else{
+        parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, datos no del mismo tipo",-1,eleft,eright));
+    }
+
 }
-}else{
-try{
-Object obj[]=(Object[])e;
-obj[2]="("+obj[2]+")";    
-RESULT=e;
-}catch(Exception ex){
-Condicion cnd=(Condicion) e;
-cnd.setLetter("("+cnd.letter+")");
-RESULT=cnd;
-}    
+String t1=String.valueOf(obj1[2]);
+String t2=String.valueOf(obj2[2]);
+if(t1.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj1[2],"Error, de sintaxis",-1,eleft,eright));
+}
+if(t2.contains("AND")||t1.contains("OR")){
+         parserPnt.Semanticos.add(new Errors((String)obj2[2],"Error, de sintaxis",-1,e1left,e1right));
+}
 }
 :}
 ;
+//------------------------------------------------------------------------->
+X22::= Operador:e S1:e1 S11:e2
+{:
+Object [] obj=new Object[4];
+obj[0]=e;
+obj[1]=e1;
 
+RESULT=obj;
+:}
+| S11:e 
+{:RESULT=e;:}
+;
 
 //------------------------------------------------------------------------->
 COND1::= V22:e OP1:e1 S1:e2
@@ -569,28 +495,24 @@ RESULT=getObj((Object []) e,(Object []) e2,(int) e1, 1,e2left,e2right);
 |V22:e {:RESULT=e;:}
 ;
 //----------------------------->
-
+COND::= Operador:e S1:e1 |  ;
 
 
 C::=  abreParen C:e S11:e1 cierraParen 
 {:
-try{
-extraClass next=(extraClass)e1;
-Condicion cond =new Condicion((boolean)e,next);
-cond.setLetter("("+cond.letter+")");
-RESULT=cond;
-}catch(Exception ex){
-Condicion cond =new Condicion((Condicion)e,(extraClass)e1);
-cond.setLetter("("+cond.letter+")");
-RESULT=cond;
-}
+
+
 :}
 | Bool:e 
-{:
-RESULT=Boolean.parseBoolean((String)e);
-containsBool=true;
-;:};
+{:RESULT=e;:};
 
+
+S11::= OperadorLogico:e E22:e1 
+{:
+
+
+:} 
+|;
 
 
 
@@ -621,21 +543,19 @@ for(int i=0;i<tablaForInt.size();i++){
     if(Id.equals(tablaForInt.get(i).getId())){
         int type=tablaForInt.get(i).type();
         array[0]=type;
-       
         exist=true;
         switch(type){
             case 1:
             array[1]=tablaForInt.get(i).getValorInt();
             break;
             case 2:
-            containsLleter=true;
             break;
             case 3:
             array[3]=tablaForInt.get(i).getValorBoolean();
-            containsBool=true;
             break;
         }
-        array[2]=Id;
+        array[2]=tablaForInt.get(i).getValue();
+        
         if(tablaForInt.get(i).isIsNull()){
         msj="La variable no esta inicializada";
         exist=false;
@@ -643,22 +563,20 @@ for(int i=0;i<tablaForInt.size();i++){
         break;
     }
 }
-
-
 if(!exist){
    Semanticos.add(new Errors((String)e,msj,-1,eleft,eright));
-   array[3]=true;
 }
 RESULT=array;
 :} 
 | COM CADENA:e COM 
 {:
-containsLleter=true;
 Object array[]=new Object[4];
 array[0]=2;
 array[1]=-1;
-array[2]="\""+(String)e+"\"";
+array[2]=(String)e;
 array[3]=false;
+
+           
 RESULT=array;
 :};
 
@@ -687,8 +605,9 @@ RESULT=array;
 | abreParen S1:e cierraParen
 {:
 Object obj[]=(Object[])e;
-String aux=(String)obj[2];
+String aux=obj[2];
 obj[2]="("+aux+")";
+
 RESULT=obj;
 ;:}
 | Id:e
@@ -698,19 +617,14 @@ array[0]=-1;
 array[1]=0;
 array[2]="";
 array[3]=false;
-boolean entro=false;
+
 String Id=String.valueOf(e);
 boolean exist=false;
 String msj="La variable no se encontro";
 for(int i=0;i<tablaForInt.size();i++){
     if(Id.equals(tablaForInt.get(i).getId())){
-        entro=false;
         int type=tablaForInt.get(i).type();
         array[0]=type;
-        if(type==2){
-            containsLleter=true;
-            array[3]=true;
-        }
         exist=true;
         switch(type){
             case 1:
@@ -721,9 +635,9 @@ for(int i=0;i<tablaForInt.size();i++){
             case 3:
             array[3]=tablaForInt.get(i).getValorBoolean();
             Semanticos.add(new Errors((String)e,"No se puede asignar una variable booleana",-1,eleft,eright));
-            containsBool=true;
             break;
         }
+        array[2]=tablaForInt.get(i).getValue();
             
         if(tablaForInt.get(i).isIsNull()){
         msj="La variable no esta inicializada";
@@ -732,10 +646,7 @@ for(int i=0;i<tablaForInt.size();i++){
         break;
     }
 }
-array[2]=Id;
-if(entro){
-    
-}        
+
 if(!exist){
    Semanticos.add(new Errors((String)e,msj,-1,eleft,eright));
 }
@@ -744,176 +655,28 @@ RESULT=array;
 | COM CADENA:e COM
 {:
 Object array[]=new Object[4];
-containsLleter=true;
 array[0]=2;
 array[1]=-1;
-array[2]="\""+(String)e+"\"";
-array[3]=true;
+array[2]=(String)e;
+array[3]=false;
+
+           
 RESULT=array;
 :}
 ;
 
 
-/*
-*SECCION DE INSTRUCCIONES
-*/
 
-INSTRUCCIONES::= Inst abreParen Id:e cierraParen abreCor INSTRUC:e1 ASIG:e2
-{:
-String methoD="String Id="+(String)e+"\n";
-methoD+=(String)e1+(String)e2;
-System.out.println(methoD);
-:}
-;
-INSTRUC::= ASIGNACION:e {:RESULT=e;:}  | PAINT:e {:RESULT=e;:} | SENTENCIAIF:e {:RESULT=e;:} 
-| SENTENCIAWHILE:e  {:RESULT=e;:} ;
-ASIGNACION::= Id:e equals E22:e1 puntoComa
-{:
-String Id=String.valueOf(e);
-for(int i=0;i<tablaForInt.size();i++){
-    if(Id.equals(tablaForInt.get(i).getId())){
-        int type=tablaForInt.get(i).type();
-        tablaForInt.get(i).setIsNull(false);
-        switch(type){
-            case 1:
-            if(containsLleter || containsBool){
-            Semanticos.add(new Errors("=","Despues de token =, tiene que asignarse a un valor entero",-1,e1left,e1right));
-            }
-           
-            break;
-            case 2:
-            if(!containsLleter || containsBool){
-              Semanticos.add(new Errors("=","Despues de token =, debe contener al menos una cadena",-1,e1left,e1right));
-            }
-            
-            break;
-            case 3:
-            break;
-        }
-         containsLleter=false;
-         containsBool=false;
-        break;
-        }
-}
+SENTENCIAIF::= If abreParen E22 cierraParen V Else V;
+SENTENCIAWHILE::= While abreParen E22 cierraParen V ;
+PAINT::= pintar abreParen E22 coma E22 coma PARAM2 coma PARAM2 cierraParen puntoComa;
 
-try{
-Condicion con=(Condicion)e1;
-RESULT=(String)e+"="+con.letter+";";
-}catch(Exception ex){
-    Object ob[]=(Object[])e1;
-    RESULT=(String)e+"="+ob[2]+";";
-}
-:};
-ASIG::= cierraCor {:RESULT="";:}|INSTRUC:e ASIG:e1 {:RESULT=(String)e+(String)e1;:};
+PARAM2::= E
+| E Punto E;
 
-SENTENCIAIF::= If abreParen E22:e cierraParen V:e1  C22:e2
-{:
-String txt="if(";
-try{
-Condicion con=(Condicion)e;
-txt+=con.letter+")";
+V::=abreLlaves Datas ;
+V::=abreLlaves cierraLlaves;
 
-RESULT=txt+(String)e1+(String)e2;
-}
-catch(Exception ex){
-    Object ob[]=(Object[])e;
-    Semanticos.add(new Errors((String)ob[2],"Error, una sentecia if debe contener operaciones logicas",-1,eleft,eright));
-    RESULT="";
-}
-
-:};
-SENTENCIAWHILE::= While abreParen E22:e cierraParen V:e1 
-{:
-
-String txt="while(";
-try{
-Condicion con=(Condicion)e;
-txt+=con.letter+")";
-RESULT=txt+(String)e1;
-}
-catch(Exception ex){
-    Object ob[]=(Object[])e;
-    Semanticos.add(new Errors((String)ob[2],"Error, una sentecia if debe contener operaciones logicas",-1,eleft,eright));
-    RESULT="";
-}
-:};
-PAINT::= pintar abreParen S1:e coma S1:e1 coma PARAM2:e2 coma PARAM2:e3 cierraParen puntoComa
-{:
-Object ob[]=(Object[])e;
-Object ob2[]=(Object[])e1;
-boolean bool=(boolean)ob[3];
-String t1=(String)ob[2];
-String t2=(String)ob2[2];
-
-if(!bool){
-   //Semanticos.add(new Errors(t1,"Error en el parametro 1, debe contener al menos una cadena",-1,eleft,eright));
-}
-bool=(boolean)ob2[3];
-if(!bool){
-   //Semanticos.add(new Errors(t2,"Error en el parametro 2, debe contener al menos una cadena",-1,e1left,e1right));
-}
-String txt = "";
-int vector1[]=(int [])e2;
-int vector2[]=(int [])e3;
-txt="\n pintar("+t1+","+t2+","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+");\n";
-
-if(Semanticos.size()==1){
-    int is=0;
-   if(t1.contains("+")){
-       is++;
-      
-   }
-    if(t2.contains("+")){
-       is++;
-          
-   }
-    if(t2.contains("*")|| t2.contains("/")){is=3;}
-     if(t1.contains("*")|| t1.contains("/")){is=3;}
-   if(is==1 || is==0){
-    Semanticos=new ArrayList();
-    if(t1.contains("\"")){
-    txt="\n pintar("+t1+",\""+t2+"\","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+");\n";
-    }else{
-    txt="\n pintar(\""+t1+"\","+t2+","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+");\n";
-    }
-   }
-}
-else if(Semanticos.size()==2){
-    if(!t1.contains("+") &&  !t2.contains("+")){
-        if(t2.contains("*")|| t2.contains("/") || t1.contains("*")|| t1.contains("/")){
-        }else{
-        Semanticos=new ArrayList();
-        txt="\n pintar(\""+t1+"\",\""+t2+"\","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+");\n";
-        }
-    }
-}
-
-
-
-RESULT=txt;
-containsLleter=false;
-containsBool=false;
-:};
-//----------------------------------------------------------------------->
-PARAM2::= E:e 
-{:
-int value=(int)((double)e); 
-int vector[]={value,-9999};
-RESULT= vector; 
-:}
-| E:e Punto E:e1 
-{:
-int value=(int)((double)e);
-int value2=(int)((double)e1);
-int vector[]={value,value2};
-RESULT= vector; 
-:};
-//------------------------------------------------------------------------->
-V::= abreLlaves  Datas:e cierraLlaves {:RESULT="\n{\n"+e+"\n}\n";:};
-Datas::= INSTRUC:e S22:e1 {:RESULT=(String)e+(String)e1;:} | {:RESULT="";:};
-S22::= INSTRUC:e S22:e1 
-{:RESULT=(String)e+(String)e1;:}
-|{:RESULT="";:};
-C22::= Else:e V:e1 
-{:RESULT="else"+(String)e1;:}
-| {:RESULT="";:};
+Datas::= ASIGNACION2 | PAINT ASIG2| SENTENCIAIF ASIG2| SENTENCIAWHILE ASIG2 ;
+ASIGNACION2::= Id equals E22  ASIG2  ;
+ASIG2::= cierraLlaves|Datas;

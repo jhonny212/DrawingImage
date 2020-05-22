@@ -36,7 +36,7 @@ return symbol(sym.Punto,new String(yytext()));}
 ")"                                                                          {return symbol(sym.cierraParen,new String(yytext()));}
 "["                                                                          {return symbol(sym.abreCor,new String(yytext()));}
 "]"                                                                          {return symbol(sym.cierraCor,new String(yytext()));}
-"\""                                                                         {return symbol(sym.COM,new String(yytext()));}
+("\"")|("“")|("”")                                                                        {return symbol(sym.COM,new String(yytext()));}
 "{"                                                                          {return symbol(sym.abreLlaves,new String(yytext()));}
 "}"                                                                          {return symbol(sym.cierraLlaves,new String(yytext()));}
 ","                                                                          {return symbol(sym.coma,new String(yytext()));}
@@ -52,8 +52,8 @@ return symbol(sym.Punto,new String(yytext()));}
 "/"                                                                          {return symbol(sym.Div,new String(yytext()));}
 "="                                                                          {return symbol(sym.equals,new String(yytext()));}
 ("==")|("<")|("<=")|(">")|(">=")|("<>")                                              {return symbol(sym.Operador,new String(yytext()));}
-("AND")|("OR")                                                                {return symbol(sym.OperadorLogico,new String(yytext()));}
-
+("AND")                                                                {return symbol(sym.And,new String(yytext()));}
+("OR")                                                                {return symbol(sym.Or,new String(yytext()));}
 (({numero})+)(".")(({numero})+)                                              {return symbol(sym.Double,new String(yytext()));}    
 (({numero})+)                                                                {return symbol(sym.Num,new String(yytext()));}    
 ((({letra})|({guionBajo})|({numero}))+)                                       {return symbol(sym.Id,new String(yytext()));}    
