@@ -40,65 +40,16 @@ public class crearClase {
                 + "public  ArrayList<Tiempos> listTime;"
                 + " public ArrayList<Errors> semanticos;"
                 + "String LienzoGlobalParamX;\n";
-        clase += "\nprivate void pintar(String clr,String img,int start1,int end1,int start2,int end2,int fil,int col){\n"
-                + "\n"
-                + "}";
-        clase += "public  int getPosLz(String lz, int fil, int col) {\n"
-                + "        try {\n"
-                + "            for (int i = 0; i < lienzos.size(); i++) {\n"
-                + "                if (lz.equals(lienzos.get(i).getId())) {\n"
-                + "                    return i;\n"
-                + "                }\n"
-                + "            }\n"
-                + "        } catch (NullPointerException ex) {\n"
-                + "        }\n"
-                + "\n"
-                + "        return -1;\n"
-                + "    }\n"
-                + "\n"
-                + "    public  int[] getPosClr(String lz, String clr, int fil, int col) {\n"
-                + "        try {\n"
-                + "            for (int i = 0; i < listado.size(); i++) {\n"
-                + "                ContentColor tmp = listado.get(i);\n"
-                + "                if (lz.equals(tmp.getName())) {\n"
-                + "                    for (int j = 0; j < tmp.getList().size(); j++) {\n"
-                + "                        if (clr.equals(tmp.getList().get(j).getId())) {\n"
-                + "                            return new int[]{i, j};\n"
-                + "                        }\n"
-                + "                    }\n"
-                + "                }\n"
-                + "            }\n"
-                + "        } catch (NullPointerException ex) {\n"
-                + "        }\n"
-                + "        return new int[]{-1, -1};\n"
-                + "    }"
-                + "  public void saludar(){"
-                + "  System.out.println(\"hola\");"
-                + "}"
-                + "\n"
-                + "\n"
-                + "    public  int[] getPosImg(String lz, String Img, int fil, int col) {\n"
-                + "        try {\n"
-                + "            for (int i = 0; i < listTime.size(); i++) {\n"
-                + "                Tiempos tmp = listTime.get(i);\n"
-                + "                if (lz.equals(tmp.getName())) {\n"
-                + "                    for (int j = 0; j < tmp.getList().size(); j++) {\n"
-                + "                        if (Img.equals(tmp.getList().get(j).getId())) {\n"
-                + "                            return new int[]{i, j};\n"
-                + "                        }\n"
-                + "                    }\n"
-                + "                }\n"
-                + "            }\n"
-                + "        } catch (NullPointerException ex) {\n"
-                + "        }\n"
-                + "        return new int[]{-1, -1};\n"
-                + "    }\n";
-        clase += "private void mainMethod(){\n";
+        
+        clase += "public void mainMethod(){\n";
         for (int i = 0; i < methods; i++) {
             clase += "instruct" + i + " ();\n";
         }
         clase += "}\n }";
 
+        clase += "";
+        
+        
         return clase;
     }
 }

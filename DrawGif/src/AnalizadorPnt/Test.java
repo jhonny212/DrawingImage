@@ -28,7 +28,7 @@ public class Test {
         this.LienzoGlobalParamX = IdLienzo;
         if (2 == 2) {
 
-            pintar("VerdePalidos", "_id1", 1, -9999, 1, -9999, 4, 26);
+            pintar("VerdePalidos", "_id1", 3, 0, 3, 0, 4, 26);
 
             pintar("VerdePalido", "_id2", 1, -9999, 0, -9999, 5, 17);
 
@@ -91,18 +91,18 @@ public class Test {
                         if (end2 != -9999) {
                             if (start2 > end1) {
                                 mayoRRR2 = start2;
-                            } else {
-                                menoRRR2 = end2;
-                            }
+                                menoRRR2=end2;
+                            } 
+
                             if (validarSIZE(start1, 0, TAMAÑOFILA, TAMAÑOCOLUMNA, fil, col)) {
                                 if (validarSIZE(menoRRR2, mayoRRR2, TAMAÑOFILA, TAMAÑOCOLUMNA, fil, col)) {
-                                    paint(start1, 2, menoRRR2, mayoRRR2, CCCC, posIMAGE);
+                                    paint(start1, start1, menoRRR2, mayoRRR2, CCCC, posIMAGE);
                                 }
                             }
                         } else {
                             if (validarSIZE(start1, 0, TAMAÑOFILA, TAMAÑOCOLUMNA, fil, col)) {
-                                if (validarSIZE(start2, 1, TAMAÑOFILA, TAMAÑOCOLUMNA, fil, col)) {
-                                    paint(start1, 2, start2, 1, CCCC, posIMAGE);
+                                if (validarSIZE(start2, 0, TAMAÑOFILA, TAMAÑOCOLUMNA, fil, col)) {
+                                    paint(start1, start1, start2, start2, CCCC, posIMAGE);
                                 }
                             }
                         }
@@ -172,18 +172,18 @@ public class Test {
     }
 
     private void paint(int inic, int end, int i2, int end2, Color clr, int posIMAGE[]) {
-        for (int i = inic; i < 2; i++) {
-            for (int m = i2; m < 2; m++) {
-        
-                this.listTime.get(posIMAGE[0]).getList().get(posIMAGE[1]).getListadoCodigo().add(new cuadroApintar(clr, i, m));
+        for (int i = inic; i <= end; i++) {
+            for (int m = i2; m <= end2; m++) {
+
+                this.listTime.get(posIMAGE[0]).getList().get(posIMAGE[1]).getListadoCodigo().add(new cuadroApintar(clr, m, i));
             }
         }
 
     }
 
     private boolean validarSIZE(int xXX, int yYY, int FF, int CC, int fil, int col) {
-        if (xXX >= 0 && xXX < FF) {
-            if (yYY >= 0 && yYY < CC) {
+        if (xXX >= 0 && xXX < CC) {
+            if (yYY >= 0 && yYY < FF) {
                 return true;
             }
         }

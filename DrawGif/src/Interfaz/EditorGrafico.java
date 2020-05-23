@@ -46,7 +46,7 @@ public class EditorGrafico extends javax.swing.JPanel {
 
     public void setItems() {
         fila = this.lz.getDim_y();
-        this.contadorGlobal = 20;
+        this.contadorGlobal = tmp.getList().size();
         columna = this.lz.getDim_x();
         this.Ids.removeAllItems();
         mouseAdapter mouse = new mouseAdapter(Color.red, this, false);
@@ -66,6 +66,7 @@ public class EditorGrafico extends javax.swing.JPanel {
                 this.tab.add(tablero[i][j]);
             }
         }
+        this.Ids.disable();
         vectorOrden = new String[tmp.getList().size()];
         for (int i = 0; i < tmp.getList().size(); i++) {
             String dato = tmp.getList().get(i).getId();
@@ -75,15 +76,25 @@ public class EditorGrafico extends javax.swing.JPanel {
             for (int j = 0; j < tmp.getList().get(i).getListadoCodigo().size(); j++) {
                 cuadroApintar cc = tmp.getList().get(i).getListadoCodigo().get(j);
                 tablero[cc.getX()][cc.getY()].setBackground(cc.getClr());
-                System.out.println(cc.getClr().toString());
+               
             }
             tmp.getList().get(i).setPaint(saveColors());
+            if(i==tmp.getList().size()){
+            }else{
+            for (int j = 0; j < tmp.getList().get(i).getListadoCodigo().size(); j++) {
+                cuadroApintar cc = tmp.getList().get(i).getListadoCodigo().get(j);
+                tablero[cc.getX()][cc.getY()].setBackground(this.lz.getColor());
+            }
+            
+            }
         }
+        this.Ids.enable();
         this.Inicio.setText(this.tmp.getInicio());
         this.Fin.setText(this.tmp.getFin());
         this.Inicio.setEnabled(false);
         this.Fin.setEnabled(false);
-
+        this.listadoPaint=tmp.getList().get(0).getPaint();
+        iniciarTablero();
         iniciarColores();
 
     }
@@ -353,9 +364,10 @@ public class EditorGrafico extends javax.swing.JPanel {
     }//GEN-LAST:event_Duracion2KeyTyped
     int pos = 0;
     int contadorGlobal;
-    
+    int COUNt = 0;
     private void IdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IdsActionPerformed
-        
+         COUNt++;
+        if (COUNt>contadorGlobal) {
             try {
                 String name = this.Ids.getSelectedItem().toString();
                 tmp.getList().get(pos).setPaint(saveColors());
@@ -367,7 +379,7 @@ public class EditorGrafico extends javax.swing.JPanel {
                 });
             } catch (NullPointerException e) {
             }
-      
+        }
 
     }//GEN-LAST:event_IdsActionPerformed
     ArrayList<Cuadro> listadoPaint;
