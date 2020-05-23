@@ -1,0 +1,2 @@
+AnalizadorLienzos.parserLienzo
+AnalizadorLienzos.CUP$parserLienzo$actions

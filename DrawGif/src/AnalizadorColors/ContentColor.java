@@ -5,6 +5,7 @@
  */
 package AnalizadorColors;
 
+import AnalizadorColors.Colores;
 import java.util.ArrayList;
 
 /**

@@ -5,14 +5,22 @@
  */
 package TablaDeSimbolos;
 
+import AnalizadorColors.ContentColor;
+import AnalizadorColors.parseColor;
+import AnalizadorLienzos.parserLienzo;
+import AnalizadorTime.Tiempos;
+import AnalizadorTime.parserTime;
+import java.util.ArrayList;
+
 /**
  *
  * @author jhonny
  */
 public class TablaSimbolos {
+
     protected String Id;
     protected boolean isNull;
-    
+
     public String getId() {
         return Id;
     }
@@ -24,6 +32,14 @@ public class TablaSimbolos {
     public void setIsNull(boolean isNull) {
         this.isNull = isNull;
     }
-    public TablaSimbolos(){}
-    
+
+    public TablaSimbolos() {
+    }
+
+    private void pintar(int lz, int clr, int img, int pos1, int posAux1, int pos2, int posAux2) {
+
+    }
+
+
+
 }

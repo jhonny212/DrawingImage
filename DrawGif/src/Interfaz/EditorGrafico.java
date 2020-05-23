@@ -8,6 +8,7 @@ package Interfaz;
 import AnalizadorColors.ContentColor;
 import AnalizadorLienzos.lienzo;
 import AnalizadorPnt.Codigo;
+import AnalizadorPnt.cuadroApintar;
 import AnalizadorTime.Tiempos;
 import AnalizadorTime.Time;
 import drawgif.Cuadro;
@@ -45,6 +46,7 @@ public class EditorGrafico extends javax.swing.JPanel {
 
     public void setItems() {
         fila = this.lz.getDim_y();
+        this.contadorGlobal = 20;
         columna = this.lz.getDim_x();
         this.Ids.removeAllItems();
         mouseAdapter mouse = new mouseAdapter(Color.red, this, false);
@@ -69,6 +71,12 @@ public class EditorGrafico extends javax.swing.JPanel {
             String dato = tmp.getList().get(i).getId();
             vectorOrden[i] = dato;
             this.Ids.addItem(dato);
+
+            for (int j = 0; j < tmp.getList().get(i).getListadoCodigo().size(); j++) {
+                cuadroApintar cc = tmp.getList().get(i).getListadoCodigo().get(j);
+                tablero[cc.getX()][cc.getY()].setBackground(cc.getClr());
+                System.out.println(cc.getClr().toString());
+            }
             tmp.getList().get(i).setPaint(saveColors());
         }
         this.Inicio.setText(this.tmp.getInicio());
@@ -344,18 +352,23 @@ public class EditorGrafico extends javax.swing.JPanel {
 
     }//GEN-LAST:event_Duracion2KeyTyped
     int pos = 0;
+    int contadorGlobal;
+    
     private void IdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IdsActionPerformed
-        try {
-            String name = this.Ids.getSelectedItem().toString();
-            tmp.getList().get(pos).setPaint(saveColors());
-            pos = this.Ids.getSelectedIndex();
-            tmp.getList().stream().filter((list) -> (list.getId().equals(name))).forEachOrdered((Time list) -> {
-                this.Duracion2.setText(String.valueOf(list.getDuracion1()));
-                this.listadoPaint = list.getPaint();
-                iniciarTablero();
-            });
-        } catch (NullPointerException e) {
-        }
+        
+            try {
+                String name = this.Ids.getSelectedItem().toString();
+                tmp.getList().get(pos).setPaint(saveColors());
+                pos = this.Ids.getSelectedIndex();
+                tmp.getList().stream().filter((list) -> (list.getId().equals(name))).forEachOrdered((Time list) -> {
+                    this.Duracion2.setText(String.valueOf(list.getDuracion1()));
+                    this.listadoPaint = list.getPaint();
+                    iniciarTablero();
+                });
+            } catch (NullPointerException e) {
+            }
+      
+
     }//GEN-LAST:event_IdsActionPerformed
     ArrayList<Cuadro> listadoPaint;
 
@@ -380,12 +393,12 @@ public class EditorGrafico extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    
-        boolean isGif=this.lz.getTipo().equals("gif");
+
+        boolean isGif = this.lz.getTipo().equals("gif");
         this.tmp.getList().get(this.pos).setPaint(this.saveColors());
-        generarImage images = new generarImage(this,isGif);
-        images.crearPNG();     
-      
+        generarImage images = new generarImage(this, isGif);
+        images.crearPNG();
+
     }//GEN-LAST:event_jButton2ActionPerformed
     lienzo lz;
     ContentColor clr;

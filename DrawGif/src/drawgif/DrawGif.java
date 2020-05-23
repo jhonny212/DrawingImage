@@ -5,20 +5,12 @@
  */
 package drawgif;
 
-import AnalizadorPnt.lexicoPnt;
-import AnalizadorPnt.parserPnt;
-import java.awt.List;
+import AnalizadorPnt.Codigo;
+import Interfaz.EditorDeTexto;
+
 //import static AnalizadorPnt.parserPnt.Semanticos;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
 
-import java.util.ArrayList;
-
-import javax.tools.JavaCompiler;
-import javax.tools.JavaFileManager;
-import javax.tools.JavaFileObject;
-import javax.tools.ToolProvider;
 
 /**
  *
@@ -29,10 +21,11 @@ public class DrawGif {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args)  {
         //generarCompilador();
-        probar();
-
+       // probar();
+        EditorDeTexto f=new EditorDeTexto();
+        f.show();
 
         /*String datos = "SanMarcos|Quetzaltengo|60|128|50|250|44\n"
                 + "Quetzaltengo|SanMarcos|60|128|50|250|44\n"
@@ -464,27 +457,20 @@ public class DrawGif {
                 + "INSTRUCCIONES(otroLienzo) ["
                 + "\n"
                 + "if(2==3){"
-                + "PINTAR(kkk,\"f\",1,2);\n"
+                + "PINTAR(llll,kkk,1,2);\n"
+                + "PINTAR(llll,kkk,1,2);\n"
+                
                 + "}"
-                + "]";
+                + "]"
+                + "INSTRUCCIONES(otroLienzo) ["
+                + "while(true){"
+                + "f=2+\"f\"+2;"
+                + "}"
+                + "]"
+                + "";
+   
+       Codigo cd=new Codigo(contenido);
         
-       
-        lexicoPnt scan = new lexicoPnt(new BufferedReader(new StringReader(contenido)));
-        String dato = (true && true && true) + " ";
-        parserPnt parser = new parserPnt(scan);
-        parser.tablaForInt = new ArrayList<>();
-        parser.Semanticos = new ArrayList<>();
-
-        try {
-            parser.parse();
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage() + "s");
-        }
-
-        for (int i = 0; i < parserPnt.Semanticos.size(); i++) {
-            System.out.println(parserPnt.Semanticos.get(i).getSolucion());
-
-        }
     }
 
 }

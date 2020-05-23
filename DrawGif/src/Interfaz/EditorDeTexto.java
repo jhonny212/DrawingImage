@@ -9,6 +9,8 @@ import AnalizadorColors.Colores;
 import AnalizadorColors.ContentColor;
 import AnalizadorLienzos.lienzo;
 import AnalizadorPnt.Codigo;
+import AnalizadorPnt.Test;
+import AnalizadorPnt.cuadroApintar;
 import AnalizadorTime.Tiempos;
 import AnalizadorTime.Time;
 import drawgif.Fichero;
@@ -359,15 +361,20 @@ public class EditorDeTexto extends javax.swing.JFrame {
         boolean x2 = false;
 
         boolean x3 = false;
-        try{
-         x1 = iniciarErrores(4);
-        x2 = iniciarErrores(2);
-        x3 = iniciarErrores(1);
-        }catch(NullPointerException e){}
-       
+        try {
+            x1 = iniciarErrores(4);
+            x2 = iniciarErrores(2);
+            x3 = iniciarErrores(1);
+        } catch (NullPointerException e) {
+        }
+
         if (x1 && x2 && x3) {
             int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea ir a la parte Grafica?", "", 0);
             if (seleccion == 0) {
+                Test f = new Test(lz.getLienzos(), clr.getListado(), tmp.getListTime());
+                f.mainMethod();
+                f.saludar();
+                
 
                 lz.getLienzos().stream().map((lienzo1) -> {
                     Tiempos Time = null;
@@ -375,6 +382,8 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     for (Tiempos listTime : tmp.getListTime()) {
                         if (lienzo1.getId().equals(listTime.getName())) {
                             Time = listTime;
+                            
+                            
                         }
                     }
                     for (ContentColor listado : clr.getListado()) {
@@ -406,7 +415,6 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 this.Menu2.disable();
             }
         }
-
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void GifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GifActionPerformed

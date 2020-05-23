@@ -5,6 +5,7 @@
  */
 package AnalizadorTime;
 
+import AnalizadorPnt.cuadroApintar;
 import drawgif.Cuadro;
 import drawgif.Fichero;
 import java.io.BufferedReader;
@@ -21,10 +22,12 @@ public class Time extends Fichero {
     float duracion1, duracion2;
     public ArrayList<Tiempos> listTime;
     protected ArrayList<Cuadro> paint;
+    ArrayList<cuadroApintar> listadoCodigo;
     public Time(String contenido) {
         super(contenido);
         listTime=new ArrayList<>();
         paint=new ArrayList();
+        this.listadoCodigo=new ArrayList<>();
         init();
     }
 
@@ -50,6 +53,7 @@ public class Time extends Fichero {
     public Time(String Id, float duracion1) {
         this.Id = Id;
         this.duracion1 = duracion1;
+        this.listadoCodigo=new ArrayList<>();
 
     }
 
@@ -73,6 +77,11 @@ public class Time extends Fichero {
         return listTime;
     }
 
+    public void setListTime(ArrayList<Tiempos> listTime) {
+        this.listTime = listTime;
+    }
+    
+
     public void setDuracion1(float duracion1) {
         this.duracion1 = duracion1;
     }
@@ -90,7 +99,13 @@ public class Time extends Fichero {
     public void setPaint(ArrayList<Cuadro> paint) {
         this.paint = paint;
     }
-    
+
+    public ArrayList<cuadroApintar> getListadoCodigo() {
+        return listadoCodigo;
+    }
+    public void inicializarList(){
+    this.listadoCodigo=new ArrayList<>();
+    }
     
 
   
