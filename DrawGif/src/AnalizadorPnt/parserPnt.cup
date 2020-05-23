@@ -3,7 +3,7 @@ import java_cup.runtime.Symbol;
 
 parser code {:
     public static ArrayList<tablaInt> tablaForInt;
-    public static ArrayList<Errors> Semanticos;
+    public static ArrayList<Errors> Semanticos,Sintacticos;
     public static boolean containsLleter,containsBool;
         
 public static int NumMethod,tipoOperacion;
@@ -11,13 +11,12 @@ public static String Variables,condicion,cadenaPrev,MetodoS;
 
    public void syntax_error(Symbol s){
        System.out.println("Error R de sintaxis: "+ s.value +" Linea "+(s.left+1)+" columna "+(s.right+1) );
+       Sintacticos.add(new Errors(String.valueOf(s.value),"",-1,s.left,s.right));
     }
     public void unrecovered_syntax_error(Symbol s) throwsjava.lang.Exception{
+     Sintacticos.add(new Errors(String.valueOf(s.value),"",-1,s.left,s.right));
     System.out.println("La Cadena:" +s.value+" en la Linea:"+(s.right+1) +" ,Columna: "+s.left+"esta fuera de contexto." );
  }
-//Metodos Para Obtener Imgane a pintar, lienzo, IdIMG
-
-
 
 public static Object[] getObj(Object [] obj1,Object [] obj2,int opc, int cases,int e2left,int e2right){
 int type=(int)obj1[0]+(int)obj2[0];
@@ -103,8 +102,6 @@ return obj1;
      }
  return null;
  }
-
- 
 :}
 
 terminal Vars,abreCor,cierraCor,Int,Id,String,Boolean,puntoComa,coma,equals,
@@ -123,24 +120,26 @@ start with AS;
 
 
 SYMBOLS::= Sum | Res | Mul | Div | abreParen | cierraParen;
-//A::= VARIABLES K  INSTRUCCIONES;
+
 OperadorLogico::= And {:RESULT="&&";:} | Or {:RESULT="||";:};
 AS::= A INSTRUCCIONES:e T22:e1
 {:
 MetodoS=(String)e+""+(String)e1;
 :}
 ;
-T22::= INSTRUCCIONES:e T22:e1 {:RESULT=(String)e+(String)+e1;:}| {:RESULT="";:};
+T22::= INSTRUCCIONES:e T22:e1 {:RESULT=(String)e+(String)e1;:}| {:RESULT="";:};
 A::=VARIABLES:e K:e1 
 {:
 containsBool=false;
 containsLleter=false;
 String txt=String.valueOf(e)+" "+String.valueOf(e1);
 Variables=txt.replace("null","");
-
 :};
 
-VARIABLES::= Vars abreCor VALUES:e {:RESULT=e;:};
+VARIABLES::= Vars abreCor VALUES:e 
+{:RESULT=e;:}
+|error
+;
 
 
 VALUES::= INT:e OPCIONINT1:e1
@@ -149,6 +148,7 @@ VALUES::= INT:e OPCIONINT1:e1
 {:RESULT="boolean "+e+" "+e1+";\n";:}
 | STRINGX:e OPCIONSTRING:e1
 {:RESULT="String "+e+" "+e1+";\n";:}
+
 ;
 
 INT::=Int Id:e OPCINT:e1 
@@ -167,8 +167,8 @@ RESULT=(String)e;
 RESULT=(String)e+"="+String.valueOf(value);
 }
 tablaForInt.add(new tablaInt(value,(String)e,isNull,"int"));
-
-:};
+:}
+;
 BOOLEAN::= Boolean Id:e OPCBOOL:e1
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -223,7 +223,8 @@ RESULT=(String)e+(String)e1;
 RESULT=(String)e;
 }
 :}
-| puntoComa ;
+| puntoComa 
+|error puntoComa;
 OPCIONBOOL2::= coma Id:e 
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -255,6 +256,7 @@ msj=(String)obj[2];
 
 RESULT=","+(String)e+"="+msj;
 :}
+|error coma
 ;
 
 STRINGX::= String Id:e OPCSTR:e1
@@ -289,7 +291,8 @@ RESULT="="+obj[2];
 
 OPCIONSTRING::= OPCIONSTRING2:e OPCIONSTRING:e1
 {:RESULT=""+e+""+e1;:}
- | puntoComa {:RESULT="";:};
+ | puntoComa {:RESULT="";:}
+ | error puntoComa;
 OPCIONSTRING2::= coma Id:e 
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -317,18 +320,20 @@ if(!containsLleter){
 tablaForInt.add(new tablaInt("",(String)e,false,"str"));
 RESULT=","+e+"="+obj[2];
 :}
+|error coma
 ;
 
 
 
 
-OPCINT::= equals E:e {:RESULT=e;:} | {:RESULT=-1.5;:};
+OPCINT::= equals E:e {:RESULT=e;:} | {:RESULT=-1.5;:} ;
 
 OPCIONINT1::= OPCIONINT2:e OPCIONINT1:e1
 {:
 RESULT=(String)e+(String)e1;
 :}
-| puntoComa {:RESULT="";:};
+| puntoComa {:RESULT="";:}
+| error puntoComa {:System.out.println("ERROR PUNTO COMA");:};
 OPCIONINT2::= coma Id:e 
 {:
 for(int i=0;i<tablaForInt.size();i++){
@@ -356,12 +361,13 @@ tablaForInt.add(new tablaInt(value,(String)e,false,"int"));
 RESULT=","+(String)e+" = "+String.valueOf(value);
 
 :}
-
+|error coma 
 ;
 K::= cierraCor {:RESULT="";:} | VALUES:e K:e1 
 {:
     RESULT=(String)e+(String)e1;
-:};
+:}
+|error K {:System.out.println("ERROR K");:};
 
 /*
 *Condicion int
@@ -762,7 +768,7 @@ INSTRUCCIONES::= Inst abreParen Id:e cierraParen abreCor INSTRUC:e1 ASIG:e2
 
 String methoD="private void instruct"+NumMethod+" (){\n";
 methoD+="String IdLienzo=\""+(String)e+"\";\n";
-methoD+="this.LienzoGlobalParamX=IdLienzo;";
+methoD+="this.LienzoGlobalParamX=IdLienzo;\n";
 methoD+=(String)e1+(String)e2+"\n}\n";
 RESULT=methoD;
 NumMethod++;
@@ -780,7 +786,7 @@ Condicion con=null;
 try{
 con=(Condicion)e1;
 RESULT=(String)e+"="+con.letter+";";
-typeS=cond.type;
+typeS=con.getTipo();
 if(con.letter.contains("true") || con.letter.contains("true")
 || con.letter.contains("&&") || con.letter.contains("||")
 || con.letter.contains(">") || con.letter.contains("<") 
@@ -886,10 +892,10 @@ txt="\n pintar("+t1+","+t2+","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vect
 if(Semanticos.size()==1){
    if(Semanticos.get(0).getSolucion().equals("La variable no se encontro")){
        if(str1.equals("??")){
-             txt="\n pintar(\""+t1+"\","+t2+","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+","+e1left+","e1right");\n";
+             txt="\n pintar(\""+t1+"\","+t2+","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+","+e1left+","+e1right+");\n";
              Semanticos=new ArrayList();
        }else if(str2.equals("??")){
-             txt="\n pintar("+t1+",\""+t2+"\","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+","+e2left+","e2right");\n";
+             txt="\n pintar("+t1+",\""+t2+"\","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+","+e2left+","+e2right+");\n";
              Semanticos=new ArrayList();
        }
    }
@@ -903,7 +909,7 @@ else if(Semanticos.size()==2){
       if(Semanticos.get(0).getSolucion().equals("La variable no se encontro")){
         if(!t2.contains("+")){
                  Semanticos=new ArrayList();
-                 txt="\n pintar(\""+t1+"\",\""+t2+"\","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+","+e2left+","e2right");\n";
+                 txt="\n pintar(\""+t1+"\",\""+t2+"\","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+","+e2left+","+e2right+");\n";
         }
      }
     }

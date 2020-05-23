@@ -23,9 +23,9 @@ public class DrawGif {
      */
     public static void main(String[] args)  {
         //generarCompilador();
-       // probar();
-        EditorDeTexto f=new EditorDeTexto();
-        f.show();
+        probar();
+        //EditorDeTexto f=new EditorDeTexto();
+        //f.show();
 
         /*String datos = "SanMarcos|Quetzaltengo|60|128|50|250|44\n"
                 + "Quetzaltengo|SanMarcos|60|128|50|250|44\n"
@@ -449,9 +449,11 @@ public class DrawGif {
         //generarCompilador();
        
         String contenido = "VARS [\n"
-                + "int x=2,j=x+2;"
-                + "boolean k=true;"
-                + "String f=\"f\";"
+                + "int x=2+2+(2+2);\n"
+                + "int x=2;\n"
+                
+                + " String k;"
+                + " String f;"
                 + "String l=f+x;\n"
                 + "]"
                 + "INSTRUCCIONES(otroLienzo) ["
@@ -463,7 +465,7 @@ public class DrawGif {
                 + "}"
                 + "]"
                 + "INSTRUCCIONES(otroLienzo) ["
-                + "while(true){"
+                + "while(false){"
                 + "f=2+\"f\"+2;"
                 + "}"
                 + "]"

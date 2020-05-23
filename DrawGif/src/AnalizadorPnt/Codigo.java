@@ -6,6 +6,7 @@
 package AnalizadorPnt;
 
 import AnalizadorColors.ContentColor;
+import drawgif.Errors;
 
 import drawgif.Fichero;
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,17 +44,21 @@ public class Codigo extends Fichero {
         lexicoPnt scan = new lexicoPnt(new BufferedReader(new StringReader(contenido)));
 
         parserPnt parser = new parserPnt(scan);
-
+        parser.Semanticos = new ArrayList<>();
+        parser.Sintacticos = new ArrayList<>();
+        parser.tablaForInt=new ArrayList<>();
         try {
             parser.parse();
         } catch (Exception ex) {
-            return false;
+            System.out.println(ex.getMessage());
+            //return false;
         }
         this.variables = parser.Variables;
         this.metodos = parser.MetodoS;
         this.methods = parser.NumMethod;
-        ContentColor d = new ContentColor(null, null);
-        crearClase();
+       
+        // ContentColor d = new ContentColor(null, null);
+        // crearClase();
         /*this.erroresLexico = scan.erroresLexico;
         this.erroresSintacticos = parser.erroresSintacticos;
         this.erroresSemanticos = parser.erroresSemanticos;
@@ -80,15 +86,15 @@ public class Codigo extends Fichero {
         }
         Object obj = null;
         try {
-         
+
             Class cls = Class.forName("AnalizadorPnt.instancia");
             obj = cls.newInstance();
             Method method;
-            method=obj.getClass().getDeclaredMethod("saludar");
+            method = obj.getClass().getDeclaredMethod("saludar");
             method.invoke(obj);
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException ex) {
-                        System.out.println("'?");
+            System.out.println("'?");
         }
 
     }

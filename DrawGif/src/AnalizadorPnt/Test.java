@@ -113,7 +113,7 @@ public class Test {
         }
     }
 
-    public int getPosLz(String lz, int fil, int col) {
+    private int getPosLz(String lz, int fil, int col) {
         try {
             for (int i = 0; i < lienzos.size(); i++) {
                 if (lz.equals(lienzos.get(i).getId())) {
@@ -126,7 +126,7 @@ public class Test {
         return -1;
     }
 
-    public int[] getPosClr(String lz, String clr, int fil, int col) {
+    private int[] getPosClr(String lz, String clr, int fil, int col) {
         try {
             for (int i = 0; i < listado.size(); i++) {
                 ContentColor tmp = listado.get(i);
@@ -143,16 +143,7 @@ public class Test {
         this.semanticos.add(new Errors(lz, "Error al buscar Id del color", fil, fil, col));
         return new int[]{-1, -1};
     }
-
-    public void saludar() {
-        for (int i = 0; i < this.semanticos.size(); i++) {
-            System.out.println(this.semanticos.get(i).getSolucion());
-
-        }
-
-    }
-
-    public int[] getPosImg(String lz, String Img, int fil, int col) {
+    private int[] getPosImg(String lz, String Img, int fil, int col) {
         try {
             for (int i = 0; i < listTime.size(); i++) {
                 Tiempos tmp = listTime.get(i);
@@ -170,7 +161,6 @@ public class Test {
 
         return new int[]{-1, -1};
     }
-
     private void paint(int inic, int end, int i2, int end2, Color clr, int posIMAGE[]) {
         for (int i = inic; i <= end; i++) {
             for (int m = i2; m <= end2; m++) {
@@ -180,7 +170,6 @@ public class Test {
         }
 
     }
-
     private boolean validarSIZE(int xXX, int yYY, int FF, int CC, int fil, int col) {
         if (xXX >= 0 && xXX < CC) {
             if (yYY >= 0 && yYY < FF) {
@@ -191,14 +180,14 @@ public class Test {
 
         return false;
     }
-
+    public ArrayList<Tiempos> getListTime() {
+        return listTime;
+    }
     public void mainMethod() {
         instruct0();
         //instruct1();
     }
 
-    public ArrayList<Tiempos> getListTime() {
-        return listTime;
-    }
+    
 
 }

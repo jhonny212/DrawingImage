@@ -373,8 +373,6 @@ public class EditorDeTexto extends javax.swing.JFrame {
             if (seleccion == 0) {
                 Test f = new Test(lz.getLienzos(), clr.getListado(), tmp.getListTime());
                 f.mainMethod();
-                f.saludar();
-                
 
                 lz.getLienzos().stream().map((lienzo1) -> {
                     Tiempos Time = null;
