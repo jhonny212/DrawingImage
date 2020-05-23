@@ -9,17 +9,20 @@ import AnalizadorColors.Colores;
 import AnalizadorColors.ContentColor;
 import AnalizadorLienzos.lienzo;
 import AnalizadorPnt.Codigo;
-import AnalizadorPnt.Test;
-import AnalizadorPnt.cuadroApintar;
+import java.lang.reflect.Method;
 import AnalizadorTime.Tiempos;
 import AnalizadorTime.Time;
-import drawgif.Fichero;
+import drawgif.Errors;
+
 import drawgif.panelError;
 import drawgif.panelTxt;
 import java.awt.Dimension;
 import java.awt.TextField;
 import java.io.File;
-import java.util.Arrays;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -308,7 +311,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         fc.setMultiSelectionEnabled(false);
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.clrs", "clrs", "*.tmp", "tmp", "*.lnz", "lnz");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("*.clrs", "clrs", "*.tmp", "tmp", "*.lnz", "lnz", "*.pnt", "pnt");
         fc.setFileFilter(filtro);
         fc.setAcceptAllFileFilterUsed(false);
         int seleccion = fc.showOpenDialog(this);
@@ -356,32 +359,26 @@ public class EditorDeTexto extends javax.swing.JFrame {
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
 
-        boolean x1 = false;
+        boolean x1 = false, x2 = false, x3 = false, x4 = false;
 
-        boolean x2 = false;
-
-        boolean x3 = false;
         try {
             x1 = iniciarErrores(4);
             x2 = iniciarErrores(2);
             x3 = iniciarErrores(1);
+            x4 = iniciarErrores(3);
         } catch (NullPointerException e) {
         }
 
-        if (x1 && x2 && x3) {
+        if (x1 && x2 && x3 && x4) {
             int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea ir a la parte Grafica?", "", 0);
             if (seleccion == 0) {
-                Test f = new Test(lz.getLienzos(), clr.getListado(), tmp.getListTime());
-                f.mainMethod();
-
                 lz.getLienzos().stream().map((lienzo1) -> {
                     Tiempos Time = null;
                     ContentColor color = null;
                     for (Tiempos listTime : tmp.getListTime()) {
                         if (lienzo1.getId().equals(listTime.getName())) {
                             Time = listTime;
-                            
-                            
+
                         }
                     }
                     for (ContentColor listado : clr.getListado()) {
@@ -591,12 +588,13 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     aux++;
                 }
                 if (!pnt.getErroresSemanticos().isEmpty()) {
-                    pnt.lexi = new panelError();
-                    pnt.lexi.init(pnt.getErroresSemanticos());
+                    pnt.seman = new panelError();
+                    pnt.seman.init(pnt.getErroresSemanticos());
                     Panel.addTab("Sintatico", pnt.seman);
                     Panel.setSelectedComponent(pnt.seman);
                     aux++;
                 }
+                aux += analizarInstancia();
                 break;
         }
         return aux == 0;
@@ -635,6 +633,57 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 new EditorDeTexto().setVisible(true);
             }
         });
+    }
+
+    public int analizarInstancia() {
+        Object obj = null;
+        try {
+            //Obteniedo la instancia
+            Class cls = Class.forName("AnalizadorPnt.instancia");
+            //Declarando el tipo de parametros []
+            Class partypes[] = new Class[3];
+            partypes[0] = ArrayList.class;
+            partypes[1] = ArrayList.class;
+            partypes[2] = ArrayList.class;
+            //Obteniendo el constructor con parametros de  tipo partypes
+            Constructor cr = cls.getConstructor(partypes);
+            //Objecto de parametros
+            Object args[] = new Object[3];
+            try {
+                args[0] = this.lz.getLienzos();
+            } catch (NullPointerException e) {
+              
+            }
+            try {
+                args[1] = this.clr.listado;
+            } catch (NullPointerException e) {
+               
+            }
+            try {
+                args[2] = this.tmp.listTime;
+            } catch (NullPointerException e) {
+                
+            }
+
+            obj = cr.newInstance(args);
+            Method method, method2;
+            method = obj.getClass().getDeclaredMethod("mainMethod");
+            method.invoke(obj);
+            method2 = obj.getClass().getDeclaredMethod("getSemanticos");
+            ArrayList<Errors> l = (ArrayList<Errors>) method2.invoke(obj);
+            if (!l.isEmpty()) {
+                pnt.seman = new panelError();
+                pnt.seman.init2(l);
+                Panel.addTab("Semantico", pnt.seman);
+                Panel.setSelectedComponent(pnt.seman);
+            }else{
+            return 0;
+            }
+           
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SecurityException | IllegalArgumentException | NoSuchMethodException | InvocationTargetException ex) {
+
+        }
+        return 10;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

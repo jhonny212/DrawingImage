@@ -178,7 +178,12 @@ public class crearClase {
                 + "    }\n"
                 + "    public ArrayList<Tiempos> getListTime() {\n"
                 + "        return listTime;\n"
-                + "    }";
+                + "    }\n"
+                + "  public ArrayList<Errors> getSemanticos() {\n"
+                + "        return semanticos;\n"
+                + "    }\n\n"
+                + "    ";
+
         clase += "}";
 
         return clase;

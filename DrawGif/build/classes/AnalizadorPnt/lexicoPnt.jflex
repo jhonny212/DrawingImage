@@ -15,7 +15,8 @@ numero=[0-9]
 letra=[a-zA-Z]
 symbols=[$#]
 guionBajo=[_]
-
+barra= "/"
+Comentario=[*+-/{}?¿'\"[]()<>=!¡]
 %{
     private Symbol symbol(int type, Object value) {
        
@@ -25,8 +26,38 @@ guionBajo=[_]
 %%
 <YYINITIAL>{
 ".."                                                                        {
-System.out.println("entro");
 return symbol(sym.Punto,new String(yytext()));}
+(({barra})({barra}))(({numero})
+|({barra})
+|({letra})
+|({symbols})
+|({guionBajo})
+|({Comentario})
+|(" ")
+|("\"")
+|("“")
+|("”")
+)*  
+{  System.out.println("ENTRO EN UN COMENTARIO?"); }
+
+(("/*"))(({numero})
+|({barra})
+|({letra})
+|({symbols})
+|({guionBajo})
+|({Comentario})
+|(" ")
+|("\"")
+|("“")
+|("”")
+|("\n")
+|("\t")
+|("*")
+)*
+("*/")  
+{  System.out.println("ENTRO EN UN COMENTARIO?"); }
+
+
 "INSTRUCCIONES"                                                              {return symbol(sym.Inst,new String(yytext()));}
 "if"                                                                         {return symbol(sym.If,new String(yytext()));}
 "else"                                                                       {return symbol(sym.Else,new String(yytext()));}

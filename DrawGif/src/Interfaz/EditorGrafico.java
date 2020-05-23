@@ -76,7 +76,6 @@ public class EditorGrafico extends javax.swing.JPanel {
             for (int j = 0; j < tmp.getList().get(i).getListadoCodigo().size(); j++) {
                 cuadroApintar cc = tmp.getList().get(i).getListadoCodigo().get(j);
                 tablero[cc.getX()][cc.getY()].setBackground(cc.getClr());
-               
             }
             tmp.getList().get(i).setPaint(saveColors());
             if(i==tmp.getList().size()){

@@ -11,7 +11,7 @@ public class Test {
 
     String LienzoGlobalParamX;
 
-    public Test(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {
+    public Test(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime,boolean v) {
         this.lienzos = lienzos;
         this.listado = listado;
         this.listTime = listTime;

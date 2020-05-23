@@ -773,6 +773,7 @@ methoD+=(String)e1+(String)e2+"\n}\n";
 RESULT=methoD;
 NumMethod++;
 :}
+|error
 ;
 INSTRUC::= ASIGNACION:e {:RESULT=e;:}  | PAINT:e {:RESULT=e;:} | SENTENCIAIF:e {:RESULT=e;:} 
 | SENTENCIAWHILE:e  {:RESULT=e;:} ;
@@ -831,8 +832,11 @@ for(int i=0;i<tablaForInt.size();i++){
 
 containsLleter=false;
 containsBool=false;
-:};
-ASIG::= cierraCor {:RESULT="";:}|INSTRUC:e ASIG:e1 {:RESULT=(String)e+(String)e1;:};
+:}
+|error puntoComa;
+ASIG::= cierraCor {:RESULT="";:}
+|INSTRUC:e ASIG:e1 {:RESULT=(String)e+(String)e1;:}
+|error cierraCor;
 
 SENTENCIAIF::= If abreParen E22:e cierraParen V:e1  C22:e2
 {:
@@ -867,7 +871,8 @@ catch(Exception ex){
 }
   containsLleter=false;
   containsBool=false;
-:};
+:}
+| error cierraParen V;
 PAINT::= pintar abreParen S1:e coma S1:e1 coma PARAM2:e2 coma PARAM2:e3 cierraParen puntoComa
 {:
 Object ob[]=(Object[])e;
@@ -915,17 +920,11 @@ else if(Semanticos.size()==2){
     }
    }
 }
-
-
-
-
-
-
-
 RESULT=txt;
 containsLleter=false;
 containsBool=false;
-:};
+:}
+|error abreParen S1;
 //----------------------------------------------------------------------->
 PARAM2::= E:e 
 {:
@@ -941,7 +940,9 @@ int vector[]={value,value2};
 RESULT= vector; 
 :};
 //------------------------------------------------------------------------->
-V::= abreLlaves  Datas:e cierraLlaves {:RESULT="\n{\n"+e+"\n}\n";:};
+V::= abreLlaves  Datas:e cierraLlaves {:RESULT="\n{\n"+e+"\n}\n";:}
+|error abreLlaves
+|error cierraLlaves;
 Datas::= INSTRUC:e S22:e1 {:RESULT=(String)e+(String)e1;:} | {:RESULT="";:};
 S22::= INSTRUC:e S22:e1 
 {:RESULT=(String)e+(String)e1;:}
