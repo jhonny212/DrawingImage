@@ -5,6 +5,8 @@
  */
 package AnalizadorPnt;
 
+import drawgif.Errors;
+
 /**
  *
  * @author jhonny
@@ -19,7 +21,7 @@ public class extraClass {
     public int Num = 0;
     public String letter;
 
-    public extraClass(String Operador, Condicion cond) {
+    public extraClass(String Operador, Condicion cond,int fila,int columna) {
         this.Operador = Operador;
         this.cond = cond;
         ext = null;
@@ -30,7 +32,9 @@ public class extraClass {
         if (this.cond != null) {
             if (this.cond.getE22() == null && this.cond.getCnd() == null) {
                 if (this.cond.getTipo() != 3) {
-                    System.out.println("Error");
+                   try{
+                   parserPnt.Semanticos.add(new Errors(cond.letter, "Error, el token no puede ser operado logicamente", -1, fila, columna));
+                   }catch(NullPointerException ex){}
                 }
             }
         }

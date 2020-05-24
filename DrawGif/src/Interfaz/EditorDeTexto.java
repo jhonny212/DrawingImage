@@ -402,9 +402,14 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 name.save();
                 name = (panelTxt) Panel.getComponentAt(2);
                 name.save();
+                name = (panelTxt) Panel.getComponentAt(3);
+                name.save();
+                
                 Panel.remove(0);
                 Panel.remove(0);
                 Panel.remove(0);
+                Panel.remove(0);
+                
                 this.Menu3.enable();
                 this.Menu1.disable();
                 this.Menu2.disable();
@@ -636,6 +641,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
     }
 
     public int analizarInstancia() {
+      
         Object obj = null;
         try {
             //Obteniedo la instancia
@@ -683,6 +689,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SecurityException | IllegalArgumentException | NoSuchMethodException | InvocationTargetException ex) {
 
         }
+       
         return 10;
     }
 

@@ -1090,6 +1090,8 @@ class CUP$parserPnt$actions {
                 String methoD = "private void instruct" + NumMethod + " (){\n";
                 methoD += "String IdLienzo=\"" + (String) e + "\";\n";
                 methoD += "this.LienzoGlobalParamX=IdLienzo;\n";
+                methoD += "this.NumFFX="+eleft+";\n";
+                methoD += "this.NumFFC="+eright+";\n";
                 methoD += (String) e1 + (String) e2 + "\n}\n";
                 RESULT = methoD;
                 NumMethod++;
@@ -1459,7 +1461,7 @@ class CUP$parserPnt$actions {
                 if (e1 != null) {
                     try {
                         extraClass next = (extraClass) e1;
-                        Condicion cond = new Condicion(e, next);
+                        Condicion cond = new Condicion(e, next,e1left,e1right);
                         String letter = cond.letter;
                         cond.setLetter("(" + letter + ")");
                         RESULT = cond;
@@ -1568,7 +1570,7 @@ class CUP$parserPnt$actions {
                 int e1right = ((java_cup.runtime.Symbol) CUP$parserPnt$stack.peek()).right;
                 Object e1 = (Object) ((java_cup.runtime.Symbol) CUP$parserPnt$stack.peek()).value;
 
-                RESULT = new extraClass((String) e, (Condicion) e1);
+                RESULT = new extraClass((String) e, (Condicion) e1,e1left,e1right);
 
                 CUP$parserPnt$result = parser.getSymbolFactory().newSymbol("S11", 55, ((java_cup.runtime.Symbol) CUP$parserPnt$stack.elementAt(CUP$parserPnt$top - 1)), ((java_cup.runtime.Symbol) CUP$parserPnt$stack.peek()), RESULT);
             }
@@ -1624,7 +1626,7 @@ class CUP$parserPnt$actions {
 
                 try {
                     extraClass next = (extraClass) e1;
-                    Condicion cond = new Condicion(e, next);
+                    Condicion cond = new Condicion(e, next,e1left,e1right);
                     RESULT = cond;
                 } catch (Exception ex) {
                     try {

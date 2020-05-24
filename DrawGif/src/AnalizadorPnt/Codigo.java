@@ -18,6 +18,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -51,6 +53,7 @@ public class Codigo extends Fichero {
         this.methods = parser.NumMethod;
         this.erroresSintacticos = parser.Sintacticos;
         this.erroresSemanticos = parser.Semanticos;
+        
         crearClase();
         return isValid();
     }
@@ -67,10 +70,15 @@ public class Codigo extends Fichero {
         }
         try {
             Process p = Runtime.getRuntime().exec("javac instancia.java -cp build/classes");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+            }
             Path o = Paths.get("instancia.class");
             Path d = Paths.get("build/classes/AnalizadorPnt/instancia.class");
             Files.copy(o, d, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
+            System.out.println("Error????");
         }
     }
 }

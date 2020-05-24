@@ -5,12 +5,14 @@
  */
 package AnalizadorPnt;
 
+import drawgif.Errors;
+
 /**
  *
  * @author jhonny
  */
 public class Condicion {
-    
+
     private int Intvalor, tipo;
     private String StringValue;
     private boolean boolValue;
@@ -18,8 +20,8 @@ public class Condicion {
     private Condicion cnd;
     public int NumC = 0;
     public String letter;
-    
-    public Condicion(Object e, extraClass e22) {
+
+    public Condicion(Object e, extraClass e22, int fila, int columna) {
         Object ob[] = (Object[]) e;
         this.Intvalor = (int) ob[1];
         this.StringValue = (String) ob[2];
@@ -29,11 +31,14 @@ public class Condicion {
         this.letter = "";
         if (e22 != null) {
             if (this.E22.Num != 2) {
-                System.out.println("Error");
+                System.out.println("ErrorXD");
             }
             if (this.tipo != e22.Type) {
                 if (e22.getOperador().equals("==") || e22.getOperador().equals("<>")) {
-                    System.out.println("Error de comparacion");
+                    try {
+                        parserPnt.Semanticos.add(new Errors(e22.letter, "Error de comparacion, los datos no son del mismo tipo ", -1, fila, columna));
+                    } catch (NullPointerException ex) {
+                    }
                 }
             }
         }
@@ -72,7 +77,7 @@ public class Condicion {
         }
         this.NumC = 1;
     }
-    
+
     public Condicion(boolean ob, extraClass e22) {
         boolValue = ob;
         this.StringValue = String.valueOf(ob);
@@ -86,7 +91,7 @@ public class Condicion {
             this.letter = StringValue;
         }
     }
-    
+
     public Condicion(Condicion c, extraClass e22) {
         this.cnd = c;
         this.E22 = e22;
@@ -98,15 +103,15 @@ public class Condicion {
                 this.letter += " " + e22.letter;
             }
         }
-        
+
     }
-    
+
     public void print() {
         //System.out.println("****************");
         //System.out.println(this.letter);
         //paint(this);
     }
-    
+
     private void paint(Condicion href) {
         if (href.cnd != null) {
             paint(href.cnd);
@@ -119,7 +124,7 @@ public class Condicion {
         } else {
             System.out.print(" " + href.StringValue);
             if (href.E22 != null) {
-                
+
                 if (href.E22.getExt() == null) {
                     System.out.print(" " + href.E22.getOperador() + "");
                     if (href.getE22().getCond() != null) {
@@ -127,12 +132,12 @@ public class Condicion {
                     } else {
                         System.out.print(href.getE22().getValue());
                     }
-                    
+
                 } else {
-                    
+
                     System.out.print(" " + href.E22.getOperador());
                     System.out.print(" " + href.E22.getValue());
-                    
+
                     if (href.E22.getExt().getCond() != null) {
                         System.out.print(" " + href.E22.getExt().getOperador());
                         paint(href.E22.getExt().getCond());
@@ -144,29 +149,29 @@ public class Condicion {
             }
         }
     }
-    
+
     public int getIntvalor() {
         return Intvalor;
     }
-    
+
     public int getTipo() {
         return tipo;
     }
-    
+
     public String getStringValue() {
         return StringValue;
     }
-    
+
     public boolean isBoolValue() {
         return boolValue;
     }
-    
+
     public Condicion getCnd() {
         return cnd;
     }
-    
+
     public String getValue() {
-        
+
         switch (tipo) {
             case 1:
                 return String.valueOf(this.Intvalor);
@@ -177,17 +182,17 @@ public class Condicion {
         }
         return "";
     }
-    
+
     public extraClass getE22() {
         return E22;
     }
-    
+
     public void setTipo(int tipo) {
         this.tipo = tipo;
     }
-    
+
     public void setLetter(String letter) {
         this.letter = letter;
     }
-    
+
 }

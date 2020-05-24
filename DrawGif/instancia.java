@@ -15,10 +15,12 @@ String l=f+x ;
 private void instruct0 (){
 String IdLienzo="lienzoId1";
 this.LienzoGlobalParamX=IdLienzo;
+this.NumFFX=10;
+this.NumFFC=15;
 if(2 == 2 )
 {
 
- pintar("VerdePalido","_id1",1,-9999,2,-9999,12,25);
+ pintar("VerdePalido","_id1",2,0,2,1,12,28);
 
 }
 
@@ -27,12 +29,15 @@ if(2 == 2 )
 public instancia(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {
         this.lienzos = lienzos;
         this.listado = listado;
-        this.listTime = listTime;        this.semanticos=new ArrayList();        this.LienzoGlobalParamX="";
-    }
+        this.listTime = listTime;        this.semanticos=new ArrayList();
+        this.LienzoGlobalParamX="";
+        this.NumFFX=0;this.NumFFC=0;    }
 public  ArrayList<lienzo> lienzos;
 public  ArrayList<ContentColor> listado;
-public  ArrayList<Tiempos> listTime; public ArrayList<Errors> semanticos;String LienzoGlobalParamX;
-public void mainMethod(){
+public  ArrayList<Tiempos> listTime;
+ public ArrayList<Errors> semanticos;
+String LienzoGlobalParamX;
+int NumFFX,NumFFC;public void mainMethod(){
 instruct0 ();
 }
  private void pintar(String clr, String img, int start1, int end1, int start2, int end2, int fil, int col) {
@@ -55,7 +60,7 @@ instruct0 ();
                             menoRRR = end1;
                         }
                         if (end2 != -9999) {
-                            if (start2 > end1) {
+                            if (start2 > end2) {
                                 mayoRRR2 = start2;
                                 menoRRR2 = end2;
                             }
@@ -74,7 +79,7 @@ instruct0 ();
 
                     } else {
                         if (end2 != -9999) {
-                            if (start2 > end1) {
+                            if (start2 > end2) {
                                 mayoRRR2 = start2;
                                 menoRRR2=end2;
                             } 
@@ -107,7 +112,7 @@ instruct0 ();
             }
         } catch (NullPointerException ex) {
         }
-        this.semanticos.add(new Errors(lz, "Error al buscar Id del lienzo, no se encontro", fil, fil, col));
+        this.semanticos.add(new Errors(lz, "Error al buscar Id del lienzo, no se encontro", fil, NumFFX,NumFFC));
         return -1;
     }
 

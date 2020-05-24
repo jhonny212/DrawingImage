@@ -85,7 +85,7 @@ public class generarImage {
     private void prueba() {
         try {
             BufferedImage first = this.Imagenes[0];
-            ImageOutputStream output = new FileImageOutputStream(new File("example.gif"));
+            ImageOutputStream output = new FileImageOutputStream(new File(href.lz.getId()+".gif"));
             GifSequenceWriter writer = null;
             int contador = 250;
             try {

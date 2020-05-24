@@ -31,15 +31,17 @@ public class crearClase {
                 + "        this.lienzos = lienzos;\n"
                 + "        this.listado = listado;\n"
                 + "        this.listTime = listTime;"
-                + "        this.semanticos=new ArrayList();"
+                + "        this.semanticos=new ArrayList();\n"
                 + "        this.LienzoGlobalParamX=\"\";\n"
+                + "        this.NumFFX=0;this.NumFFC=0;"
                 + "    }\n";
 
         clase += "public  ArrayList<lienzo> lienzos;\n"
                 + "public  ArrayList<ContentColor> listado;\n"
-                + "public  ArrayList<Tiempos> listTime;"
-                + " public ArrayList<Errors> semanticos;"
-                + "String LienzoGlobalParamX;\n";
+                + "public  ArrayList<Tiempos> listTime;\n"
+                + " public ArrayList<Errors> semanticos;\n"
+                + "String LienzoGlobalParamX;\n"
+                + "int NumFFX,NumFFC;";
 
         clase += "public void mainMethod(){\n";
         for (int i = 0; i < methods; i++) {
@@ -66,7 +68,7 @@ public class crearClase {
                 + "                            menoRRR = end1;\n"
                 + "                        }\n"
                 + "                        if (end2 != -9999) {\n"
-                + "                            if (start2 > end1) {\n"
+                + "                            if (start2 > end2) {\n"
                 + "                                mayoRRR2 = start2;\n"
                 + "                                menoRRR2 = end2;\n"
                 + "                            }\n"
@@ -85,7 +87,7 @@ public class crearClase {
                 + "\n"
                 + "                    } else {\n"
                 + "                        if (end2 != -9999) {\n"
-                + "                            if (start2 > end1) {\n"
+                + "                            if (start2 > end2) {\n"
                 + "                                mayoRRR2 = start2;\n"
                 + "                                menoRRR2=end2;\n"
                 + "                            } \n"
@@ -118,7 +120,7 @@ public class crearClase {
                 + "            }\n"
                 + "        } catch (NullPointerException ex) {\n"
                 + "        }\n"
-                + "        this.semanticos.add(new Errors(lz, \"Error al buscar Id del lienzo, no se encontro\", fil, fil, col));\n"
+                + "        this.semanticos.add(new Errors(lz, \"Error al buscar Id del lienzo, no se encontro\", fil, NumFFX,NumFFC));\n"
                 + "        return -1;\n"
                 + "    }\n"
                 + "\n"

@@ -21,6 +21,7 @@ public class DrawGif {
     public static void main(String[] args) {
         EditorDeTexto f = new EditorDeTexto();
         f.show();
+        
 
     }
 
