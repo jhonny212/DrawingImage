@@ -384,25 +384,33 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
-        iniciarErrores(1);
+        if (iniciarErrores(1)) {
+            JOptionPane.showMessageDialog(this, "Analisis sin errores");
+        }
 
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        iniciarErrores(4);
+        if (iniciarErrores(4)) {
+            JOptionPane.showMessageDialog(this, "Analisis sin errores");
+        }
 
 
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // TODO add your handling code here:
-        iniciarErrores(2);
+        if (iniciarErrores(2)) {
+            JOptionPane.showMessageDialog(this, "Analisis sin errores");
+        }
 
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
         // TODO add your handling code here:
-        iniciarErrores(3);
+        if (iniciarErrores(3)) {
+            JOptionPane.showMessageDialog(this, "Analisis sin errores");
+        }
 
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
@@ -410,7 +418,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         // TODO add your handling code here:
         all(0);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
-private void all(int opc){
+    private void all(int opc) {
 
         boolean x1 = false, x2 = false, x3 = false, x4 = false;
 
@@ -418,15 +426,14 @@ private void all(int opc){
             x1 = iniciarErrores(4);
             x2 = iniciarErrores(2);
             x3 = iniciarErrores(1);
-            if(opc==0){
-            x4 = iniciarErrores(3);
-            }else{
-            x4=true;
+            if (opc == 0) {
+                x4 = iniciarErrores(3);
+            } else {
+                x4 = true;
             }
         } catch (NullPointerException e) {
-           
+
         }
-        
 
         if (x1 && x2 && x3 && x4) {
             int seleccion = JOptionPane.showConfirmDialog(this, "¿Desea ir a la parte Grafica?", "", 0);
@@ -475,7 +482,7 @@ private void all(int opc){
             }
         }
 
-}
+    }
     public static int contadoR = 0;
 
     private void GifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GifActionPerformed
@@ -485,8 +492,7 @@ private void all(int opc){
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int seleccion = fc.showOpenDialog(this);
         if (seleccion == JFileChooser.APPROVE_OPTION) {
-          
-            
+
             for (int i = 0; i < Panel.getTabCount(); i++) {
                 EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
                 href.tmp.getList().get(href.pos).setPaint(href.saveColors());
@@ -505,13 +511,13 @@ private void all(int opc){
         fc.setMultiSelectionEnabled(false);
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int seleccion = fc.showOpenDialog(this);
-        
+
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             for (int i = 0; i < Panel.getTabCount(); i++) {
                 EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
                 href.tmp.getList().get(href.pos).setPaint(href.saveColors());
                 generarImage images = new generarImage(href, false, fc.getSelectedFile().getAbsolutePath());
-                
+
                 images.crearPNG();
             }
         }
@@ -551,22 +557,22 @@ private void all(int opc){
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-       JDialog f=new JDialog(this);
-       f.setSize(720, 500);
-       f.setResizable(false);
-       f.add(new AcercaDe());
-       f.show();
+        JDialog f = new JDialog(this);
+        f.setSize(720, 500);
+        f.setResizable(false);
+        f.add(new AcercaDe());
+        f.show();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
         all(1);
     }//GEN-LAST:event_jMenuItem16ActionPerformed
     private void open(String name) throws IOException {
-        File path = new File("../documentos/"+name);
+        File path = new File("../documentos/" + name);
         Desktop.getDesktop().open(path);
     }
 
@@ -586,7 +592,9 @@ private void all(int opc){
                     Panel.remove(lz.seman);
                 } catch (Exception e) {
                 }
-                if(this.lienzo==null)return false;
+                if (this.lienzo == null) {
+                    return false;
+                }
                 lz = new lienzo(this.lienzo.getTexto().getText());
 
                 if (!lz.getErroresSintacticos().isEmpty()) {
@@ -626,7 +634,9 @@ private void all(int opc){
                     Panel.remove(tmp.seman);
                 } catch (Exception e) {
                 }
-                if(this.tiempo==null)return false;
+                if (this.tiempo == null) {
+                    return false;
+                }
                 tmp = new Time(this.tiempo.getTexto().getText());
                 if (!tmp.getErroresSintacticos().isEmpty()) {
                     tmp.sintact = new panelError();
@@ -635,7 +645,7 @@ private void all(int opc){
                     Panel.setSelectedComponent(tmp.sintact);
                     aux++;
                 }
-                
+
                 if (!tmp.getErroresLexico().isEmpty()) {
                     tmp.lexi = new panelError();
                     tmp.lexi.init(tmp.getErroresLexico());
@@ -664,7 +674,9 @@ private void all(int opc){
                     Panel.remove(clr.seman);
                 } catch (Exception e) {
                 }
-                if(this.colores==null)return false;
+                if (this.colores == null) {
+                    return false;
+                }
                 clr = new Colores(this.colores.getTexto().getText());
 
                 clr.init();
@@ -704,7 +716,9 @@ private void all(int opc){
                 } catch (Exception e) {
                 }
                 System.out.println("Texto a anlizar?" + this.codigo.getTexto().getText());
-                if(this.codigo==null)return false;
+                if (this.codigo == null) {
+                    return false;
+                }
                 pnt = new Codigo(this.codigo.getTexto().getText());
 
                 if (!pnt.getErroresSintacticos().isEmpty()) {
@@ -816,7 +830,7 @@ private void all(int opc){
             }
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SecurityException | IllegalArgumentException | NoSuchMethodException | InvocationTargetException ex) {
-           
+
         }
 
         return 10;
