@@ -17,7 +17,9 @@ import drawgif.Errors;
 import drawgif.panelError;
 import drawgif.panelTxt;
 import java.awt.Desktop;
+import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.TextArea;
 import java.awt.TextField;
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -233,6 +236,11 @@ public class EditorDeTexto extends javax.swing.JFrame {
         jMenu5.add(jMenuItem12);
 
         jMenuItem13.setText("Acerca De");
+        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem13ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem13);
 
         jMenuBar1.add(jMenu5);
@@ -505,7 +513,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         try {
-            open("Usuario.pdf");
+            open("manual de usuario.pdf");
         } catch (IOException ex) {
         }
     }//GEN-LAST:event_jMenuItem11ActionPerformed
@@ -516,6 +524,14 @@ public class EditorDeTexto extends javax.swing.JFrame {
         } catch (IOException ex) {
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
+
+    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
+       JDialog f=new JDialog(this);
+       f.setSize(720, 500);
+       f.setResizable(false);
+       f.add(new AcercaDe());
+       f.show();
+    }//GEN-LAST:event_jMenuItem13ActionPerformed
     private void open(String name) throws IOException {
         File path = new File("../documentos/"+name);
         Desktop.getDesktop().open(path);

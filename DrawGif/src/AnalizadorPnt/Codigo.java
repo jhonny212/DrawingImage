@@ -53,6 +53,7 @@ public class Codigo extends Fichero {
         this.methods = parser.NumMethod;
         this.erroresSintacticos = parser.Sintacticos;
         this.erroresSemanticos = parser.Semanticos;
+        this.erroresLexico=scan.erroresLexico;
 
         crearClase();
         return isValid();

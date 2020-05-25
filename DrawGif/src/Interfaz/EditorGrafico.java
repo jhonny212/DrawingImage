@@ -40,6 +40,7 @@ public class EditorGrafico extends javax.swing.JPanel {
 
     public EditorGrafico() {
         initComponents();
+        Cantidad.disable();
     }
 
     public JButton getColorSelect() {
