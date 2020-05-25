@@ -808,7 +808,7 @@ class CUP$parserPnt$actions {
                 String txt = "";
                 int vector1[] = (int[]) e2;
                 int vector2[] = (int[]) e3;
-                txt = "\n pintar(" + t1 + "," + t2 + "," + vector1[0] + "," + vector1[1] + "," + vector2[0] + "," + vector2[1] + ");\n";
+                txt = "\n pintar(" + t1 + "," + t2 + "," + vector1[0] + "," + vector1[1] + "," + vector2[0] + "," + vector2[1] + "," + e1left + "," + e1right + ");\n";
 
                 /*if (Semanticos.size() == 1) {
                     if (Semanticos.get(0).getSolucion().equals("La variable no se encontro")) {

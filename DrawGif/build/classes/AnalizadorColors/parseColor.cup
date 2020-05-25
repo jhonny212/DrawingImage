@@ -3,8 +3,15 @@ import java_cup.runtime.Symbol;
 /*
 import static AnalizadorColors.parseColor.clr;
 import static AnalizadorColors.parseColor.coloreslist;
+import static AnalizadorColors.parseColor.erroresSemanticos;
+import static AnalizadorColors.parseColor.erroresSintacticos;
 import static AnalizadorColors.parseColor.id;
 import static AnalizadorColors.parseColor.listado;
+import static AnalizadorLienzos.parserLienzo.lienzos;
+import drawgif.Errors;
+import java.awt.Color;
+import java.util.ArrayList;
+import java_cup.runtime.Symbol;
 */
 
 parser code {:
@@ -79,13 +86,14 @@ for (int i = 0; i < coloreslist.size(); i++) {
                     }
                 }
 
+ coloreslist.add(new Colores(id_, (Color) e1));
 :}
 |error Id dosPuntos abreLlaves COLORS cierraLlaves 
 |error  dosPuntos abreLlaves COLORS cierraLlaves 
 |error  abreLlaves COLORS cierraLlaves 
 |error  COLORS cierraLlaves 
 ;
-J::= coma H | |error coma H;
+J::= coma H J| |error coma H;
 COLORS::= K:c1 dosPuntos Numero:e1 coma K:c2 dosPuntos Numero:e2 coma K:c3 dosPuntos Numero:e3
 {:
 int x1=(int)c1;

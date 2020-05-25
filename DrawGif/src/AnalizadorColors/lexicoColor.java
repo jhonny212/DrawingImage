@@ -279,6 +279,7 @@ ArrayList<Errors> erroresLexico;
    */
   public lexicoColor(java.io.Reader in) {
     this.zzReader = in;
+    this.erroresLexico=new ArrayList<>();
   }
 
 

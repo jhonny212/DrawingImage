@@ -368,6 +368,7 @@ public class lexicoLienzo implements java_cup.runtime.Scanner {
    */
   public lexicoLienzo(java.io.Reader in) {
     this.zzReader = in;
+    this.erroresLexico=new ArrayList<>();
   }
 
 

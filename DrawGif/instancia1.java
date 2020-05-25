@@ -5,7 +5,7 @@ import AnalizadorLienzos.lienzo;
 import AnalizadorTime.Tiempos;
 import drawgif.Errors;
 import java.awt.Color;
-import java.util.ArrayList;public class instancia3{
+import java.util.ArrayList;public class instancia1{
  int x=2 ;
  int y=2 ;
 String k="" ;
@@ -26,7 +26,7 @@ if(x == 2 )
 
 }
 
-public instancia3(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {
+public instancia1(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {
         this.lienzos = lienzos;
         this.listado = listado;
         this.listTime = listTime;

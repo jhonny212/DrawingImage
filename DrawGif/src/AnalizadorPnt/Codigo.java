@@ -86,9 +86,6 @@ public class Codigo extends Fichero {
         } catch (IOException ex) {
 
         }
-        File f=new File("instancia" + EditorDeTexto.contadoR + ".java");
-        if(f.exists()){
-        f.delete();
-        }
+        
     }
 }
