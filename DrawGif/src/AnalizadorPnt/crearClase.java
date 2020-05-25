@@ -5,6 +5,8 @@
  */
 package AnalizadorPnt;
 
+import Interfaz.EditorDeTexto;
+
 /**
  *
  * @author jhonny
@@ -23,17 +25,17 @@ public class crearClase {
                 + "import java.awt.Color;\n"
                 + "import java.util.ArrayList;";
 
-        clase += "public class instancia{\n "
+        clase += "public class instancia"+EditorDeTexto.contadoR+"{\n "
                 + variables + "\n"
                 + metodos
                 + "\n";
-        clase += "public instancia(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {\n"
+        clase += "public instancia" + EditorDeTexto.contadoR + "(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {\n"
                 + "        this.lienzos = lienzos;\n"
                 + "        this.listado = listado;\n"
-                + "        this.listTime = listTime;"
+                + "        this.listTime = listTime;\n"
                 + "        this.semanticos=new ArrayList();\n"
                 + "        this.LienzoGlobalParamX=\"\";\n"
-                + "        this.NumFFX=0;this.NumFFC=0;"
+                + "        this.NumFFX=0;this.NumFFC=0;\n"
                 + "    }\n";
 
         clase += "public  ArrayList<lienzo> lienzos;\n"
@@ -169,6 +171,7 @@ public class crearClase {
                 + "\n"
                 + "    }\n"
                 + "    private boolean validarSIZE(int xXX, int yYY, int FF, int CC, int fil, int col) {\n"
+                + "System.out.println(\"Datos\"+xXX+\" \"+CC+\" \"+yYY+\" \"+FF);"
                 + "        if (xXX >= 0 && xXX < CC) {\n"
                 + "            if (yYY >= 0 && yYY < FF) {\n"
                 + "                return true;\n"

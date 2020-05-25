@@ -27,6 +27,7 @@ public class Ordenar extends javax.swing.JPanel {
     }
     EditorGrafico href;
     String[] vector;
+    int[] Nodes;
 
     public void inicializar(EditorGrafico href) {
         this.href = href;
@@ -134,13 +135,18 @@ public class Ordenar extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             String tmp = btns[0][seleccion + 1].getText();
+            int aux = Nodes[seleccion + 1];
             btns[0][seleccion + 1].setText(btns[0][seleccion].getText());
             vector[seleccion + 1] = btns[0][seleccion].getText();
             vector[seleccion] = tmp;
             btns[0][seleccion].setText(tmp);
+
+            Nodes[seleccion + 1] = Nodes[seleccion];
+            Nodes[seleccion] = aux;
+            ;
             seleccion += 1;
             btns[0][seleccion].setBackground(Color.yellow);
-            btns[0][seleccion-1].setBackground(Color.gray);
+            btns[0][seleccion - 1].setBackground(Color.gray);
 
         } catch (ArrayIndexOutOfBoundsException e) {
         }
@@ -149,14 +155,20 @@ public class Ordenar extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             String tmp = btns[0][seleccion - 1].getText();
+            int aux = Nodes[seleccion - 1];
             btns[0][seleccion - 1].setText(btns[0][seleccion].getText());
             vector[seleccion - 1] = btns[0][seleccion].getText();
             vector[seleccion] = tmp;
+
+            Nodes[seleccion - 1] = Nodes[seleccion];
+           Nodes[seleccion] = aux;
+
             btns[0][seleccion].setText(tmp);
             seleccion -= 1;
             btns[0][seleccion].setBackground(Color.yellow);
-            btns[0][seleccion+1].setBackground(Color.gray);
+            btns[0][seleccion + 1].setBackground(Color.gray);
         } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Aca");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -164,6 +176,7 @@ public class Ordenar extends javax.swing.JPanel {
         href.setVectorOrden(vector);
         href.getInicio().setText(vector[0]);
         href.getFin().setText(vector[size - 1]);
+        href.setVectorNodes(Nodes);
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -180,11 +193,14 @@ JButton btns[][];
     int size;
     int seleccion;
 
+    public void setNodes(int[] Nodes) {
+        this.Nodes = Nodes;
+    }
+
     private void llenarTablero() {
-        seleccion=-1;
+        seleccion = -1;
         size = href.getVectorOrden().length;
         vector = new String[size];
-
         btns = new JButton[1][size];
         GridLayout layout = new GridLayout(1, size);
         content.setLayout(layout);
@@ -192,6 +208,7 @@ JButton btns[][];
             String tmp = href.getVectorOrden()[i];
             btns[0][i] = new JButton(tmp);
             vector[i] = tmp;
+
             btns[0][i].setBackground(Color.gray);
             btns[0][i].setMinimumSize(new Dimension(20, 10));
             btns[0][i].setPreferredSize(new Dimension(20, 10));

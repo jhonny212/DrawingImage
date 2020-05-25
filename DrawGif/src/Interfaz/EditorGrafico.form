@@ -47,7 +47,7 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jButton1" alignment="0" pref="260" max="32767" attributes="0"/>
+                              <Component id="jButton1" alignment="0" pref="259" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -55,7 +55,7 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="Duracion1" pref="79" max="32767" attributes="0"/>
+                                      <Component id="Cantidad" pref="79" max="32767" attributes="0"/>
                                       <Component id="Inicio" max="32767" attributes="0"/>
                                       <Component id="Fin" max="32767" attributes="0"/>
                                   </Group>
@@ -80,7 +80,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="Duracion1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="Cantidad" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -116,7 +116,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Duracion"/>
+            <Property name="text" type="java.lang.String" value="Cantidad"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -129,9 +129,9 @@
             <Property name="text" type="java.lang.String" value="Fin"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="Duracion1">
+        <Component class="javax.swing.JTextField" name="Cantidad">
           <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="Duracion1KeyTyped"/>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="CantidadKeyTyped"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="Inicio">

@@ -37,6 +37,8 @@ public class parserPnt extends java_cup.runtime.lr_parser {
      */
     public parserPnt(java_cup.runtime.Scanner s) {
         super(s);
+        NumMethod=0;
+        MetodoS="";
     }
 
     /**
@@ -808,7 +810,7 @@ class CUP$parserPnt$actions {
                 int vector2[] = (int[]) e3;
                 txt = "\n pintar(" + t1 + "," + t2 + "," + vector1[0] + "," + vector1[1] + "," + vector2[0] + "," + vector2[1] + ");\n";
 
-                if (Semanticos.size() == 1) {
+                /*if (Semanticos.size() == 1) {
                     if (Semanticos.get(0).getSolucion().equals("La variable no se encontro")) {
                         if (str1.equals("??")) {
                             txt = "\n pintar(\"" + t1 + "\"," + t2 + "," + vector1[0] + "," + vector1[1] + "," + vector2[0] + "," + vector2[1] + "," + e1left + "," + e1right + ");\n";
@@ -831,7 +833,7 @@ class CUP$parserPnt$actions {
                             }
                         }
                     }
-                }
+                }*/
                 RESULT = txt;
                 containsLleter = false;
                 containsBool = false;

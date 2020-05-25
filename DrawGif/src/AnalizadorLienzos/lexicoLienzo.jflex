@@ -11,9 +11,9 @@ import java.util.ArrayList;
 %char
 %public
 /*Identifiers*/
-letraHexa=[A-F]
+letraHexa=[A-Fa-f]
 numero=[0-9]
-letra=[a-zG-Z]
+letra=[g-zG-Z]
 symbols=[-$#.]
 guionBajo=[_]
 

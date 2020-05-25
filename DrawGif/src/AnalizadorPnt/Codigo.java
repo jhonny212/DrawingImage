@@ -5,21 +5,21 @@
  */
 package AnalizadorPnt;
 
+import Interfaz.EditorDeTexto;
 import drawgif.Fichero;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
-
 import java.nio.file.Files;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -53,32 +53,42 @@ public class Codigo extends Fichero {
         this.methods = parser.NumMethod;
         this.erroresSintacticos = parser.Sintacticos;
         this.erroresSemanticos = parser.Semanticos;
-        
+
         crearClase();
         return isValid();
     }
 
     private void crearClase() {
+        EditorDeTexto.contadoR++;
         crearClase cl = new crearClase();
-        String txt = cl.init(variables, metodos, methods);
+        String txt = cl.init(this.variables, this.metodos, this.methods);
+        
         try {
-            String sFichero = "instancia.java";
+            String sFichero = "instancia" + EditorDeTexto.contadoR + ".java";
             BufferedWriter bw = new BufferedWriter(new FileWriter(sFichero));
             bw.write(txt);
             bw.close();
         } catch (IOException ex) {
         }
         try {
-            Process p = Runtime.getRuntime().exec("javac instancia.java -cp build/classes");
+            Process p = Runtime.getRuntime().exec("javac instancia" + EditorDeTexto.contadoR + ".java -cp build/classes");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
             }
-            Path o = Paths.get("instancia.class");
-            Path d = Paths.get("build/classes/AnalizadorPnt/instancia.class");
-            Files.copy(o, d, StandardCopyOption.REPLACE_EXISTING);
+            Path o = Paths.get("instancia" + EditorDeTexto.contadoR + ".class");
+            Path d = Paths.get("build/classes/AnalizadorPnt/instancia" + EditorDeTexto.contadoR + ".class");
+            Files.move(o, d, StandardCopyOption.REPLACE_EXISTING);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+            }
         } catch (IOException ex) {
-            System.out.println("Error????");
+
+        }
+        File f=new File("instancia" + EditorDeTexto.contadoR + ".java");
+        if(f.exists()){
+        f.delete();
         }
     }
 }

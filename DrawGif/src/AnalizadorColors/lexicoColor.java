@@ -38,9 +38,10 @@ public class lexicoColor implements java_cup.runtime.Scanner {
     "\11\0\1\32\1\32\1\33\1\33\1\33\22\0\1\32\2\0\1\30"+
     "\10\0\1\15\1\0\1\31\1\0\12\2\1\6\6\0\1\1\1\20"+
     "\1\7\1\1\1\13\1\1\1\23\1\26\3\3\1\11\2\3\1\10"+
-    "\2\3\1\12\1\14\4\3\1\27\2\3\4\0\1\3\1\0\3\3"+
-    "\1\17\1\16\6\3\1\21\1\3\1\25\3\3\1\24\2\3\1\22"+
-    "\5\3\1\4\1\0\1\5\7\0\1\33\u1fa2\0\1\33\1\33\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
+    "\2\3\1\12\1\14\4\3\1\27\2\3\4\0\1\3\1\0\3\1"+
+    "\1\17\1\16\1\1\5\3\1\21\1\3\1\25\3\3\1\24\2\3"+
+    "\1\22\5\3\1\4\1\0\1\5\7\0\1\33\u1fa2\0\1\33\1\33"+
+    "\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\udfe6\0";
 
   /** 
    * Translates characters to character classes
@@ -124,24 +125,24 @@ public class lexicoColor implements java_cup.runtime.Scanner {
     "\6\3\1\0\3\3\1\23\6\3\5\0\3\3\3\0"+
     "\6\3\1\0\6\3\1\24\3\3\5\0\3\3\3\0"+
     "\4\3\1\25\1\3\1\0\12\3\5\0\2\26\4\0"+
-    "\1\26\3\0\1\26\4\0\1\26\15\0\1\27\32\0"+
+    "\1\26\3\0\1\26\2\0\3\26\15\0\1\27\32\0"+
     "\3\3\3\0\2\3\1\30\3\3\1\0\12\3\5\0"+
     "\3\3\3\0\6\3\1\0\1\3\1\31\10\3\5\0"+
     "\3\3\3\0\6\3\1\0\4\3\1\32\5\3\5\0"+
     "\3\3\3\0\6\3\1\0\1\33\11\3\5\0\3\3"+
     "\3\0\6\3\1\0\11\3\1\34\5\0\2\35\4\0"+
-    "\1\35\3\0\1\35\4\0\1\35\14\0\3\3\3\0"+
+    "\1\35\3\0\1\35\2\0\3\35\14\0\3\3\3\0"+
     "\1\3\1\36\4\3\1\0\12\3\5\0\3\3\3\0"+
     "\6\3\1\0\1\37\11\3\5\0\3\3\3\0\6\3"+
     "\1\0\1\40\11\3\5\0\2\41\4\0\1\41\3\0"+
-    "\1\41\4\0\1\41\14\0\3\3\3\0\3\3\1\42"+
+    "\1\41\2\0\3\41\14\0\3\3\3\0\3\3\1\42"+
     "\2\3\1\0\12\3\5\0\3\3\3\0\6\3\1\0"+
     "\7\3\1\43\2\3\5\0\2\44\4\0\1\44\3\0"+
-    "\1\44\4\0\1\44\14\0\3\3\3\0\4\3\1\45"+
+    "\1\44\2\0\3\44\14\0\3\3\3\0\4\3\1\45"+
     "\1\3\1\0\12\3\5\0\2\46\4\0\1\46\3\0"+
-    "\1\46\4\0\1\46\14\0\3\3\3\0\5\3\1\47"+
+    "\1\46\2\0\3\46\14\0\3\3\3\0\5\3\1\47"+
     "\1\0\12\3\5\0\2\50\4\0\1\50\3\0\1\50"+
-    "\4\0\1\50\13\0";
+    "\2\0\3\50\13\0";
 
   private static int [] zzUnpackTrans() {
     int [] result = new int[784];
@@ -263,7 +264,7 @@ public class lexicoColor implements java_cup.runtime.Scanner {
   private int zzFinalHighSurrogate = 0;
 
   /* user code: */
-public ArrayList<Errors> erroresLexico;
+ArrayList<Errors> erroresLexico;
     
     private Symbol symbol(int type, Object value) {
        
@@ -278,7 +279,6 @@ public ArrayList<Errors> erroresLexico;
    */
   public lexicoColor(java.io.Reader in) {
     this.zzReader = in;
-    erroresLexico=new ArrayList<>();
   }
 
 
@@ -292,7 +292,7 @@ public ArrayList<Errors> erroresLexico;
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 152) {
+    while (i < 154) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);
@@ -729,7 +729,7 @@ return symbol(sym.Error,new String(yytext()));
             // fall through
           case 29: break;
           case 15: 
-            { System.out.println(yytext());return symbol(sym.Letter,new String(yytext()));
+            { return symbol(sym.Letter,new String(yytext()));
             } 
             // fall through
           case 30: break;

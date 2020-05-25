@@ -16,12 +16,16 @@ import drawgif.Errors;
 
 import drawgif.panelError;
 import drawgif.panelTxt;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.TextField;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -70,6 +74,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         Menu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem14 = new javax.swing.JMenuItem();
         Menu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -123,6 +128,15 @@ public class EditorDeTexto extends javax.swing.JFrame {
             }
         });
         Menu1.add(jMenuItem3);
+
+        jMenuItem14.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem14.setText("Guardar");
+        jMenuItem14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem14ActionPerformed(evt);
+            }
+        });
+        Menu1.add(jMenuItem14);
 
         jMenuBar1.add(Menu1);
 
@@ -203,9 +217,19 @@ public class EditorDeTexto extends javax.swing.JFrame {
         jMenu5.setText("Ayuda");
 
         jMenuItem11.setText("Manual De usuario");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem11);
 
         jMenuItem12.setText("Manual Tecnico");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jMenu5.add(jMenuItem12);
 
         jMenuItem13.setText("Acerca De");
@@ -367,6 +391,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
             x3 = iniciarErrores(1);
             x4 = iniciarErrores(3);
         } catch (NullPointerException e) {
+
         }
 
         if (x1 && x2 && x3 && x4) {
@@ -404,12 +429,12 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 name.save();
                 name = (panelTxt) Panel.getComponentAt(3);
                 name.save();
-                
+
                 Panel.remove(0);
                 Panel.remove(0);
                 Panel.remove(0);
                 Panel.remove(0);
-                
+
                 this.Menu3.enable();
                 this.Menu1.disable();
                 this.Menu2.disable();
@@ -417,24 +442,46 @@ public class EditorDeTexto extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+    public static int contadoR = 0;
+
     private void GifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GifActionPerformed
-        for (int i = 0; i < Panel.getTabCount(); i++) {
-            EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
-            href.tmp.getList().get(href.pos).setPaint(href.saveColors());
-            generarImage images = new generarImage(href, true);
-            images.crearPNG();
+        JOptionPane.showMessageDialog(this, "Seleccione la ruta donde se guardara el archivo");
+        JFileChooser fc = new JFileChooser();
+        fc.setMultiSelectionEnabled(false);
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int seleccion = fc.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+          
+            
+            for (int i = 0; i < Panel.getTabCount(); i++) {
+                EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
+                href.tmp.getList().get(href.pos).setPaint(href.saveColors());
+                generarImage images = new generarImage(href, true, fc.getSelectedFile().getAbsolutePath());
+                images.crearPNG();
+            }
+
         }
 
 
     }//GEN-LAST:event_GifActionPerformed
 
     private void PngActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PngActionPerformed
-        for (int i = 0; i < Panel.getTabCount(); i++) {
-            EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
-            href.tmp.getList().get(href.pos).setPaint(href.saveColors());
-            generarImage images = new generarImage(href, false);
-            images.crearPNG();
+        JOptionPane.showMessageDialog(this, "Seleccione la ruta donde se guardara el archivo");
+        JFileChooser fc = new JFileChooser();
+        fc.setMultiSelectionEnabled(false);
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int seleccion = fc.showOpenDialog(this);
+        
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            for (int i = 0; i < Panel.getTabCount(); i++) {
+                EditorGrafico href = (EditorGrafico) Panel.getComponentAt(i);
+                href.tmp.getList().get(href.pos).setPaint(href.saveColors());
+                generarImage images = new generarImage(href, false, fc.getSelectedFile().getAbsolutePath());
+                
+                images.crearPNG();
+            }
         }
+
     }//GEN-LAST:event_PngActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
@@ -442,10 +489,36 @@ public class EditorDeTexto extends javax.swing.JFrame {
         this.Menu3.disable();
         this.Menu1.enable();
         this.Menu2.enable();
-        for (int i = 0; i < Panel.getTabCount(); i++) {
-            Panel.remove(0);
-        }
+        Panel.removeAll();
+
     }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
+        try {
+            panelTxt name = (panelTxt) Panel.getSelectedComponent();
+            name.save();
+        } catch (NullPointerException ex) {
+        }
+
+    }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        try {
+            open("Usuario.pdf");
+        } catch (IOException ex) {
+        }
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        try {
+            open("Tecnico.pdf");
+        } catch (IOException ex) {
+        }
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
+    private void open(String name) throws IOException {
+        File path = new File("../documentos/"+name);
+        Desktop.getDesktop().open(path);
+    }
 
     public boolean iniciarErrores(int type) {
         int aux = 0;
@@ -576,6 +649,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     Panel.remove(pnt.seman);
                 } catch (Exception e) {
                 }
+                System.out.println("Texto a anlizar?" + this.codigo.getTexto().getText());
                 pnt = new Codigo(this.codigo.getTexto().getText());
 
                 if (!pnt.getErroresSintacticos().isEmpty()) {
@@ -641,11 +715,12 @@ public class EditorDeTexto extends javax.swing.JFrame {
     }
 
     public int analizarInstancia() {
-      
+
         Object obj = null;
         try {
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             //Obteniedo la instancia
-            Class cls = Class.forName("AnalizadorPnt.instancia");
+            Class cls = classLoader.loadClass("AnalizadorPnt.instancia" + contadoR);
             //Declarando el tipo de parametros []
             Class partypes[] = new Class[3];
             partypes[0] = ArrayList.class;
@@ -658,19 +733,18 @@ public class EditorDeTexto extends javax.swing.JFrame {
             try {
                 args[0] = this.lz.getLienzos();
             } catch (NullPointerException e) {
-              
+
             }
             try {
                 args[1] = this.clr.listado;
             } catch (NullPointerException e) {
-               
+
             }
             try {
                 args[2] = this.tmp.listTime;
             } catch (NullPointerException e) {
-                
-            }
 
+            }
             obj = cr.newInstance(args);
             Method method, method2;
             method = obj.getClass().getDeclaredMethod("mainMethod");
@@ -682,16 +756,17 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 pnt.seman.init2(l);
                 Panel.addTab("Semantico", pnt.seman);
                 Panel.setSelectedComponent(pnt.seman);
-            }else{
-            return 0;
+            } else {
+                return 0;
             }
-           
+
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SecurityException | IllegalArgumentException | NoSuchMethodException | InvocationTargetException ex) {
 
         }
-       
+
         return 10;
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Gif;
@@ -708,6 +783,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
+    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

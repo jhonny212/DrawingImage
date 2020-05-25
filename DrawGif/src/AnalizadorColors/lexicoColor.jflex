@@ -10,9 +10,9 @@ import java_cup.runtime.Symbol;
 %char
 %public
 /*Identifiers*/
-letraHexa=[A-F]
+letraHexa=[A-Fa-f]
 numero=[0-9]
-letra=[a-zG-Z]
+letra=[g-zG-Z]
 guionBajo=[_]
 
 
@@ -36,7 +36,7 @@ ArrayList<Error> erroresLexico;
 "Green"                                                                      {return symbol(sym.Verde,new String(yytext()));}
 ("HEX")                                                                      {return symbol(sym.Hex,new String(yytext()));}
 ("#")(({letraHexa})|({numero}))(({letraHexa})|({numero}))(({letraHexa})|({numero}))(({letraHexa})|({numero}))(({letraHexa})|({numero}))(({letraHexa})|({numero}))
-{System.out.println(yytext());return symbol(sym.Letter,new String(yytext()));}
+{return symbol(sym.Letter,new String(yytext()));}
 (({numero})+)(".")(({numero})+)                                              {return symbol(sym.Double,new String(yytext()));}    
 (({numero})+)                                                                {return symbol(sym.Numero,new String(yytext()));}    
 ((({letra})|({guionBajo})|({letraHexa})|({numero}))+)                        {return symbol(sym.Id,new String(yytext()));}    

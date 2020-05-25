@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -67,32 +69,64 @@ public class EditorGrafico extends javax.swing.JPanel {
             }
         }
         this.Ids.disable();
+        this.Cantidad.setText(String.valueOf(tmp.getList().size()));
         vectorOrden = new String[tmp.getList().size()];
+        vectorNodes = new int[tmp.getList().size()];
+        int fin = 0;
         for (int i = 0; i < tmp.getList().size(); i++) {
             String dato = tmp.getList().get(i).getId();
             vectorOrden[i] = dato;
+            vectorNodes[i] = i;
             this.Ids.addItem(dato);
+            if (tmp.getInicio().equals(dato)) {
+                if (i != 0) {
+                    int aux = vectorNodes[0];
+                    String data = vectorOrden[0];
+                    vectorNodes[0] = i;
+                    vectorOrden[0] = dato;
+                    vectorNodes[i] = aux;
+                    vectorOrden[i] = data;
+                }
+            }
+            if (tmp.getFin().equals(dato)) {
+                fin = i;
+            }
 
             for (int j = 0; j < tmp.getList().get(i).getListadoCodigo().size(); j++) {
                 cuadroApintar cc = tmp.getList().get(i).getListadoCodigo().get(j);
                 tablero[cc.getX()][cc.getY()].setBackground(cc.getClr());
             }
+
             tmp.getList().get(i).setPaint(saveColors());
-            if(i==tmp.getList().size()){
-            }else{
-            for (int j = 0; j < tmp.getList().get(i).getListadoCodigo().size(); j++) {
-                cuadroApintar cc = tmp.getList().get(i).getListadoCodigo().get(j);
-                tablero[cc.getX()][cc.getY()].setBackground(this.lz.getColor());
-            }
-            
+            if (i == tmp.getList().size()) {
+            } else {
+                for (int j = 0; j < tmp.getList().get(i).getListadoCodigo().size(); j++) {
+                    cuadroApintar cc = tmp.getList().get(i).getListadoCodigo().get(j);
+                    try {
+                        tablero[cc.getX()][cc.getY()].setBackground(this.lz.getColor());
+                    } catch (Exception s) {
+                    }
+
+                }
+
             }
         }
+        if (fin != tmp.getList().size() - 1) {
+            int aux = vectorNodes[tmp.getList().size() - 1];
+            String data = vectorOrden[tmp.getList().size() - 1];
+            vectorNodes[tmp.getList().size() - 1] = vectorNodes[fin];
+            vectorOrden[tmp.getList().size() - 1] = vectorOrden[fin];
+            vectorNodes[fin] = aux;
+            vectorOrden[fin] = data;
+        }
+
+      
         this.Ids.enable();
         this.Inicio.setText(this.tmp.getInicio());
         this.Fin.setText(this.tmp.getFin());
         this.Inicio.setEnabled(false);
         this.Fin.setEnabled(false);
-        this.listadoPaint=tmp.getList().get(0).getPaint();
+        this.listadoPaint = tmp.getList().get(0).getPaint();
         iniciarTablero();
         iniciarColores();
 
@@ -111,7 +145,7 @@ public class EditorGrafico extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        Duracion1 = new javax.swing.JTextField();
+        Cantidad = new javax.swing.JTextField();
         Inicio = new javax.swing.JTextField();
         Fin = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
@@ -136,15 +170,15 @@ public class EditorGrafico extends javax.swing.JPanel {
 
         jPanel1.setBackground(java.awt.Color.white);
 
-        jLabel1.setText("Duracion");
+        jLabel1.setText("Cantidad");
 
         jLabel2.setText("Inicio");
 
         jLabel3.setText("Fin");
 
-        Duracion1.addKeyListener(new java.awt.event.KeyAdapter() {
+        Cantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                Duracion1KeyTyped(evt);
+                CantidadKeyTyped(evt);
             }
         });
 
@@ -204,14 +238,14 @@ public class EditorGrafico extends javax.swing.JPanel {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1)
                                     .addComponent(jLabel2))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(Duracion1, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                                    .addComponent(Cantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
                                     .addComponent(Inicio)
                                     .addComponent(Fin))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -228,7 +262,7 @@ public class EditorGrafico extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(Duracion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -332,12 +366,12 @@ public class EditorGrafico extends javax.swing.JPanel {
         add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 20, 220, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Duracion1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Duracion1KeyTyped
+    private void CantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CantidadKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
             evt.consume();
         }
-    }//GEN-LAST:event_Duracion1KeyTyped
+    }//GEN-LAST:event_CantidadKeyTyped
 
     private void InicioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_InicioKeyTyped
         char c = evt.getKeyChar();
@@ -365,8 +399,8 @@ public class EditorGrafico extends javax.swing.JPanel {
     int contadorGlobal;
     int COUNt = 0;
     private void IdsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IdsActionPerformed
-         COUNt++;
-        if (COUNt>contadorGlobal) {
+        COUNt++;
+        if (COUNt > contadorGlobal) {
             try {
                 String name = this.Ids.getSelectedItem().toString();
                 tmp.getList().get(pos).setPaint(saveColors());
@@ -395,8 +429,9 @@ public class EditorGrafico extends javax.swing.JPanel {
     }//GEN-LAST:event_Duracion2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JDialog dialogo = new JDialog(new EditorDeTexto(), "Ordenando...");
+        JDialog dialogo = new JDialog(new FixSequence(), "Ordenando...");
         Ordenar orden = new Ordenar();
+        orden.setNodes(this.vectorNodes);
         orden.inicializar(this);
         dialogo.add(orden);
         dialogo.setSize(new Dimension(700, 500));
@@ -404,11 +439,18 @@ public class EditorGrafico extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        JOptionPane.showMessageDialog(this, "Seleccione la ruta donde se guardara el archivo");
+        JFileChooser fc = new JFileChooser();
+        fc.setMultiSelectionEnabled(false);
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int seleccion = fc.showOpenDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            boolean isGif = this.lz.getTipo().equals("gif");
+            this.tmp.getList().get(this.pos).setPaint(this.saveColors());
+            generarImage images = new generarImage(this, isGif, fc.getSelectedFile().getAbsolutePath());
+            images.crearPNG();
+        }
 
-        boolean isGif = this.lz.getTipo().equals("gif");
-        this.tmp.getList().get(this.pos).setPaint(this.saveColors());
-        generarImage images = new generarImage(this, isGif);
-        images.crearPNG();
 
     }//GEN-LAST:event_jButton2ActionPerformed
     lienzo lz;
@@ -434,8 +476,8 @@ public class EditorGrafico extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField Cantidad;
     private javax.swing.JButton ColorSelect;
-    private javax.swing.JTextField Duracion1;
     private javax.swing.JTextField Duracion2;
     private javax.swing.JTextField Fin;
     private javax.swing.JComboBox<String> Ids;
@@ -520,6 +562,7 @@ public class EditorGrafico extends javax.swing.JPanel {
         return tmp;
     }
     String vectorOrden[];
+    int vectorNodes[];
 
     public void setVectorOrden(String[] vectorOrden) {
         this.vectorOrden = vectorOrden;
@@ -535,6 +578,14 @@ public class EditorGrafico extends javax.swing.JPanel {
 
     public JTextField getInicio() {
         return Inicio;
+    }
+
+    public void setVectorNodes(int[] vectorNodes) {
+        this.vectorNodes = vectorNodes;
+    }
+
+    public int[] getVectorNodes() {
+        return vectorNodes;
     }
 
 }

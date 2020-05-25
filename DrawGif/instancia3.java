@@ -5,7 +5,7 @@ import AnalizadorLienzos.lienzo;
 import AnalizadorTime.Tiempos;
 import drawgif.Errors;
 import java.awt.Color;
-import java.util.ArrayList;public class instancia{
+import java.util.ArrayList;public class instancia3{
  int x=8 ;
  int y=8 ;
 String k="" ;
@@ -20,18 +20,20 @@ this.NumFFC=15;
 if(2 == 2 )
 {
 
- pintar("VerdePalido","_id1",2,0,2,1,12,28);
+ pintar("VerdePalido","_id1",2,0,2,3,12,28);
 
 }
 
 }
 
-public instancia(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {
+public instancia3(ArrayList<lienzo> lienzos, ArrayList<ContentColor> listado, ArrayList<Tiempos> listTime) {
         this.lienzos = lienzos;
         this.listado = listado;
-        this.listTime = listTime;        this.semanticos=new ArrayList();
+        this.listTime = listTime;
+        this.semanticos=new ArrayList();
         this.LienzoGlobalParamX="";
-        this.NumFFX=0;this.NumFFC=0;    }
+        this.NumFFX=0;this.NumFFC=0;
+    }
 public  ArrayList<lienzo> lienzos;
 public  ArrayList<ContentColor> listado;
 public  ArrayList<Tiempos> listTime;
@@ -161,7 +163,7 @@ instruct0 ();
 
     }
     private boolean validarSIZE(int xXX, int yYY, int FF, int CC, int fil, int col) {
-        if (xXX >= 0 && xXX < CC) {
+System.out.println("Datos"+xXX+" "+CC+" "+yYY+" "+FF);        if (xXX >= 0 && xXX < CC) {
             if (yYY >= 0 && yYY < FF) {
                 return true;
             }
