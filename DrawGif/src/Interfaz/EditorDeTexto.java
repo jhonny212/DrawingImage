@@ -78,6 +78,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
+        jMenuItem15 = new javax.swing.JMenuItem();
         Menu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -92,6 +93,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenuItem12 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem16 = new javax.swing.JMenuItem();
 
         jMenu3.setText("jMenu3");
 
@@ -140,6 +142,14 @@ public class EditorDeTexto extends javax.swing.JFrame {
             }
         });
         Menu1.add(jMenuItem14);
+
+        jMenuItem15.setText("Salir");
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
+        Menu1.add(jMenuItem15);
 
         jMenuBar1.add(Menu1);
 
@@ -242,6 +252,14 @@ public class EditorDeTexto extends javax.swing.JFrame {
             }
         });
         jMenu5.add(jMenuItem13);
+
+        jMenuItem16.setText("F");
+        jMenuItem16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem16ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem16);
 
         jMenuBar1.add(jMenu5);
 
@@ -390,6 +408,9 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
+        all(0);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+private void all(int opc){
 
         boolean x1 = false, x2 = false, x3 = false, x4 = false;
 
@@ -397,7 +418,11 @@ public class EditorDeTexto extends javax.swing.JFrame {
             x1 = iniciarErrores(4);
             x2 = iniciarErrores(2);
             x3 = iniciarErrores(1);
+            if(opc==0){
             x4 = iniciarErrores(3);
+            }else{
+            x4=true;
+            }
         } catch (NullPointerException e) {
            
         }
@@ -449,8 +474,8 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 this.Menu2.disable();
             }
         }
-    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
+}
     public static int contadoR = 0;
 
     private void GifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GifActionPerformed
@@ -520,7 +545,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         try {
-            open("Tecnico.pdf");
+            open("Manueal tecnico.pdf");
         } catch (IOException ex) {
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
@@ -532,6 +557,14 @@ public class EditorDeTexto extends javax.swing.JFrame {
        f.add(new AcercaDe());
        f.show();
     }//GEN-LAST:event_jMenuItem13ActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+       System.exit(0);
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void jMenuItem16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem16ActionPerformed
+        all(1);
+    }//GEN-LAST:event_jMenuItem16ActionPerformed
     private void open(String name) throws IOException {
         File path = new File("../documentos/"+name);
         Desktop.getDesktop().open(path);
@@ -553,6 +586,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     Panel.remove(lz.seman);
                 } catch (Exception e) {
                 }
+                if(this.lienzo==null)return false;
                 lz = new lienzo(this.lienzo.getTexto().getText());
 
                 if (!lz.getErroresSintacticos().isEmpty()) {
@@ -592,6 +626,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     Panel.remove(tmp.seman);
                 } catch (Exception e) {
                 }
+                if(this.tiempo==null)return false;
                 tmp = new Time(this.tiempo.getTexto().getText());
                 if (!tmp.getErroresSintacticos().isEmpty()) {
                     tmp.sintact = new panelError();
@@ -600,6 +635,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     Panel.setSelectedComponent(tmp.sintact);
                     aux++;
                 }
+                
                 if (!tmp.getErroresLexico().isEmpty()) {
                     tmp.lexi = new panelError();
                     tmp.lexi.init(tmp.getErroresLexico());
@@ -628,6 +664,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                     Panel.remove(clr.seman);
                 } catch (Exception e) {
                 }
+                if(this.colores==null)return false;
                 clr = new Colores(this.colores.getTexto().getText());
 
                 clr.init();
@@ -667,6 +704,7 @@ public class EditorDeTexto extends javax.swing.JFrame {
                 } catch (Exception e) {
                 }
                 System.out.println("Texto a anlizar?" + this.codigo.getTexto().getText());
+                if(this.codigo==null)return false;
                 pnt = new Codigo(this.codigo.getTexto().getText());
 
                 if (!pnt.getErroresSintacticos().isEmpty()) {
@@ -801,6 +839,8 @@ public class EditorDeTexto extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
+    private javax.swing.JMenuItem jMenuItem15;
+    private javax.swing.JMenuItem jMenuItem16;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

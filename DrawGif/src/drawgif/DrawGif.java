@@ -18,9 +18,10 @@ public class DrawGif {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        EditorDeTexto f = new EditorDeTexto();
-        f.show();
-        //generarCompilador();
+       EditorDeTexto f = new EditorDeTexto();
+       f.show();
+     
+     
     }
 
     private static void generarCompilador() {
