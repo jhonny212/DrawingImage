@@ -63,9 +63,9 @@ public class Codigo extends Fichero {
         EditorDeTexto.contadoR++;
         crearClase cl = new crearClase();
         String txt = cl.init(this.variables, this.metodos, this.methods);
-        
+        String sFichero="";
         try {
-            String sFichero = "instancia" + EditorDeTexto.contadoR + ".java";
+             sFichero= "instancia" + EditorDeTexto.contadoR + ".java";
             BufferedWriter bw = new BufferedWriter(new FileWriter(sFichero));
             bw.write(txt);
             bw.close();
@@ -87,6 +87,8 @@ public class Codigo extends Fichero {
         } catch (IOException ex) {
 
         }
+        File fil=new File(sFichero);
+        if(fil.exists())fil.delete();
         
     }
 }

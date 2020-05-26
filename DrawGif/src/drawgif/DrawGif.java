@@ -20,17 +20,17 @@ public class DrawGif {
     public static void main(String[] args) {
        EditorDeTexto f = new EditorDeTexto();
        f.show();
-     
+       //generarCompilador();
      
     }
 
     private static void generarCompilador() {
 
         try {
-            String ruta = "src/AnalizadorColors/"; //ruta donde tenemos los archivos con extension .jflex y .cup
+            String ruta = "src/AnalizadorPnt/"; //ruta donde tenemos los archivos con extension .jflex y .cup
             String opcFlex[] = {ruta + "lexicoColor.jflex", "-d", ruta};
             //jflex.Main.generate(opcFlex);
-            String opcCUP[] = {"-destdir", ruta, "-parser", "parseColor", ruta + "parseColor.cup"};
+            String opcCUP[] = {"-destdir", ruta, "-parser", "parserPnt", ruta + "parserPnt.cup"};
             java_cup.Main.main(opcCUP);
         } catch (Exception e) {
             e.printStackTrace();

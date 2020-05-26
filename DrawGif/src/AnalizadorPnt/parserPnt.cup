@@ -741,7 +741,7 @@ for(int i=0;i<tablaForInt.size();i++){
 array[2]=Id;
      
 if(!exist){
-    array[3]="??";
+    array[3]=false;
    Semanticos.add(new Errors((String)e,msj,-1,eleft,eright));
 }
 RESULT=array;
@@ -890,8 +890,8 @@ if(str2.equals("false")){
    Semanticos.add(new Errors(t2,"Error en el parametro 2, debe contener al menos una cadena",-1,e1left,e1right));
 }
 String txt = "";
-int vector1[]=(int [])e2;
-int vector2[]=(int [])e3;
+String vector1[]=(String [])e2;
+String vector2[]=(String [])e3;
 txt="\n pintar("+t1+","+t2+","+vector1[0]+","+vector1[1]+","+vector2[0]+","+vector2[1]+");\n";
 
 if(Semanticos.size()==1){
@@ -926,17 +926,30 @@ containsBool=false;
 :}
 |error abreParen S1;
 //----------------------------------------------------------------------->
-PARAM2::= E:e 
+PARAM2::= S1:e 
 {:
-int value=(int)((double)e); 
-int vector[]={value,-9999};
+Object obj[]=(Object[])e;
+boolean valid=obj[3];
+if(valid){
+     Semanticos.add(new Errors(String.valueOf(obj[2]),"Error, no puede contener cadenas",-1,eleft,eright));
+}
+String vector[]={String.valueOf(obj[2]),"-9999"};
 RESULT= vector; 
 :}
-| E:e Punto E:e1 
+| S1:e Punto S1:e1 
 {:
-int value=(int)((double)e);
-int value2=(int)((double)e1);
-int vector[]={value,value2};
+Object obj[]=(Object[])e;
+Object obj2[]=(Object[])e1;
+boolean valid=obj[3];
+if(valid){
+     Semanticos.add(new Errors(String.valueOf(obj[2]),"Error, no puede contener cadenas",-1,eleft,eright));
+}
+boolean valid=obj2[3];
+if(valid){
+     Semanticos.add(new Errors(String.valueOf(obj2[2]),"Error, no puede contener cadenas",-1,e1left,e1right));
+}
+
+String vector[]={String.valueOf(obj[2]),String.valueOf(obj2[2])};
 RESULT= vector; 
 :};
 //------------------------------------------------------------------------->
